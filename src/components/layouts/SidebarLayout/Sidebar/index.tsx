@@ -1,22 +1,20 @@
 import { useContext } from 'react';
-import Scrollbar from 'src/components/Scrollbar';
-import { SidebarContext } from 'src/contexts/SidebarContext';
 
 import {
   Box,
+  Button,
+  Divider,
   Drawer,
   alpha,
-  styled,
-  Divider,
-  useTheme,
-  Button,
-  lighten,
   darken,
-  Tooltip
+  lighten,
+  styled,
+  useTheme,
 } from '@mui/material';
 
+import { SidebarContext } from '../../../../contexts/SidebarContext';
+import Scrollbar from '../../../Scrollbar';
 import SidebarMenu from './SidebarMenu';
-import Logo from 'src/components/LogoSign';
 
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `
@@ -41,17 +39,17 @@ function Sidebar() {
         sx={{
           display: {
             xs: 'none',
-            lg: 'inline-block'
+            lg: 'inline-block',
           },
           position: 'fixed',
           left: 0,
           top: 0,
           background:
             theme.palette.mode === 'dark'
-              ? alpha(lighten(theme.header.background, 0.1), 0.5)
+              ? alpha(lighten(theme.header.background as string, 0.1), 0.5)
               : darken(theme.colors.alpha.black[100], 0.5),
           boxShadow:
-            theme.palette.mode === 'dark' ? theme.sidebar.boxShadow : 'none'
+            theme.palette.mode === 'dark' ? theme.sidebar.boxShadow : 'none',
         }}
       >
         <Scrollbar>
@@ -59,24 +57,24 @@ function Sidebar() {
             <Box
               mx={2}
               sx={{
-                width: 52
+                width: 52,
               }}
             >
-              <Logo />
+              LOGO
             </Box>
           </Box>
           <Divider
             sx={{
               mt: theme.spacing(3),
               mx: theme.spacing(2),
-              background: theme.colors.alpha.trueWhite[10]
+              background: theme.colors.alpha.trueWhite[10],
             }}
           />
           <SidebarMenu />
         </Scrollbar>
         <Divider
           sx={{
-            background: theme.colors.alpha.trueWhite[10]
+            background: theme.colors.alpha.trueWhite[10],
           }}
         />
         <Box p={2}>
@@ -95,7 +93,7 @@ function Sidebar() {
       </SidebarWrapper>
       <Drawer
         sx={{
-          boxShadow: `${theme.sidebar.boxShadow}`
+          boxShadow: `${theme.sidebar.boxShadow}`,
         }}
         anchor={theme.direction === 'rtl' ? 'right' : 'left'}
         open={sidebarToggle}
@@ -108,7 +106,7 @@ function Sidebar() {
             background:
               theme.palette.mode === 'dark'
                 ? theme.colors.alpha.white[100]
-                : darken(theme.colors.alpha.black[100], 0.5)
+                : darken(theme.colors.alpha.black[100], 0.5),
           }}
         >
           <Scrollbar>
@@ -116,17 +114,17 @@ function Sidebar() {
               <Box
                 mx={2}
                 sx={{
-                  width: 52
+                  width: 52,
                 }}
               >
-                <Logo />
+                LOGO
               </Box>
             </Box>
             <Divider
               sx={{
                 mt: theme.spacing(3),
                 mx: theme.spacing(2),
-                background: theme.colors.alpha.trueWhite[10]
+                background: theme.colors.alpha.trueWhite[10],
               }}
             />
             <SidebarMenu />

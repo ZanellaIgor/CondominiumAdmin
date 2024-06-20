@@ -1,16 +1,16 @@
-import { Home } from '@mui/icons-material';
 import { RouteObject } from 'react-router';
 import { Navigate } from 'react-router-dom';
-import BaseLayout from './components/layouts/BaseLayout';
+import { SidebarLayout } from './components/layouts/SidebarLayout';
+import { HomePage } from './components/pages/Home';
 
 export const routes: RouteObject[] = [
   {
     path: '',
-    element: <BaseLayout />,
+    element: <SidebarLayout />,
     children: [
       {
         path: '/',
-        element: <Home />,
+        element: <HomePage />,
       },
       {
         path: '*',

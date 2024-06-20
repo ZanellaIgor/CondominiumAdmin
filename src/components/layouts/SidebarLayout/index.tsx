@@ -1,15 +1,15 @@
-import { FC, ReactNode } from 'react';
 import { Box, alpha, lighten, useTheme } from '@mui/material';
+import { FC, ReactNode } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import Sidebar from './Sidebar';
 import Header from './Header';
+import Sidebar from './Sidebar';
 
-interface SidebarLayoutProps {
+interface ISidebarLayoutProps {
   children?: ReactNode;
 }
 
-const SidebarLayout: FC<SidebarLayoutProps> = () => {
+export const SidebarLayout: FC<ISidebarLayoutProps> = () => {
   const theme = useTheme();
 
   return (
@@ -37,8 +37,8 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
                   )}, 0px 5px 12px -4px ${alpha(
                     theme.colors.alpha.black[100],
                     0.05
-                  )}`
-          }
+                  )}`,
+          },
         }}
       >
         <Header />
@@ -51,8 +51,8 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
             flex: 1,
             pt: `${theme.header.height}`,
             [theme.breakpoints.up('lg')]: {
-              ml: `${theme.sidebar.width}`
-            }
+              ml: `${theme.sidebar.width}`,
+            },
           }}
         >
           <Box display="block">
@@ -63,5 +63,3 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
     </>
   );
 };
-
-export default SidebarLayout;
