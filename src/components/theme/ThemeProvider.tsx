@@ -1,14 +1,20 @@
 import { ThemeProvider } from '@mui/material';
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, createContext, useState } from 'react';
 import { themeCreator } from './base';
 
 interface IThemeProviderPops {
   children: ReactNode;
 }
 
-export const ThemeContext = React.createContext(
-  (themeName: string): void => {}
-);
+type ThemeContextType = {
+  currentTheme: ReturnType<typeof themeCreator>;
+  setThemeName: (themeName: string) => void;
+};
+
+export const ThemeContext = createContext<ThemeContextType>({
+  currentTheme: themeCreator('PureLightTheme'),
+  setThemeName: () => {},
+});
 
 const ThemeProviderWrapper: React.FC<IThemeProviderPops> = ({ children }) => {
   const curThemeName = localStorage.getItem('appTheme') || 'PureLightTheme';
@@ -19,8 +25,13 @@ const ThemeProviderWrapper: React.FC<IThemeProviderPops> = ({ children }) => {
     _setThemeName(themeName);
   };
 
+  const contextValue = {
+    currentTheme: theme,
+    setThemeName,
+  };
+
   return (
-    <ThemeContext.Provider value={setThemeName}>
+    <ThemeContext.Provider value={contextValue}>
       <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </ThemeContext.Provider>
   );

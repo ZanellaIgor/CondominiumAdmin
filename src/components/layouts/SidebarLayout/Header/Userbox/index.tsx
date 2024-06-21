@@ -13,15 +13,15 @@ import {
   ListItem,
   ListItemText,
   Popover,
-  Typography
+  Typography,
 } from '@mui/material';
 
-import InboxTwoToneIcon from '@mui/icons-material/InboxTwoTone';
-import { styled } from '@mui/material/styles';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
-import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
+import InboxTwoToneIcon from '@mui/icons-material/InboxTwoTone';
+import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
+import { styled } from '@mui/material/styles';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -62,7 +62,7 @@ function HeaderUserbox() {
   const user = {
     name: 'Catherine Pike',
     avatar: '/static/images/avatars/1.jpg',
-    jobtitle: 'Project Manager'
+    jobtitle: 'Project Manager',
   };
 
   const ref = useRef<any>(null);
@@ -98,11 +98,11 @@ function HeaderUserbox() {
         open={isOpen}
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'right'
+          horizontal: 'right',
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'right'
+          horizontal: 'right',
         }}
       >
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">

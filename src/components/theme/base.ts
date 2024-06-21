@@ -7,7 +7,7 @@ export function themeCreator(theme: string): Theme {
   return themeMap[theme];
 }
 
-declare module '@mui/material/styles' {
+declare module '@mui/material/' {
   interface Theme {
     colors: {
       gradients: {

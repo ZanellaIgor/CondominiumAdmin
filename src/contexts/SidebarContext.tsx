@@ -9,7 +9,6 @@ interface ISidebarProviderProps {
   children: React.ReactNode;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SidebarContext = createContext<SidebarContext>(
   {} as SidebarContext
 );

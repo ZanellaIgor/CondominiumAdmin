@@ -1,30 +1,30 @@
-import { forwardRef, Ref, useState, ReactElement, ChangeEvent } from 'react';
+import FindInPageTwoToneIcon from '@mui/icons-material/FindInPageTwoTone';
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import {
   Avatar,
-  Link,
   Box,
   Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   Divider,
+  Hidden,
   IconButton,
   InputAdornment,
-  lighten,
+  Link,
   List,
   ListItem,
   ListItemAvatar,
+  Slide,
   TextField,
   Theme,
   Tooltip,
   Typography,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Slide,
-  Hidden
+  lighten,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { TransitionProps } from '@mui/material/transitions';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import FindInPageTwoToneIcon from '@mui/icons-material/FindInPageTwoTone';
+import { ChangeEvent, ReactElement, Ref, forwardRef, useState } from 'react';
 
 import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone';
 
@@ -117,7 +117,7 @@ function HeaderSearch() {
                 <InputAdornment position="start">
                   <SearchTwoToneIcon />
                 </InputAdornment>
-              )
+              ),
             }}
             placeholder="Search terms here..."
             fullWidth
@@ -155,7 +155,7 @@ function HeaderSearch() {
                     <Avatar
                       sx={{
                         background: (theme: Theme) =>
-                          theme.palette.secondary.main
+                          theme.palette.secondary.main,
                       }}
                     >
                       <FindInPageTwoToneIcon />
@@ -178,7 +178,7 @@ function HeaderSearch() {
                     variant="body2"
                     sx={{
                       color: (theme: Theme) =>
-                        lighten(theme.palette.secondary.main, 0.5)
+                        lighten(theme.palette.secondary.main, 0.5),
                     }}
                   >
                     This page contains all the necessary information for
@@ -194,7 +194,7 @@ function HeaderSearch() {
                     <Avatar
                       sx={{
                         background: (theme: Theme) =>
-                          theme.palette.secondary.main
+                          theme.palette.secondary.main,
                       }}
                     >
                       <FindInPageTwoToneIcon />
@@ -217,7 +217,7 @@ function HeaderSearch() {
                     variant="body2"
                     sx={{
                       color: (theme: Theme) =>
-                        lighten(theme.palette.secondary.main, 0.5)
+                        lighten(theme.palette.secondary.main, 0.5),
                     }}
                   >
                     This is yet another search result pointing to a app page.
@@ -232,7 +232,7 @@ function HeaderSearch() {
                     <Avatar
                       sx={{
                         background: (theme: Theme) =>
-                          theme.palette.secondary.main
+                          theme.palette.secondary.main,
                       }}
                     >
                       <FindInPageTwoToneIcon />
@@ -255,7 +255,7 @@ function HeaderSearch() {
                     variant="body2"
                     sx={{
                       color: (theme: Theme) =>
-                        lighten(theme.palette.secondary.main, 0.5)
+                        lighten(theme.palette.secondary.main, 0.5),
                     }}
                   >
                     Choose if you would like to show or not this typography
