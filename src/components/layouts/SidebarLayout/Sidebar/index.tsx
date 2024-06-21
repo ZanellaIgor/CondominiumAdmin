@@ -2,9 +2,9 @@ import { useContext } from 'react';
 
 import {
   Box,
-  Button,
   Divider,
   Drawer,
+  Typography,
   alpha,
   darken,
   lighten,
@@ -78,17 +78,15 @@ function Sidebar() {
           }}
         />
         <Box p={2}>
-          <Button
-            href="https://bloomui.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            variant="contained"
-            color="warning"
-            size="small"
-            fullWidth
+          <Typography
+            sx={{
+              textAlign: 'center',
+              bgcolor: theme.colors.warning.main,
+              borderRadius: 2,
+            }}
           >
-            Upgrade to PRO
-          </Button>
+            Painel de Gestão v1
+          </Typography>
         </Box>
       </SidebarWrapper>
       <Drawer
