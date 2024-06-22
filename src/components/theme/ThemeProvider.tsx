@@ -1,37 +1,54 @@
 import { ThemeProvider } from '@mui/material';
-import React, { ReactNode, createContext, useState } from 'react';
+import React, {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { themeCreator } from './base';
 
-interface IThemeProviderPops {
+interface IThemeProviderProps {
   children: ReactNode;
 }
 
-type ThemeContextType = {
-  currentTheme: ReturnType<typeof themeCreator>;
-  setThemeName: (themeName: string) => void;
-};
+type ThemeName = 'DarkTheme' | 'LightTheme';
 
-export const ThemeContext = createContext<ThemeContextType>({
-  currentTheme: themeCreator('PureLightTheme'),
-  setThemeName: () => {},
+interface ThemeContextType {
+  theme: ReturnType<typeof themeCreator>;
+  toggleTheme: () => void;
+  themeName: ThemeName;
+}
+
+const ThemeContext = createContext<ThemeContextType>({
+  theme: themeCreator('LightTheme'),
+  toggleTheme: () => {},
+  themeName: 'LightTheme',
 });
 
-const ThemeProviderWrapper: React.FC<IThemeProviderPops> = ({ children }) => {
-  const curThemeName = localStorage.getItem('appTheme') || 'PureLightTheme';
-  const [themeName, _setThemeName] = useState(curThemeName);
-  const theme = themeCreator(themeName);
-  const setThemeName = (themeName: string): void => {
-    localStorage.setItem('appTheme', themeName);
-    _setThemeName(themeName);
+export const useThemeContext = () => useContext(ThemeContext);
+
+const ThemeProviderWrapper: React.FC<IThemeProviderProps> = ({ children }) => {
+  const [themeName, setThemeName] = useState<ThemeName>('LightTheme');
+
+  useEffect(() => {
+    const storedThemeName = localStorage.getItem('appTheme') as ThemeName;
+    if (storedThemeName) {
+      setThemeName(storedThemeName);
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newThemeName =
+      themeName === 'LightTheme' ? 'DarkTheme' : 'LightTheme';
+    localStorage.setItem('appTheme', newThemeName);
+    setThemeName(newThemeName);
   };
 
-  const contextValue = {
-    currentTheme: theme,
-    setThemeName,
-  };
+  const theme = themeCreator(themeName);
 
   return (
-    <ThemeContext.Provider value={contextValue}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, themeName }}>
       <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </ThemeContext.Provider>
   );

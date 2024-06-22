@@ -1,4 +1,3 @@
-/* import '@mui/lab/themeAugmentation'; */
 import { alpha, createTheme, darken, lighten } from '@mui/material';
 
 const themeColors = {
@@ -129,7 +128,7 @@ const colors = {
   },
 };
 
-export const PureLightTheme = createTheme({
+export const LightTheme = createTheme({
   // direction: i18n.dir(),
   colors: {
     gradients: {
@@ -993,54 +992,6 @@ export const PureLightTheme = createTheme({
         },
       },
     },
-    /* MuiTimelineDot: {
-      styleOverrides: {
-        root: {
-          margin: 0,
-          zIndex: 5,
-          position: 'absolute',
-          top: '50%',
-          marginTop: -6,
-          left: -6
-        },
-        outlined: {
-          backgroundColor: colors.alpha.white[100],
-          boxShadow: '0 0 0 6px ' + colors.alpha.white[100]
-        },
-        outlinedPrimary: {
-          backgroundColor: colors.alpha.white[100],
-          boxShadow: '0 0 0 6px ' + colors.alpha.white[100]
-        }
-      }
-    }, */
-    /* MuiTimelineConnector: {
-      styleOverrides: {
-        root: {
-          position: 'absolute',
-          height: '100%',
-          top: 0,
-          borderRadius: 50,
-          backgroundColor: colors.alpha.black[10],
-        },
-      },
-    }, */
-    /* MuiTimelineItem: {
-      styleOverrides: {
-        root: {
-          minHeight: 0,
-          padding: '8px 0',
-
-          '&:before': {
-            display: 'none',
-          },
-        },
-        missingOppositeContent: {
-          '&:before': {
-            display: 'none',
-          },
-        },
-      },
-    }, */
     MuiTooltip: {
       styleOverrides: {
         tooltip: {

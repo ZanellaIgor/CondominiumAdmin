@@ -1,9 +1,10 @@
 import React from 'react';
 
 import { Theme } from '@mui/material';
-import { PureLightTheme } from './schemes/PureLightTheme';
+import { DarkTheme } from './schemes/DarkTheme';
+import { LightTheme } from './schemes/LightTheme';
 
-export function themeCreator(theme: string): Theme {
+export function themeCreator(theme: 'DarkTheme' | 'LightTheme'): Theme {
   return themeMap[theme];
 }
 
@@ -249,5 +250,6 @@ declare module '@mui/material/' {
 }
 
 const themeMap: { [key: string]: Theme } = {
-  PureLightTheme,
+  LightTheme: LightTheme,
+  DarkTheme: DarkTheme,
 };
