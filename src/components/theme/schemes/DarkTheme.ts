@@ -1,15 +1,15 @@
 import { alpha, createTheme, darken, lighten } from '@mui/material';
 
 const themeColors = {
-  primary: '#5569ff',
-  secondary: '#6E759F',
-  success: '#57CA22',
-  warning: '#FFA319',
-  error: '#FF1943',
-  info: '#33C2FF',
-  black: '#ffffff',
-  white: '#223354',
-  primaryAlt: '#000C57',
+  primary: '#CAD2D3',
+  secondary: '#383838',
+  success: '#3B873E',
+  warning: '#B37400',
+  error: '#B22035',
+  info: '#246B89',
+  black: '#121826',
+  white: '#f6f6f6f6',
+  primaryAlt: '#1C2540',
 };
 
 const colors = {
@@ -242,9 +242,9 @@ export const DarkTheme = createTheme({
   },
   header: {
     height: '80px',
-    background: colors.alpha.white[100],
+    background: darken(colors.secondary.main, 0.5),
     boxShadow: colors.shadows.cardSm,
-    textColor: colors.secondary.main,
+    textColor: colors.secondary.light,
   },
   spacing: 9,
   palette: {
@@ -252,7 +252,7 @@ export const DarkTheme = createTheme({
       black: colors.alpha.black[100],
       white: colors.alpha.white[100],
     },
-    mode: 'light',
+    mode: 'dark',
     primary: {
       light: colors.primary.light,
       main: colors.primary.main,
@@ -557,7 +557,7 @@ export const DarkTheme = createTheme({
             boxShadow: colors.shadows.primary,
           },
           '&.MuiButtonBase-root:hover': {
-            background: colors.alpha.black[5],
+            background: colors.alpha.white[5],
           },
           '&.Mui-selected.MuiButtonBase-root:hover': {
             background: colors.primary.main,
@@ -593,7 +593,7 @@ export const DarkTheme = createTheme({
 
           '&:hover, &.MuiSelected': {
             backgroundColor: colors.alpha.black[5],
-            color: colors.alpha.black[100],
+            color: colors.alpha.white[100],
           },
         },
         sizeSmall: {
@@ -886,10 +886,10 @@ export const DarkTheme = createTheme({
       styleOverrides: {
         root: {
           '&.MuiButtonBase-root': {
-            color: colors.secondary.main,
+            color: colors.alpha.trueWhite[70],
 
             '&:hover, &:active, &.active, &.Mui-selected': {
-              color: colors.alpha.black[100],
+              color: colors.alpha.white[100],
               background: lighten(colors.primary.lighter, 0.5),
             },
           },
@@ -1134,16 +1134,16 @@ export const DarkTheme = createTheme({
     caption: {
       fontSize: 13,
       textTransform: 'uppercase',
-      color: colors.alpha.black[50],
+      color: colors.alpha.white[50],
     },
     subtitle1: {
       fontSize: 14,
-      color: colors.alpha.black[70],
+      color: colors.alpha.white[70],
     },
     subtitle2: {
       fontWeight: 400,
       fontSize: 15,
-      color: colors.alpha.black[70],
+      color: colors.alpha.white[70],
     },
     overline: {
       fontSize: 13,

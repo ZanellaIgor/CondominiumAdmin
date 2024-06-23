@@ -5,9 +5,7 @@ import {
   Divider,
   Drawer,
   Typography,
-  alpha,
   darken,
-  lighten,
   styled,
   useTheme,
 } from '@mui/material';
@@ -46,7 +44,7 @@ function Sidebar() {
           top: 0,
           background:
             theme.palette.mode === 'dark'
-              ? alpha(lighten(theme.header.background as string, 0.1), 0.5)
+              ? theme.colors.gradients.black1
               : darken(theme.colors.alpha.black[100], 0.5),
           boxShadow:
             theme.palette.mode === 'dark' ? theme.sidebar.boxShadow : 'none',
@@ -103,7 +101,7 @@ function Sidebar() {
           sx={{
             background:
               theme.palette.mode === 'dark'
-                ? theme.colors.alpha.white[100]
+                ? theme.colors.gradients.black1
                 : darken(theme.colors.alpha.black[100], 0.5),
           }}
         >
