@@ -1,9 +1,23 @@
 import { RouteObject } from 'react-router';
 import { Navigate } from 'react-router-dom';
 
-import { SidebarLayout } from './components/Layouts/SidebarLayout';
-import { HomePage } from './pages/Home/Home';
-import { WarningsPage } from './pages/Warnings/Warnings';
+import { SidebarLayout } from '@components/layouts/SidebarLayout';
+import { ComponentType, FC, Suspense, lazy } from 'react';
+
+const Loader =
+  (Component: ComponentType<any>): FC =>
+  (props) =>
+    (
+      <Suspense fallback={<h1>Carregando</h1>}>
+        <Component {...props} />
+      </Suspense>
+    );
+
+const HomePage = Loader(lazy(() => import('./pages/Home/Home')));
+const WarningsPage = Loader(lazy(() => import('./pages/Warnings/Warnings')));
+const ReservationsPage = Loader(
+  lazy(() => import('./pages/Reservations/Reservations'))
+);
 
 export const routes: RouteObject[] = [
   {
@@ -16,8 +30,12 @@ export const routes: RouteObject[] = [
       },
 
       {
-        path: '/Warnings',
+        path: '/warnings',
         element: <WarningsPage />,
+      },
+      {
+        path: '/reservations',
+        element: <ReservationsPage />,
       },
       {
         path: '*',

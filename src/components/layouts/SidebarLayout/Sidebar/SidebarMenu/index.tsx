@@ -186,7 +186,7 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/dashboards/crypto"
+                  to="/warnings"
                   startIcon={<Announcement />}
                 >
                   Avisos
@@ -198,7 +198,7 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/dashboards/messenger"
+                  to="/reservations"
                   startIcon={<EventAvailable />}
                 >
                   Reservas

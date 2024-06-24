@@ -1,8 +1,8 @@
 import { IconButton, Tooltip } from '@mui/material';
 import { useRef } from 'react';
 
+import { useThemeContext } from '@components/theme/ThemeProvider';
 import { DarkMode, LightMode } from '@mui/icons-material';
-import { useThemeContext } from '../../../../../Theme/ThemeProvider';
 
 function HeaderTheme() {
   const ref = useRef<any>(null);

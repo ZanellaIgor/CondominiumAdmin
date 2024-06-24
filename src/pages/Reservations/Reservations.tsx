@@ -17,12 +17,12 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { WarningsMock } from './Mock/Warnings';
 
-export default function WarningsPage() {
+export default function ReservationsPage() {
   const { theme } = useThemeContext();
   return (
     <Container>
       <Card>
-        <CardHeader title="Avisos" />
+        <CardHeader title="Reservas" />
         <CardContent>
           <Grid
             container
