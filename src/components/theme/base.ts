@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { Theme } from '@mui/material';
-import { DarkTheme } from './schemes/DarkTheme';
-import { LightTheme } from './schemes/LightTheme';
+import { DarkTheme } from './Schemas/DarkTheme';
+import { LightTheme } from './Schemas/LightTheme';
 
 export function themeCreator(theme: 'DarkTheme' | 'LightTheme'): Theme {
   return themeMap[theme];

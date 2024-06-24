@@ -2,7 +2,7 @@ import { IconButton, Tooltip } from '@mui/material';
 import { useRef } from 'react';
 
 import { DarkMode, LightMode } from '@mui/icons-material';
-import { useThemeContext } from '../../../../../theme/ThemeProvider';
+import { useThemeContext } from '../../../../../Theme/ThemeProvider';
 
 function HeaderTheme() {
   const ref = useRef<any>(null);
