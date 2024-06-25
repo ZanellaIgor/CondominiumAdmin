@@ -1,7 +1,7 @@
 import { IconButton, Tooltip } from '@mui/material';
 import { useRef } from 'react';
 
-import { useThemeContext } from '@components/theme/ThemeProvider';
+import { useThemeContext } from '@components/Theme/ThemeProvider';
 import { DarkMode, LightMode } from '@mui/icons-material';
 
 function HeaderTheme() {

@@ -1,4 +1,4 @@
-import { useThemeContext } from '@components/theme/ThemeProvider';
+import { useThemeContext } from '@components/Theme/ThemeProvider';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';

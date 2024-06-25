@@ -1,7 +1,7 @@
 import { RouteObject } from 'react-router';
 import { Navigate } from 'react-router-dom';
 
-import { SidebarLayout } from '@components/layouts/SidebarLayout';
+import { SidebarLayout } from '@components/Layouts/SidebarLayout';
 import { ComponentType, FC, Suspense, lazy } from 'react';
 
 const Loader =

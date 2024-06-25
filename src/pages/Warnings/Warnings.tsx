@@ -1,4 +1,4 @@
-import { useThemeContext } from '@components/theme/ThemeProvider';
+import { useThemeContext } from '@components/Theme/ThemeProvider';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
@@ -19,6 +19,7 @@ import { WarningsMock } from './Mock/Warnings';
 
 export default function WarningsPage() {
   const { theme } = useThemeContext();
+  console.log(WarningsMock);
   return (
     <Container>
       <Card>
@@ -46,7 +47,7 @@ export default function WarningsPage() {
                         />
                       </TableCell>
                       <TableCell>Título</TableCell>
-                      <TableCell>Descrição</TableCell>
+                      <TableCell>Categoria</TableCell>
                       <TableCell>Descrição</TableCell>
                       <TableCell align="right">Data</TableCell>
                       <TableCell align="right">Status</TableCell>
@@ -73,12 +74,16 @@ export default function WarningsPage() {
                             >
                               {warning.title}
                             </Typography>
+                          </TableCell>
+                          <TableCell>
                             <Typography
-                              variant="body2"
-                              color="text.secondary"
+                              variant="body1"
+                              fontWeight="bold"
+                              color="text.primary"
+                              gutterBottom
                               noWrap
                             >
-                              {warning.description}
+                              {warning.category}
                             </Typography>
                           </TableCell>
                           <TableCell>

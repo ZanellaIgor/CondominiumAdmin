@@ -1,7 +1,7 @@
 import { CssBaseline } from '@mui/material';
 import { useRoutes } from 'react-router-dom';
 
-import ThemeProviderWrapper from '@components/theme/ThemeProvider';
+import ThemeProviderWrapper from '@components/Theme/ThemeProvider';
 import { routes } from './router';
 
 function App() {
