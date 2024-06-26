@@ -6,6 +6,9 @@ export const WarningsMock = Array.from({ length: 25 }).map(() => {
     category: faker.lorem.word(4),
     severity: faker.lorem.word(6),
     status: faker.datatype.boolean(),
-    created_at: faker.date.past(),
+    created_at: faker.date.weekday(),
+    //pessoa
+    //predio
+    //criado
   };
 });

@@ -1,4 +1,5 @@
 import { useThemeContext } from '@components/Theme/ThemeProvider';
+import { Delete, Edit } from '@mui/icons-material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
@@ -15,13 +16,28 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { useState } from 'react';
 import { WarningsMock } from './Mock/Warnings';
+import { ModalWarning } from './Warnings.Modal';
+import { WarningRegisterProps } from './Warnings.Schema';
 
 export default function WarningsPage() {
   const { theme } = useThemeContext();
+  const [open, setOpen] = useState(false);
+  const [register, setRegister] = useState<WarningRegisterProps | undefined>();
+
   console.log(WarningsMock);
+  const handleEdit = (warning: WarningRegisterProps) => {
+    setRegister(warning);
+    setOpen(true);
+  };
   return (
     <Container>
+      <ModalWarning
+        open={open}
+        handleClose={() => setOpen(false)}
+        register={register}
+      />
       <Card>
         <CardHeader title="Avisos" />
         <CardContent>
@@ -48,19 +64,15 @@ export default function WarningsPage() {
                       </TableCell>
                       <TableCell>Título</TableCell>
                       <TableCell>Categoria</TableCell>
-                      <TableCell>Descrição</TableCell>
-                      <TableCell align="right">Data</TableCell>
-                      <TableCell align="right">Status</TableCell>
+                      <TableCell>Status</TableCell>
+                      <TableCell>Data</TableCell>
+                      <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {WarningsMock.map((warning) => {
+                    {WarningsMock.map((warning: WarningRegisterProps) => {
                       return (
-                        <TableRow
-                          hover
-                          key={warning.id}
-                          //selected={isCryptoOrderSelected}
-                        >
+                        <TableRow hover key={warning.id}>
                           <TableCell padding="checkbox">
                             <Checkbox color="primary" />
                           </TableCell>
@@ -94,7 +106,7 @@ export default function WarningsPage() {
                               gutterBottom
                               noWrap
                             >
-                              {warning.status}
+                              {warning.status ? 'Ativo' : 'Inativo'}
                             </Typography>
                           </TableCell>
                           <TableCell>
@@ -105,22 +117,27 @@ export default function WarningsPage() {
                               gutterBottom
                               noWrap
                             >
-                              ss
+                              {warning.severity}
+                            </Typography>
+                          </TableCell>
+                          <TableCell>
+                            <Typography
+                              variant="body1"
+                              fontWeight="bold"
+                              color="text.primary"
+                              gutterBottom
+                              noWrap
+                            >
+                              {warning.created_at ?? 'Create_At'}
                             </Typography>
                           </TableCell>
                           <TableCell align="right">
                             <Tooltip title="Edit Order" arrow>
                               <IconButton
-                                sx={{
-                                  '&:hover': {
-                                    background: theme.colors.primary.lighter,
-                                  },
-                                  color: theme.palette.primary.main,
-                                }}
-                                color="inherit"
                                 size="small"
+                                onClick={() => handleEdit(warning)}
                               >
-                                ss
+                                <Edit />
                               </IconButton>
                             </Tooltip>
                             <Tooltip title="Delete Order" arrow>
@@ -134,7 +151,7 @@ export default function WarningsPage() {
                                 color="inherit"
                                 size="small"
                               >
-                                ss
+                                <Delete />
                               </IconButton>
                             </Tooltip>
                           </TableCell>
