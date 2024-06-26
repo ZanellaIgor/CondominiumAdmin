@@ -1,5 +1,6 @@
 import { useThemeContext } from '@components/Theme/ThemeProvider';
 import { Delete, Edit } from '@mui/icons-material';
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
@@ -39,7 +40,10 @@ export default function WarningsPage() {
         register={register}
       />
       <Card>
-        <CardHeader title="Avisos" />
+        <CardHeader
+          title="Avisos"
+          action={<Button onClick={() => setOpen(true)}>Adicionar</Button>}
+        />
         <CardContent>
           <Grid
             container

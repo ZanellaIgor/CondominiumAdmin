@@ -23,6 +23,7 @@ export const InputField = forwardRef((props: InputFieldProps, ref) => {
             shrink: !!field?.value,
           }}
           inputRef={ref}
+          sx={{ display: 'flex', justifyContent: 'center' }}
         />
       )}
     />
