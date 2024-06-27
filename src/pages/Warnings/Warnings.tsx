@@ -23,11 +23,11 @@ import { ModalWarning } from './Warnings.Modal';
 import { WarningRegisterProps } from './Warnings.Schema';
 
 export default function WarningsPage() {
+  const [selectWarnings, setSelectWarnings] = useState<string[]>([]);
   const { theme } = useThemeContext();
   const [open, setOpen] = useState(false);
   const [register, setRegister] = useState<WarningRegisterProps | undefined>();
 
-  console.log(WarningsMock);
   const handleEdit = (warning: WarningRegisterProps) => {
     setRegister(warning);
     setOpen(true);

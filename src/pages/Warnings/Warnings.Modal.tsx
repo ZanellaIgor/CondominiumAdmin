@@ -23,7 +23,6 @@ export const ModalWarning = ({
   open,
   handleClose,
 }: ModalWarningProps) => {
-  console.log(register);
   const { control, handleSubmit, reset } = useForm<WarningRegisterProps>({
     defaultValues: warningHelper(register),
     resolver: zodResolver(WarningsSchema),
@@ -57,6 +56,15 @@ export const ModalWarning = ({
             </Grid>
             <Grid item xs={6}>
               <InputField name="severity" control={control} label="severity" />
+            </Grid>
+            <Grid item xs={12}>
+              <InputField
+                name="description"
+                control={control}
+                label="Descrição"
+                multiline
+                rows={4}
+              />
             </Grid>
             <Grid item xs={6}>
               <SwitchField name="status" control={control} label="Status" />
