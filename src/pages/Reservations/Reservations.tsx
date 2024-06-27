@@ -1,4 +1,5 @@
 import { useThemeContext } from '@components/Theme/ThemeProvider';
+import { Delete, Edit } from '@mui/icons-material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
@@ -15,10 +16,18 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { WarningsMock } from './Mock/Warnings';
+import { useState } from 'react';
+import { reservationsMock } from './Mock/Reservations';
 
 export default function ReservationsPage() {
   const { theme } = useThemeContext();
+  const [register, setRegister] = useState();
+  const [open, setOpen] = useState(false);
+
+  const handleEdit = (reservation: any) => {
+    setRegister(reservation);
+    setOpen(true);
+  };
   return (
     <Container>
       <Card>
@@ -45,19 +54,20 @@ export default function ReservationsPage() {
                           onChange={handleSelectAllCryptoOrders} */
                         />
                       </TableCell>
-                      <TableCell>Título</TableCell>
-                      <TableCell>Descrição</TableCell>
-                      <TableCell>Descrição</TableCell>
-                      <TableCell align="right">Data</TableCell>
-                      <TableCell align="right">Status</TableCell>
+
+                      <TableCell>Titulo</TableCell>
+                      <TableCell>Espaço</TableCell>
+                      <TableCell>Finalidade</TableCell>
+                      <TableCell>Status</TableCell>
+                      <TableCell>Data</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {WarningsMock.map((warning) => {
+                    {reservationsMock.map((reservation: any) => {
                       return (
                         <TableRow
                           hover
-                          key={warning.id}
+                          key={reservation.id}
                           //selected={isCryptoOrderSelected}
                         >
                           <TableCell padding="checkbox">
@@ -71,14 +81,14 @@ export default function ReservationsPage() {
                               gutterBottom
                               noWrap
                             >
-                              {warning.title}
+                              {reservation.title}
                             </Typography>
                             <Typography
                               variant="body2"
                               color="text.secondary"
                               noWrap
                             >
-                              {warning.description}
+                              {reservation.space}
                             </Typography>
                           </TableCell>
                           <TableCell>
@@ -89,7 +99,18 @@ export default function ReservationsPage() {
                               gutterBottom
                               noWrap
                             >
-                              {warning.status}
+                              {reservation.purpose}
+                            </Typography>
+                          </TableCell>
+                          <TableCell>
+                            <Typography
+                              variant="body1"
+                              fontWeight="bold"
+                              color="text.primary"
+                              gutterBottom
+                              noWrap
+                            >
+                              {reservation.status}
                             </Typography>
                           </TableCell>
                           <TableCell>
@@ -103,19 +124,24 @@ export default function ReservationsPage() {
                               ss
                             </Typography>
                           </TableCell>
+                          <TableCell>
+                            <Typography
+                              variant="body1"
+                              fontWeight="bold"
+                              color="text.primary"
+                              gutterBottom
+                              noWrap
+                            >
+                              {reservation.created_at ?? 'Create_At'}
+                            </Typography>
+                          </TableCell>
                           <TableCell align="right">
                             <Tooltip title="Edit Order" arrow>
                               <IconButton
-                                sx={{
-                                  '&:hover': {
-                                    background: theme.colors.primary.lighter,
-                                  },
-                                  color: theme.palette.primary.main,
-                                }}
-                                color="inherit"
                                 size="small"
+                                onClick={() => handleEdit(reservation)}
                               >
-                                ss
+                                <Edit />
                               </IconButton>
                             </Tooltip>
                             <Tooltip title="Delete Order" arrow>
@@ -129,7 +155,7 @@ export default function ReservationsPage() {
                                 color="inherit"
                                 size="small"
                               >
-                                ss
+                                <Delete />
                               </IconButton>
                             </Tooltip>
                           </TableCell>
