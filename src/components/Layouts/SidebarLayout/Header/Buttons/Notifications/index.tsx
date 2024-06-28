@@ -101,7 +101,7 @@ function HeaderNotifications() {
                 <Typography variant="caption" sx={{ textTransform: 'none' }}>
                   {formatDistance(subDays(new Date(), 3), new Date(), {
                     addSuffix: true,
-                  })}
+                  }) ?? 'SS'}
                 </Typography>
               </Box>
               <Typography
@@ -109,7 +109,6 @@ function HeaderNotifications() {
                 variant="body2"
                 color="text.secondary"
               >
-                {' '}
                 new messages in your inbox
               </Typography>
             </Box>

@@ -1,5 +1,6 @@
 import { useThemeContext } from '@components/Theme/ThemeProvider';
 import { Delete, Edit } from '@mui/icons-material';
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
@@ -18,6 +19,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { reservationsMock } from './Mock/Reservations';
+import { ModalReservations } from './Reservations.Modal';
 
 export default function ReservationsPage() {
   const { theme } = useThemeContext();
@@ -30,8 +32,16 @@ export default function ReservationsPage() {
   };
   return (
     <Container>
+      <ModalReservations
+        open={open}
+        handleClose={() => setOpen(false)}
+        register={register}
+      />
       <Card>
-        <CardHeader title="Reservas" />
+        <CardHeader
+          title="Reservas"
+          action={<Button onClick={() => setOpen(true)}>Adicionar</Button>}
+        />
         <CardContent>
           <Grid
             container
@@ -54,22 +64,18 @@ export default function ReservationsPage() {
                           onChange={handleSelectAllCryptoOrders} */
                         />
                       </TableCell>
-
                       <TableCell>Titulo</TableCell>
                       <TableCell>Espaço</TableCell>
                       <TableCell>Finalidade</TableCell>
                       <TableCell>Status</TableCell>
                       <TableCell>Data</TableCell>
+                      <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {reservationsMock.map((reservation: any) => {
                       return (
-                        <TableRow
-                          hover
-                          key={reservation.id}
-                          //selected={isCryptoOrderSelected}
-                        >
+                        <TableRow hover key={reservation.id}>
                           <TableCell padding="checkbox">
                             <Checkbox color="primary" />
                           </TableCell>
@@ -83,9 +89,13 @@ export default function ReservationsPage() {
                             >
                               {reservation.title}
                             </Typography>
+                          </TableCell>
+                          <TableCell>
                             <Typography
-                              variant="body2"
-                              color="text.secondary"
+                              variant="body1"
+                              fontWeight="bold"
+                              color="text.primary"
+                              gutterBottom
                               noWrap
                             >
                               {reservation.space}
@@ -110,32 +120,11 @@ export default function ReservationsPage() {
                               gutterBottom
                               noWrap
                             >
-                              {reservation.status}
+                              {reservation.status ? 'Ativo' : 'Inativo'}
                             </Typography>
                           </TableCell>
+
                           <TableCell>
-                            <Typography
-                              variant="body1"
-                              fontWeight="bold"
-                              color="text.primary"
-                              gutterBottom
-                              noWrap
-                            >
-                              ss
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography
-                              variant="body1"
-                              fontWeight="bold"
-                              color="text.primary"
-                              gutterBottom
-                              noWrap
-                            >
-                              {reservation.created_at ?? 'Create_At'}
-                            </Typography>
-                          </TableCell>
-                          <TableCell align="right">
                             <Tooltip title="Edit Order" arrow>
                               <IconButton
                                 size="small"

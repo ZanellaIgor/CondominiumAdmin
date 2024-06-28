@@ -9,34 +9,37 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { warningHelper } from './Warnings.Funcions';
-import { WarningRegisterProps, WarningsSchema } from './Warnings.Schema';
+import { reservationHelper } from './Reservations.Funcions';
+import {
+  ReservationsRegisterProps,
+  reservationsSchema,
+} from './Reservations.Schema';
 
-type ModalWarningProps = {
-  register: WarningRegisterProps | undefined;
+type ModalReservationsProps = {
+  register: ReservationsRegisterProps | undefined;
   open: boolean;
   handleClose: () => void;
 };
 
-export const ModalWarning = ({
+export const ModalReservations = ({
   register,
   open,
   handleClose,
-}: ModalWarningProps) => {
-  const { control, handleSubmit, reset } = useForm<WarningRegisterProps>({
-    defaultValues: warningHelper(register),
-    resolver: zodResolver(WarningsSchema),
+}: ModalReservationsProps) => {
+  const { control, handleSubmit, reset } = useForm<ReservationsRegisterProps>({
+    defaultValues: reservationHelper(register),
+    resolver: zodResolver(reservationsSchema),
   });
-  const submitForm: SubmitHandler<WarningRegisterProps> = (
-    values: WarningRegisterProps
+  const submitForm: SubmitHandler<ReservationsRegisterProps> = (
+    values: ReservationsRegisterProps
   ) => {
     console.log(values);
   };
 
   useEffect(() => {
-    reset(warningHelper(register));
+    reset(reservationHelper(register));
     return () => {
-      reset(warningHelper(undefined));
+      reset(reservationHelper(undefined));
     };
   }, [register]);
 
@@ -52,11 +55,22 @@ export const ModalWarning = ({
               <InputField name="title" control={control} label="Título" />
             </Grid>
             <Grid item xs={6}>
-              <InputField name="category" control={control} label="Categoria" />
+              <InputField name="space" control={control} label="Categoria" />
             </Grid>
             <Grid item xs={6}>
-              <InputField name="severity" control={control} label="severity" />
+              <InputField name="purpose" control={control} label="severity" />
             </Grid>
+            {/*  <Grid item xs={6}>
+              <InputDatePicker
+                name="dateReservation"
+                control={control}
+                label="Ativo"
+              />
+            </Grid> */}
+            <Grid item xs={6}>
+              <SwitchField name="status" control={control} label="Ativo" />
+            </Grid>
+
             <Grid item xs={12}>
               <InputField
                 name="description"
@@ -66,16 +80,13 @@ export const ModalWarning = ({
                 rows={4}
               />
             </Grid>
-            <Grid item xs={6}>
-              <SwitchField name="status" control={control} label="Ativo" />
-            </Grid>
           </Grid>
           <Grid item xs={12}>
             <Stack justifyContent={'flex-end'} direction={'row'}>
               <Button
                 onClick={() => {
                   handleClose();
-                  reset(warningHelper(undefined));
+                  reset(reservationHelper(undefined));
                 }}
               >
                 Voltar

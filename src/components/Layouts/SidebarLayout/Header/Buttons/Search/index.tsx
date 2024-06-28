@@ -135,14 +135,15 @@ function HeaderSearch() {
             >
               <Typography variant="body2" component="span">
                 Search results for{' '}
-                <Typography
-                  sx={{ fontWeight: 'bold' }}
-                  variant="body1"
-                  component="span"
-                >
-                  {searchValue}
-                </Typography>
               </Typography>
+              <Typography
+                sx={{ fontWeight: 'bold' }}
+                variant="body1"
+                component="span"
+              >
+                {searchValue}
+              </Typography>
+
               <Link href="#" variant="body2" underline="hover">
                 Advanced search
               </Link>
