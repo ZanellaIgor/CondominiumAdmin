@@ -18,6 +18,9 @@ const WarningsPage = Loader(lazy(() => import('./pages/Warnings/Warnings')));
 const ReservationsPage = Loader(
   lazy(() => import('./pages/Reservations/Reservations'))
 );
+const MaintenancePage = Loader(
+  lazy(() => import('./pages/Maintence/Maintence'))
+);
 
 export const routes: RouteObject[] = [
   {
@@ -36,6 +39,10 @@ export const routes: RouteObject[] = [
       {
         path: '/reservations',
         element: <ReservationsPage />,
+      },
+      {
+        path: '/maintenance',
+        element: <MaintenancePage />,
       },
       {
         path: '*',

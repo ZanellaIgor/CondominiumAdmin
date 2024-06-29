@@ -220,7 +220,7 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/dashboards/messenger"
+                  to="/maintenance"
                   startIcon={<Engineering />}
                 >
                   Manutenções

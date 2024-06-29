@@ -10,29 +10,29 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { reservationHelper } from './Reservations.Funcions';
+import { reservationHelper } from './Maintenance.Funcions';
 import {
-  ReservationsRegisterProps,
-  reservationsSchema,
-} from './Reservations.Schema';
+  MaintenanceRegisterProps,
+  maintenanceSchema,
+} from './Maintenance.Schema';
 
-type ModalReservationsProps = {
-  register: ReservationsRegisterProps | undefined;
+type ModalMaintenanceProps = {
+  register: MaintenanceRegisterProps | undefined;
   open: boolean;
   handleClose: () => void;
 };
 
-export const ModalReservations = ({
+export const MaintenanceReservations = ({
   register,
   open,
   handleClose,
-}: ModalReservationsProps) => {
-  const { control, handleSubmit, reset } = useForm<ReservationsRegisterProps>({
+}: ModalMaintenanceProps) => {
+  const { control, handleSubmit, reset } = useForm<MaintenanceRegisterProps>({
     defaultValues: reservationHelper(register),
-    resolver: zodResolver(reservationsSchema),
+    resolver: zodResolver(maintenanceSchema),
   });
-  const submitForm: SubmitHandler<ReservationsRegisterProps> = (
-    values: ReservationsRegisterProps
+  const submitForm: SubmitHandler<MaintenanceRegisterProps> = (
+    values: MaintenanceRegisterProps
   ) => {
     console.log(values);
   };
@@ -48,7 +48,7 @@ export const ModalReservations = ({
     <Dialog open={open} onClose={handleClose}>
       <DialogContent>
         <DialogTitle sx={{ textAlign: 'center' }}>
-          {register ? 'Edite a reserva' : 'Adicione uma nova reserva'}
+          {register ? 'Edite a solicitação' : 'Adicione uma nova solicitação'}
         </DialogTitle>
         <form noValidate onSubmit={handleSubmit(submitForm)}>
           <Grid container spacing={2}>
