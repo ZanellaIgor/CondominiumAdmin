@@ -16,7 +16,6 @@ import {
   Engineering,
   EventAvailable,
   Folder,
-  SearchOff,
 } from '@mui/icons-material';
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
 import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTone';
@@ -231,21 +230,10 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/dashboards/messenger"
+                  to="/documents"
                   startIcon={<Folder />}
                 >
                   Documentos
-                </Button>
-              </ListItem>
-              <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/dashboards/messenger"
-                  startIcon={<SearchOff />}
-                >
-                  Achados e Perdidos
                 </Button>
               </ListItem>
             </List>

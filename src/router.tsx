@@ -21,7 +21,7 @@ const ReservationsPage = Loader(
 const MaintenancePage = Loader(
   lazy(() => import('./pages/Maintence/Maintence'))
 );
-
+const DocumentsPage = Loader(lazy(() => import('./pages/Documents/Documents')));
 export const routes: RouteObject[] = [
   {
     path: '',
@@ -43,6 +43,10 @@ export const routes: RouteObject[] = [
       {
         path: '/maintenance',
         element: <MaintenancePage />,
+      },
+      {
+        path: '/documents',
+        element: <DocumentsPage />,
       },
       {
         path: '*',
