@@ -1,5 +1,4 @@
 import { InputField } from '@components/Inputs/InputField/InputField';
-import { SwitchField } from '@components/Inputs/SwitchField/SwitchField';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -7,6 +6,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
+import { InputSelect } from '@src/components/Inputs/InputSelect/InputSelect';
+import { api } from '@src/services/api.service';
+import { optionsSituation } from '@src/utils/options/situation.options';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { warningHelper } from './Warnings.Funcions';
@@ -27,12 +29,15 @@ export const ModalWarning = ({
     defaultValues: warningHelper(register),
     resolver: zodResolver(WarningsSchema),
   });
-  const submitForm: SubmitHandler<WarningRegisterProps> = (
-    values: WarningRegisterProps
-  ) => {
-    console.log(values);
-  };
 
+  const submitForm: SubmitHandler<WarningRegisterProps> = async (values) => {
+    let response;
+    try {
+      response = await api.post('/warnings', values);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     reset(warningHelper(register));
     return () => {
@@ -52,11 +57,22 @@ export const ModalWarning = ({
               <InputField name="title" control={control} label="Título" />
             </Grid>
             <Grid item xs={6}>
-              <InputField name="category" control={control} label="Categoria" />
+              <InputSelect
+                name="category"
+                control={control}
+                label="Categoria"
+                options={optionsSituation}
+              />
             </Grid>
             <Grid item xs={6}>
-              <InputField name="severity" control={control} label="severity" />
+              <InputSelect
+                name="situation"
+                control={control}
+                label="Situação"
+                options={optionsSituation}
+              />
             </Grid>
+
             <Grid item xs={12}>
               <InputField
                 name="description"
@@ -65,9 +81,6 @@ export const ModalWarning = ({
                 multiline
                 rows={4}
               />
-            </Grid>
-            <Grid item xs={6}>
-              <SwitchField name="status" control={control} label="Ativo" />
             </Grid>
           </Grid>
           <Grid item xs={12}>

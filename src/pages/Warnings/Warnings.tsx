@@ -17,8 +17,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { useFindManyWarnings } from '@src/hooks/queries/useWarning';
 import { useState } from 'react';
-import { WarningsMock } from './Mock/Warnings';
 import { ModalWarning } from './Warnings.Modal';
 import { WarningRegisterProps } from './Warnings.Schema';
 
@@ -27,11 +27,16 @@ export default function WarningsPage() {
   const { theme } = useThemeContext();
   const [open, setOpen] = useState(false);
   const [register, setRegister] = useState<WarningRegisterProps | undefined>();
+  const { data, isLoading, error } = useFindManyWarnings();
 
   const handleEdit = (warning: WarningRegisterProps) => {
     setRegister(warning);
     setOpen(true);
   };
+
+  if (error) return <Typography>Ocorreu um erro</Typography>;
+  if (isLoading) return <Typography>Carregando...</Typography>;
+
   return (
     <Container>
       <ModalWarning
@@ -39,6 +44,7 @@ export default function WarningsPage() {
         handleClose={() => setOpen(false)}
         register={register}
       />
+
       <Card>
         <CardHeader
           title="Avisos"
@@ -74,7 +80,7 @@ export default function WarningsPage() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {WarningsMock.map((warning: WarningRegisterProps) => {
+                    {data?.map((warning: WarningRegisterProps) => {
                       return (
                         <TableRow hover key={warning.id}>
                           <TableCell padding="checkbox">
@@ -100,28 +106,6 @@ export default function WarningsPage() {
                               noWrap
                             >
                               {warning.category}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography
-                              variant="body1"
-                              fontWeight="bold"
-                              color="text.primary"
-                              gutterBottom
-                              noWrap
-                            >
-                              {warning.status ? 'Ativo' : 'Inativo'}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography
-                              variant="body1"
-                              fontWeight="bold"
-                              color="text.primary"
-                              gutterBottom
-                              noWrap
-                            >
-                              {warning.severity}
                             </Typography>
                           </TableCell>
                           <TableCell>
