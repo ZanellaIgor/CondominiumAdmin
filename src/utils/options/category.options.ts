@@ -1,6 +1,6 @@
 import { EnumCategory } from '../enum/category.enum';
 
-export const optionsSituation = [
+export const optionsCategory = [
   { value: EnumCategory.ALTA, label: 'Alta' },
   { value: EnumCategory.CRITICA, label: 'Crítica' },
   { value: EnumCategory.GRAVE, label: 'Grave' },

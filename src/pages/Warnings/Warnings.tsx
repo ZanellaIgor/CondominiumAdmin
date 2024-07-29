@@ -23,12 +23,11 @@ import { ModalWarning } from './Warnings.Modal';
 import { WarningRegisterProps } from './Warnings.Schema';
 
 export default function WarningsPage() {
-  const [selectWarnings, setSelectWarnings] = useState<string[]>([]);
   const { theme } = useThemeContext();
   const [open, setOpen] = useState(false);
   const [register, setRegister] = useState<WarningRegisterProps | undefined>();
   const { data, isLoading, error } = useFindManyWarnings();
-
+  const registerWarnings = data?.data;
   const handleEdit = (warning: WarningRegisterProps) => {
     setRegister(warning);
     setOpen(true);
@@ -80,7 +79,7 @@ export default function WarningsPage() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {data?.map((warning: WarningRegisterProps) => {
+                    {registerWarnings?.map((warning: WarningRegisterProps) => {
                       return (
                         <TableRow hover key={warning.id}>
                           <TableCell padding="checkbox">
