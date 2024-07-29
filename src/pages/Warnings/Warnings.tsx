@@ -4,7 +4,6 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
-import Checkbox from '@mui/material/Checkbox';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
@@ -63,18 +62,10 @@ export default function WarningsPage() {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          /*  checked={selectedAllCryptoOrders}
-                          indeterminate={selectedSomeCryptoOrders}
-                          onChange={handleSelectAllCryptoOrders} */
-                        />
-                      </TableCell>
                       <TableCell>Título</TableCell>
                       <TableCell>Categoria</TableCell>
-                      <TableCell>Status</TableCell>
-                      <TableCell>Data</TableCell>
+                      <TableCell>Situação</TableCell>
+                      <TableCell align="center">Data</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
@@ -82,9 +73,6 @@ export default function WarningsPage() {
                     {registerWarnings?.map((warning: WarningRegisterProps) => {
                       return (
                         <TableRow hover key={warning.id}>
-                          <TableCell padding="checkbox">
-                            <Checkbox color="primary" />
-                          </TableCell>
                           <TableCell>
                             <Typography
                               variant="body1"
@@ -114,6 +102,18 @@ export default function WarningsPage() {
                               color="text.primary"
                               gutterBottom
                               noWrap
+                            >
+                              {warning.situation}
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="center">
+                            <Typography
+                              variant="body1"
+                              fontWeight="bold"
+                              color="text.primary"
+                              gutterBottom
+                              noWrap
+                              textAlign="center"
                             >
                               {warning.created_at ?? 'Create_At'}
                             </Typography>
