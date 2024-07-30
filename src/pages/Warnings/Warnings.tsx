@@ -8,6 +8,8 @@ import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -17,17 +19,21 @@ import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useFindManyWarnings } from '@src/hooks/queries/useWarning';
+import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
+import { IWarningPageDataProps } from './Warnings.Interface';
 import { ModalWarning } from './Warnings.Modal';
-import { WarningRegisterProps } from './Warnings.Schema';
+import { IWarningFormProps } from './Warnings.Schema';
 
 export default function WarningsPage() {
   const { theme } = useThemeContext();
   const [open, setOpen] = useState(false);
-  const [register, setRegister] = useState<WarningRegisterProps | undefined>();
-  const { data, isLoading, error } = useFindManyWarnings();
+  const [register, setRegister] = useState<IWarningPageDataProps | undefined>();
+  const [page, setPage] = useState(1);
+  const { data, isLoading, error } = useFindManyWarnings({ page });
+
   const registerWarnings = data?.data;
-  const handleEdit = (warning: WarningRegisterProps) => {
+  const handleEdit = (warning: IWarningPageDataProps) => {
     setRegister(warning);
     setOpen(true);
   };
@@ -36,13 +42,12 @@ export default function WarningsPage() {
   if (isLoading) return <Typography>Carregando...</Typography>;
 
   return (
-    <Container>
+    <Container sx={{ mt: 1 }}>
       <ModalWarning
         open={open}
         handleClose={() => setOpen(false)}
-        register={register}
+        register={register as unknown as IWarningFormProps}
       />
-
       <Card>
         <CardHeader
           title="Avisos"
@@ -54,11 +59,10 @@ export default function WarningsPage() {
             direction="row"
             justifyContent="center"
             alignItems="stretch"
-            spacing={3}
           >
             <Grid item xs={12}>
               <Divider />
-              <TableContainer>
+              <TableContainer sx={{ minHeight: '40rem' }}>
                 <Table>
                   <TableHead>
                     <TableRow>
@@ -70,54 +74,13 @@ export default function WarningsPage() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {registerWarnings?.map((warning: WarningRegisterProps) => {
+                    {registerWarnings?.map((warning: IWarningPageDataProps) => {
                       return (
                         <TableRow hover key={warning.id}>
-                          <TableCell>
-                            <Typography
-                              variant="body1"
-                              fontWeight="bold"
-                              color="text.primary"
-                              gutterBottom
-                              noWrap
-                            >
-                              {warning.title}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography
-                              variant="body1"
-                              fontWeight="bold"
-                              color="text.primary"
-                              gutterBottom
-                              noWrap
-                            >
-                              {warning.category}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography
-                              variant="body1"
-                              fontWeight="bold"
-                              color="text.primary"
-                              gutterBottom
-                              noWrap
-                            >
-                              {warning.situation}
-                            </Typography>
-                          </TableCell>
-                          <TableCell align="center">
-                            <Typography
-                              variant="body1"
-                              fontWeight="bold"
-                              color="text.primary"
-                              gutterBottom
-                              noWrap
-                              textAlign="center"
-                            >
-                              {warning.created_at ?? 'Create_At'}
-                            </Typography>
-                          </TableCell>
+                          <TableCell>{warning.title}</TableCell>
+                          <TableCell>{warning.category}</TableCell>
+                          <TableCell>{warning.situation}</TableCell>
+                          <TableCell align="center">{'Create_At'}</TableCell>
                           <TableCell align="right">
                             <Tooltip title="Edit Order" arrow>
                               <IconButton
@@ -148,6 +111,17 @@ export default function WarningsPage() {
                   </TableBody>
                 </Table>
               </TableContainer>
+              <Stack spacing={2} justifyContent="center" alignItems="center">
+                <Pagination
+                  count={totalPagination({ totalCount: data?.totalCount ?? 0 })}
+                  shape="rounded"
+                  onChange={(_, page) => {
+                    setPage(page);
+                  }}
+                  boundaryCount={1}
+                  page={page}
+                />
+              </Stack>
             </Grid>
           </Grid>
         </CardContent>

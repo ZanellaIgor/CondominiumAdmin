@@ -15,10 +15,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { warningHelper } from './Warnings.Funcions';
-import { WarningRegisterProps, WarningsSchema } from './Warnings.Schema';
+import { IWarningFormProps, WarningsSchema } from './Warnings.Schema';
 
 type ModalWarningProps = {
-  register: WarningRegisterProps | undefined;
+  register: IWarningFormProps | undefined;
   open: boolean;
   handleClose: () => void;
 };
@@ -31,7 +31,7 @@ export const ModalWarning = ({
   const clientQuery = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async (values: WarningRegisterProps) => {
+    mutationFn: async (values: IWarningFormProps) => {
       const response = await api.post('/warnings', values);
       return response.data;
     },
@@ -44,12 +44,12 @@ export const ModalWarning = ({
     },
   });
 
-  const { control, handleSubmit, reset } = useForm<WarningRegisterProps>({
+  const { control, handleSubmit, reset } = useForm<IWarningFormProps>({
     defaultValues: warningHelper(register),
     resolver: zodResolver(WarningsSchema),
   });
 
-  const submitForm: SubmitHandler<WarningRegisterProps> = (values) => {
+  const submitForm: SubmitHandler<IWarningFormProps> = (values) => {
     values.userId = 1;
     values.condominiumId = 1;
     mutation.mutate(values);

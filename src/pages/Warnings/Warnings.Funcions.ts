@@ -1,8 +1,8 @@
 import { EnumCategory } from '@src/utils/enum/category.enum';
 import { EnumSituation } from '@src/utils/enum/situation.enum';
-import { WarningRegisterProps } from './Warnings.Schema';
+import { IWarningFormProps } from './Warnings.Schema';
 
-export function warningHelper(data: WarningRegisterProps | undefined) {
+export function warningHelper(data: IWarningFormProps | undefined) {
   data = {
     id: data?.id ?? undefined,
     title: data?.title ?? '',

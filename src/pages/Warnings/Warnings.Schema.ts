@@ -12,7 +12,7 @@ export const WarningsSchema = z.object({
   situation: z.nativeEnum(EnumSituation),
   created_at: z.string().optional(),
 });
-export type WarningRegisterProps = z.infer<typeof WarningsSchema> & {
+export type IWarningFormProps = z.infer<typeof WarningsSchema> & {
   userId: number;
   condominiumId: number;
 };

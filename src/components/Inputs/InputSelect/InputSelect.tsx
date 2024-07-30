@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import { Control, Controller } from 'react-hook-form';
 
 type OptionType = {
-  value: string;
+  value: string | number;
   label: string;
 };
 
