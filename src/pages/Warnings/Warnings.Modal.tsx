@@ -28,18 +28,20 @@ export const ModalWarning = ({
   open,
   handleClose,
 }: ModalWarningProps) => {
-  const clientQuery = useQueryClient();
-
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async (values: IWarningFormProps) => {
-      const response = await api.post('/warnings', values);
+      const response = values.id
+        ? await api.patch(`/warnings/${values.id}`, values)
+        : await api.post('/warnings', values);
       return response.data;
     },
     onError: (error: any) => {
       console.error('Erro ao criar o aviso:', error);
+      alert('Ocorreu um erro ao salvar o aviso. Tente novamente.');
     },
     onSuccess: () => {
-      clientQuery.invalidateQueries({ queryKey: [EnumQueries.WARNING] });
+      queryClient.invalidateQueries({ queryKey: [EnumQueries.WARNING] });
       handleClose();
     },
   });
@@ -57,14 +59,14 @@ export const ModalWarning = ({
 
   useEffect(() => {
     reset(warningHelper(register));
-  }, [open]);
+  }, [open, register, reset]);
 
   return (
     <Dialog open={open} onClose={handleClose}>
+      <DialogTitle sx={{ textAlign: 'center' }}>
+        {register ? 'Edite o aviso' : 'Adicione um novo aviso'}
+      </DialogTitle>
       <DialogContent>
-        <DialogTitle sx={{ textAlign: 'center' }}>
-          {register ? 'Edite o aviso' : 'Adicione um novo aviso'}
-        </DialogTitle>
         <form noValidate onSubmit={handleSubmit(submitForm)}>
           <Grid container spacing={2}>
             <Grid item xs={6}>
@@ -96,25 +98,24 @@ export const ModalWarning = ({
               />
             </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <Stack justifyContent={'flex-end'} direction={'row'}>
-              <Button
-                onClick={() => {
-                  handleClose();
-                  reset(warningHelper(undefined));
-                }}
-              >
-                Voltar
-              </Button>
-              <Button
-                type="submit"
-                color="success"
-                disabled={mutation.isPending}
-              >
-                {mutation.isPending ? 'Adicionando...' : 'Adicionar'}
-              </Button>
-            </Stack>
-          </Grid>
+          <Stack
+            justifyContent={'flex-end'}
+            direction={'row'}
+            spacing={2}
+            mt={2}
+          >
+            <Button
+              onClick={() => {
+                handleClose();
+                reset(warningHelper(undefined));
+              }}
+            >
+              Voltar
+            </Button>
+            <Button type="submit" color="success" disabled={mutation.isPending}>
+              {mutation.isPending ? 'Adicionando...' : 'Adicionar'}
+            </Button>
+          </Stack>
         </form>
       </DialogContent>
     </Dialog>

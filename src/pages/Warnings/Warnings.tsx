@@ -74,40 +74,38 @@ export default function WarningsPage() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {registerWarnings?.map((warning: IWarningPageDataProps) => {
-                      return (
-                        <TableRow hover key={warning.id}>
-                          <TableCell>{warning.title}</TableCell>
-                          <TableCell>{warning.category}</TableCell>
-                          <TableCell>{warning.situation}</TableCell>
-                          <TableCell align="center">{'Create_At'}</TableCell>
-                          <TableCell align="right">
-                            <Tooltip title="Edit Order" arrow>
-                              <IconButton
-                                size="small"
-                                onClick={() => handleEdit(warning)}
-                              >
-                                <Edit />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Delete Order" arrow>
-                              <IconButton
-                                sx={{
-                                  '&:hover': {
-                                    background: theme.colors.error.lighter,
-                                  },
-                                  color: theme.palette.error.main,
-                                }}
-                                color="inherit"
-                                size="small"
-                              >
-                                <Delete />
-                              </IconButton>
-                            </Tooltip>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
+                    {registerWarnings?.map((warning: IWarningPageDataProps) => (
+                      <TableRow hover key={warning.id}>
+                        <TableCell>{warning.title}</TableCell>
+                        <TableCell>{warning.category}</TableCell>
+                        <TableCell>{warning.situation}</TableCell>
+                        <TableCell align="center">{'Create_At'}</TableCell>
+                        <TableCell align="right">
+                          <Tooltip title="Editar Aviso" arrow>
+                            <IconButton
+                              size="small"
+                              onClick={() => handleEdit(warning)}
+                            >
+                              <Edit />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Deletar Aviso" arrow>
+                            <IconButton
+                              sx={{
+                                '&:hover': {
+                                  background: theme.colors.error.lighter,
+                                },
+                                color: theme.palette.error.main,
+                              }}
+                              color="inherit"
+                              size="small"
+                            >
+                              <Delete />
+                            </IconButton>
+                          </Tooltip>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </TableContainer>
@@ -115,9 +113,7 @@ export default function WarningsPage() {
                 <Pagination
                   count={totalPagination({ totalCount: data?.totalCount ?? 0 })}
                   shape="rounded"
-                  onChange={(_, page) => {
-                    setPage(page);
-                  }}
+                  onChange={(_, page) => setPage(page)}
                   boundaryCount={1}
                   page={page}
                 />
