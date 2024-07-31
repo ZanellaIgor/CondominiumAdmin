@@ -58,8 +58,8 @@ export const ModalWarning = ({
   };
 
   useEffect(() => {
-    reset(warningHelper(register));
-  }, [open, register, reset]);
+    if (open) reset(warningHelper(register));
+  }, [open]);
 
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -68,7 +68,7 @@ export const ModalWarning = ({
       </DialogTitle>
       <DialogContent>
         <form noValidate onSubmit={handleSubmit(submitForm)}>
-          <Grid container spacing={2}>
+          <Grid container spacing={3} padding={1}>
             <Grid item xs={6}>
               <InputField name="title" control={control} label="Título" />
             </Grid>
