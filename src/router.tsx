@@ -18,10 +18,12 @@ const WarningsPage = Loader(lazy(() => import('./pages/Warnings/Warnings')));
 const ReservationsPage = Loader(
   lazy(() => import('./pages/Reservations/Reservations'))
 );
+const UserPage = Loader(lazy(() => import('./pages/User/User')));
 const MaintenancePage = Loader(
   lazy(() => import('./pages/Maintence/Maintence'))
 );
 const DocumentsPage = Loader(lazy(() => import('./pages/Documents/Documents')));
+
 export const routes: RouteObject[] = [
   {
     path: '',
@@ -48,6 +50,7 @@ export const routes: RouteObject[] = [
         path: '/documents',
         element: <DocumentsPage />,
       },
+      { path: 'user', element: <UserPage /> },
       {
         path: '*',
         element: <Navigate to="/" replace />,

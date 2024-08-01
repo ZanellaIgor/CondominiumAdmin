@@ -17,6 +17,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { useFindManyUsers } from '@src/hooks/queries/useUser';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
 import { IUserPageDataProps } from './User.Interface';
@@ -28,14 +30,16 @@ export default function UserPage() {
   const [open, setOpen] = useState(false);
   const [register, setRegister] = useState<IUserPageDataProps | undefined>();
   const [page, setPage] = useState(1);
-  //const { data, isLoading, error } = useFindManyWarnings({ page });
-  const data: any = [];
-  const registerUser: any[] = [];
+  const { data, isFetching, error } = useFindManyUsers({ page });
+
+  const registerUser = data?.data;
+  console.log(data);
   const handleEdit = (user: IUserPageDataProps) => {
     setRegister(user);
     setOpen(true);
   };
-
+  if (error) return <Typography>Ocorreu um erro</Typography>;
+  if (isFetching) return <Typography>Carregando...</Typography>;
   return (
     <Container sx={{ mt: 1 }}>
       <ModalUser

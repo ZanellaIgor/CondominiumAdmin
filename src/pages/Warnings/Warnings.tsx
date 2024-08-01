@@ -30,7 +30,7 @@ export default function WarningsPage() {
   const [open, setOpen] = useState(false);
   const [register, setRegister] = useState<IWarningPageDataProps | undefined>();
   const [page, setPage] = useState(1);
-  const { data, isLoading, error } = useFindManyWarnings({ page });
+  const { data, isFetching, error } = useFindManyWarnings({ page });
 
   const registerWarnings = data?.data;
   const handleEdit = (warning: IWarningPageDataProps) => {
@@ -39,7 +39,7 @@ export default function WarningsPage() {
   };
 
   if (error) return <Typography>Ocorreu um erro</Typography>;
-  if (isLoading) return <Typography>Carregando...</Typography>;
+  if (isFetching) return <Typography>Carregando...</Typography>;
 
   return (
     <Container sx={{ mt: 1 }}>

@@ -6,8 +6,12 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { InputField } from '@src/components/Inputs/InputField/InputField';
-import { useQueryClient } from '@tanstack/react-query';
+import { SwitchField } from '@src/components/Inputs/SwitchField/SwitchField';
+import { api } from '@src/services/api.service';
+import { EnumQueries } from '@src/utils/enum/queries.enum';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { userHelper } from './User.Funcions';
 import { IUserFormProps, userSchema } from './User.Schema';
 
 type ModalUserProps = {
@@ -18,15 +22,32 @@ type ModalUserProps = {
 
 export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
   const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async (values: IUserFormProps) => {
+      const response = values.id
+        ? await api.patch(`/user/${values.id}`, values)
+        : await api.post('/user', values);
+      return response.data;
+    },
+    onError: (error: any) => {
+      console.error('Erro ao criar o aviso:', error);
+      alert('Ocorreu um erro ao salvar o aviso. Tente novamente.');
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [EnumQueries.USER] });
+      handleClose();
+    },
+  });
 
   const { control, handleSubmit, reset } = useForm<IUserFormProps>({
-    defaultValues: register,
+    defaultValues: userHelper(register),
     resolver: zodResolver(userSchema),
   });
 
-  const submitForm: SubmitHandler<any> = (values) => {
+  const submitForm: SubmitHandler<IUserFormProps> = (values) => {
     values.userId = 1;
     values.condominiumId = 1;
+    mutation.mutate(values);
   };
 
   return (
@@ -49,6 +70,11 @@ export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
             <Grid item xs={12}>
               <InputField name="password" control={control} label="Password" />
             </Grid>
+            {register?.id && (
+              <Grid item xs={12}>
+                <SwitchField control={control} name="status" label="Status" />
+              </Grid>
+            )}
           </Grid>
           <Stack
             justifyContent={'flex-end'}

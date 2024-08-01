@@ -1,4 +1,4 @@
-export interface IWarningPageProps {
+export interface IUserPageProps {
   data: IUserPageDataProps[];
   totalCount: number;
   page: number;
@@ -8,4 +8,5 @@ export interface IUserPageDataProps {
   id: number;
   name: string;
   email?: string;
+  status: boolean;
 }

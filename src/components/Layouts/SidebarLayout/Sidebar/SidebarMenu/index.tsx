@@ -16,6 +16,7 @@ import {
   Engineering,
   EventAvailable,
   Folder,
+  Group,
 } from '@mui/icons-material';
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
 import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTone';
@@ -270,6 +271,17 @@ function SidebarMenu() {
                   startIcon={<DisplaySettingsTwoToneIcon />}
                 >
                   Account Settings
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/user"
+                  startIcon={<Group />}
+                >
+                  Usuários
                 </Button>
               </ListItem>
             </List>

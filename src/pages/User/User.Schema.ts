@@ -11,4 +11,5 @@ export const userSchema = z.object({
 export type IUserFormProps = z.infer<typeof userSchema> & {
   userId: number;
   condominiumId: number;
+  status: boolean;
 };
