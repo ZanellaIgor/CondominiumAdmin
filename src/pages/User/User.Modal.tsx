@@ -30,7 +30,7 @@ export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
       return response.data;
     },
     onError: (error: any) => {
-      console.error('Erro ao criar o aviso:', error);
+      console.error('Erro ao criar o usuário:', error);
       alert('Ocorreu um erro ao salvar o aviso. Tente novamente.');
     },
     onSuccess: () => {
@@ -58,9 +58,6 @@ export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
       <DialogContent>
         <form noValidate onSubmit={handleSubmit(submitForm)}>
           <Grid container spacing={3} padding={1}>
-            <Grid item xs={6}>
-              <InputField name="title" control={control} label="Título" />
-            </Grid>
             <Grid item xs={6}>
               <InputField name="nome" control={control} label="Nome" />
             </Grid>

@@ -17,6 +17,7 @@ export const InputField = forwardRef((props: InputFieldProps, ref) => {
         <TextField
           {...field}
           {...rest}
+          value={field.value}
           error={!!error}
           helperText={error?.message}
           InputLabelProps={{

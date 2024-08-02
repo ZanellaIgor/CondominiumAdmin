@@ -51,7 +51,16 @@ export default function WarningsPage() {
       <Card>
         <CardHeader
           title="Avisos"
-          action={<Button onClick={() => setOpen(true)}>Adicionar</Button>}
+          action={
+            <Button
+              onClick={() => {
+                setRegister(undefined);
+                setOpen(true);
+              }}
+            >
+              Adicionar
+            </Button>
+          }
         />
         <CardContent>
           <Grid

@@ -33,7 +33,7 @@ export default function UserPage() {
   const { data, isFetching, error } = useFindManyUsers({ page });
 
   const registerUser = data?.data;
-  console.log(data);
+
   const handleEdit = (user: IUserPageDataProps) => {
     setRegister(user);
     setOpen(true);
