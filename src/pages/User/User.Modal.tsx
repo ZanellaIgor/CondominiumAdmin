@@ -45,8 +45,8 @@ export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
   });
 
   const submitForm: SubmitHandler<IUserFormProps> = (values) => {
-    values.userId = 1;
     values.condominiumId = 1;
+    values.apartmentId = 1;
     mutation.mutate(values);
   };
 
@@ -59,7 +59,7 @@ export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
         <form noValidate onSubmit={handleSubmit(submitForm)}>
           <Grid container spacing={3} padding={1}>
             <Grid item xs={6}>
-              <InputField name="nome" control={control} label="Nome" />
+              <InputField name="name" control={control} label="Nome" />
             </Grid>
             <Grid item xs={6}>
               <InputField name="email" control={control} label="E-mail" />

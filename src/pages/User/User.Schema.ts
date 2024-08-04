@@ -9,7 +9,7 @@ export const userSchema = z.object({
   password: z.string(),
 });
 export type IUserFormProps = z.infer<typeof userSchema> & {
-  userId: number;
+  apartmentId: number;
   condominiumId: number;
   status: boolean;
 };
