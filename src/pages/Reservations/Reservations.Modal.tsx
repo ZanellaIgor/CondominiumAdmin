@@ -8,6 +8,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
+import { InputDatePicker } from '@src/components/Inputs/InputDatePicker/InputDatePicker';
+import { InputTime } from '@src/components/Inputs/InputTime/InputTime';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { reservationHelper } from './Reservations.Funcions';
@@ -59,13 +61,20 @@ export const ModalReservations = ({
             <Grid item xs={6}>
               <InputField name="purpose" control={control} label="Finalidade" />
             </Grid>
-            {/*  <Grid item xs={6}>
+            <Grid item xs={6}>
               <InputDatePicker
                 name="dateReservation"
                 control={control}
                 label="Ativo"
               />
-            </Grid> */}
+            </Grid>
+
+            <Grid item xs={6}>
+              <InputTime name="startTime" control={control} label="Ativo" />
+            </Grid>
+            <Grid item xs={6}>
+              <InputTime name="endTime" control={control} label="Ativo" />
+            </Grid>
             <Grid item xs={6}>
               <InputSelect
                 name="space"

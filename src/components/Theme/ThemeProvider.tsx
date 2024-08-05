@@ -1,4 +1,8 @@
 import { ThemeProvider } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { de } from 'date-fns/locale/de';
+
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import React, {
   ReactNode,
   createContext,
@@ -49,7 +53,11 @@ const ThemeProviderWrapper: React.FC<IThemeProviderProps> = ({ children }) => {
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, themeName }}>
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={de}>
+          {children}
+        </LocalizationProvider>
+      </ThemeProvider>
     </ThemeContext.Provider>
   );
 };
