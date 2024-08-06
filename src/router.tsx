@@ -15,8 +15,8 @@ const Loader =
 
 const HomePage = Loader(lazy(() => import('./pages/Home/Home')));
 const WarningsPage = Loader(lazy(() => import('./pages/Warnings/Warnings')));
-const ReservationsPage = Loader(
-  lazy(() => import('./pages/Reservations/Reservations'))
+const ReservationPage = Loader(
+  lazy(() => import('./pages/Reservation/Reservation'))
 );
 const UserPage = Loader(lazy(() => import('./pages/User/User')));
 const MaintenancePage = Loader(
@@ -40,7 +40,7 @@ export const routes: RouteObject[] = [
       },
       {
         path: '/reservations',
-        element: <ReservationsPage />,
+        element: <ReservationPage />,
       },
       {
         path: '/maintenance',

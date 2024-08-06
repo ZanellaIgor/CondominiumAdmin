@@ -12,23 +12,23 @@ import { InputDatePicker } from '@src/components/Inputs/InputDatePicker/InputDat
 import { InputTime } from '@src/components/Inputs/InputTime/InputTime';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { reservationHelper } from './Reservations.Funcions';
+import { reservationHelper } from './Reservation.Funcions';
 import {
   ReservationsRegisterProps,
   reservationsSchema,
-} from './Reservations.Schema';
+} from './Reservation.Schema';
 
-type ModalReservationsProps = {
+type ModalReservationProps = {
   register: ReservationsRegisterProps | undefined;
   open: boolean;
   handleClose: () => void;
 };
 
-export const ModalReservations = ({
+export const ModalReservation = ({
   register,
   open,
   handleClose,
-}: ModalReservationsProps) => {
+}: ModalReservationProps) => {
   const { control, handleSubmit, reset } = useForm<ReservationsRegisterProps>({
     defaultValues: reservationHelper(register),
     resolver: zodResolver(reservationsSchema),
@@ -70,10 +70,14 @@ export const ModalReservations = ({
             </Grid>
 
             <Grid item xs={6}>
-              <InputTime name="startTime" control={control} label="Ativo" />
+              <InputTime
+                name="startTime"
+                control={control}
+                label="Hora Inicial"
+              />
             </Grid>
             <Grid item xs={6}>
-              <InputTime name="endTime" control={control} label="Ativo" />
+              <InputTime name="endTime" control={control} label="Hora Final" />
             </Grid>
             <Grid item xs={6}>
               <InputSelect

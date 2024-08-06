@@ -1,40 +1,38 @@
-import TextField from '@mui/material/TextField'; // Certifique-se de que está importando o TextField corretamente
 import { TimePicker } from '@mui/x-date-pickers';
 import { forwardRef } from 'react';
 import { Control, Controller } from 'react-hook-form';
+import { z } from 'zod';
 
 type InputFieldProps = {
   name: string;
-  control: Control<any>;
+  control: Control<any | any>;
   label: string;
 };
+const timeSchema = z
+  .date()
+  .refine((date) => date.getHours() >= 0 && date.getHours() <= 23, {
+    message: 'Horário inválido. Deve estar entre 00:00 e 23:59.',
+  });
 
-export const InputTime = forwardRef<HTMLDivElement, InputFieldProps>(
+const validateTime = (value: Date | null) => {
+  if (!value) return true; // Se o valor for nulo, é válido
+  return timeSchema.safeParse(value).success;
+};
+export const InputTime = forwardRef<HTMLInputElement, InputFieldProps>(
   ({ name, control, label, ...rest }, ref) => {
     return (
       <Controller
         name={name}
         control={control}
-        render={({ field, fieldState: { error } }) => (
+        rules={{ validate: validateTime }}
+        render={({ field }) => (
           <TimePicker
+            {...rest}
+            inputRef={ref}
             label={label}
             value={field.value}
             onChange={(newValue) => field.onChange(newValue)}
-            slots={{
-              textField: (params) => (
-                <TextField
-                  fullWidth
-                  {...params}
-                  {...rest}
-                  error={!!error}
-                  helperText={error?.message}
-                  InputLabelProps={{
-                    shrink: !!field?.value,
-                  }}
-                  inputRef={ref}
-                />
-              ),
-            }}
+            sx={{ width: '100%' }}
           />
         )}
       />
