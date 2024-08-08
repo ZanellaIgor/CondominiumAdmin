@@ -32,7 +32,7 @@ export const InputTime = forwardRef<HTMLInputElement, InputFieldProps>(
             label={label}
             value={field.value}
             onChange={(newValue) => field.onChange(newValue)}
-            sx={{ width: '100%' }}
+            sx={{ width: '100%', height: '100%' }}
           />
         )}
       />

@@ -5,10 +5,15 @@ export const reservationsSchema = z.object({
     .transform((value) => Number(value))
     .optional(),
   title: z.string(),
-  category: z.string(),
-  severity: z.string(),
-  status: z.boolean(),
+  description: z.string(),
+  situation: z.string().optional(),
+  startTime: z.date(),
+  endTime: z.date(),
   created_at: z.string().optional(),
-  dateReservation: z.string().optional(),
+  dateReservation: z.date().optional(),
 });
-export type ReservationsRegisterProps = z.infer<typeof reservationsSchema>;
+export type ReservationsFormProps = z.infer<typeof reservationsSchema> & {
+  apartmentId: number;
+  condominiumId: number;
+  userId: number;
+};

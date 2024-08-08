@@ -45,6 +45,7 @@ export const InputSelect = ({
                 label={label}
                 error={!!error}
                 helperText={error?.message}
+                sx={{ margin: 0 }}
               />
             )}
             {...rest}

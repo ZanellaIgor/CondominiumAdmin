@@ -334,6 +334,17 @@ export const DarkTheme = createTheme({
         },
       },
     },
+    MuiFormControl: {
+      styleOverrides: {
+        root: {
+          display: 'inline-flex',
+          flexDirection: 'column',
+          margin: '0',
+
+          width: '100%',
+        },
+      },
+    },
     MuiFormHelperText: {
       styleOverrides: {
         root: {

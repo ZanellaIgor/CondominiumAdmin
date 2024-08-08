@@ -10,16 +10,20 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { InputDatePicker } from '@src/components/Inputs/InputDatePicker/InputDatePicker';
 import { InputTime } from '@src/components/Inputs/InputTime/InputTime';
+import { api } from '@src/services/api.service';
+import { EnumQueries } from '@src/utils/enum/queries.enum';
+import { optionsSituationReservation } from '@src/utils/options/situationReservation.options';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { reservationHelper } from './Reservation.Funcions';
 import {
-  ReservationsRegisterProps,
+  ReservationsFormProps,
   reservationsSchema,
 } from './Reservation.Schema';
 
 type ModalReservationProps = {
-  register: ReservationsRegisterProps | undefined;
+  register: ReservationsFormProps | undefined;
   open: boolean;
   handleClose: () => void;
 };
@@ -29,14 +33,40 @@ export const ModalReservation = ({
   open,
   handleClose,
 }: ModalReservationProps) => {
-  const { control, handleSubmit, reset } = useForm<ReservationsRegisterProps>({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ReservationsFormProps>({
     defaultValues: reservationHelper(register),
     resolver: zodResolver(reservationsSchema),
   });
-  const submitForm: SubmitHandler<ReservationsRegisterProps> = (
-    values: ReservationsRegisterProps
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async (values: ReservationsFormProps) => {
+      const response = values.id
+        ? await api.patch(`/reservation/${values.id}`, values)
+        : await api.post('/reservation', values);
+      return response.data;
+    },
+    onError: (error: any) => {
+      console.error('Erro ao criar o Reserva:', error);
+      alert('Ocorreu um erro ao marcar a reserva. Tente novamente.');
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [EnumQueries.RESERVATION] });
+      handleClose();
+    },
+  });
+  console.log(errors);
+  const submitForm: SubmitHandler<ReservationsFormProps> = (
+    values: ReservationsFormProps
   ) => {
-    console.log(values);
+    values.condominiumId = 1;
+    values.apartmentId = 1;
+    values.userId = 1;
+    mutation.mutate(values);
   };
 
   useEffect(() => {
@@ -53,31 +83,27 @@ export const ModalReservation = ({
           {register ? 'Edite a reserva' : 'Adicione uma nova reserva'}
         </DialogTitle>
         <form noValidate onSubmit={handleSubmit(submitForm)}>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} padding={1}>
             <Grid item xs={6}>
               <InputField name="title" control={control} label="Título" />
             </Grid>
+            {register?.id && (
+              <Grid item xs={6}>
+                <InputSelect
+                  name="situation"
+                  control={control}
+                  label="Situação"
+                  options={optionsSituationReservation}
+                />
+              </Grid>
+            )}
 
-            <Grid item xs={6}>
-              <InputField name="purpose" control={control} label="Finalidade" />
-            </Grid>
             <Grid item xs={6}>
               <InputDatePicker
                 name="dateReservation"
                 control={control}
-                label="Ativo"
+                label="Data de Reserva"
               />
-            </Grid>
-
-            <Grid item xs={6}>
-              <InputTime
-                name="startTime"
-                control={control}
-                label="Hora Inicial"
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <InputTime name="endTime" control={control} label="Hora Final" />
             </Grid>
             <Grid item xs={6}>
               <InputSelect
@@ -95,6 +121,17 @@ export const ModalReservation = ({
                 ]}
               />
             </Grid>
+            <Grid item xs={6}>
+              <InputTime
+                name="startTime"
+                control={control}
+                label="Hora Inicial"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <InputTime name="endTime" control={control} label="Hora Final" />
+            </Grid>
+
             <Grid item xs={6}>
               <SwitchField name="status" control={control} label="Ativo" />
             </Grid>
