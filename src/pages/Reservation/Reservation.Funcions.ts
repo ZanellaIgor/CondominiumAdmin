@@ -1,13 +1,16 @@
-import { ReservationsRegisterProps } from './Reservations.Schema';
+import { ReservationsFormProps } from './Reservation.Schema';
 
-export function reservationHelper(data: ReservationsRegisterProps | undefined) {
+export function reservationHelper(
+  data: Partial<ReservationsFormProps> | undefined
+) {
   data = {
     id: data?.id ?? undefined,
     title: data?.title ?? '',
-    category: data?.category ?? '',
-    severity: data?.severity ?? '',
-    status: data?.status ?? false,
-    created_at: data?.created_at ?? '',
+    situation: data?.situation ?? '',
+    dateReservation: data?.dateReservation ?? new Date(),
+    endTime: data?.endTime ?? undefined,
+    startTime: data?.startTime ?? undefined,
+    spaceReservationId: data?.spaceReservationId ?? undefined,
   };
   return data;
 }

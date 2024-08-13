@@ -12,6 +12,7 @@ import { InputDatePicker } from '@src/components/Inputs/InputDatePicker/InputDat
 import { InputTime } from '@src/components/Inputs/InputTime/InputTime';
 import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
+import { EnumSituation } from '@src/utils/enum/situation.enum';
 import { optionsSituationReservation } from '@src/utils/options/situationReservation.options';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
@@ -59,13 +60,16 @@ export const ModalReservation = ({
       handleClose();
     },
   });
-  console.log(errors);
+
   const submitForm: SubmitHandler<ReservationsFormProps> = (
     values: ReservationsFormProps
   ) => {
     values.condominiumId = 1;
     values.apartmentId = 1;
     values.userId = 1;
+    values.spaceReservationId = 1;
+    values.situation = EnumSituation.ABERTO;
+
     mutation.mutate(values);
   };
 
@@ -107,7 +111,7 @@ export const ModalReservation = ({
             </Grid>
             <Grid item xs={6}>
               <InputSelect
-                name="space"
+                name="spaceReservationId"
                 control={control}
                 label="Local"
                 options={[
