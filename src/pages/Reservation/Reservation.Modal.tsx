@@ -38,6 +38,7 @@ export const ModalReservation = ({
     control,
     handleSubmit,
     reset,
+    getValues,
     formState: { errors },
   } = useForm<ReservationsFormProps>({
     defaultValues: reservationHelper(register),
@@ -60,7 +61,8 @@ export const ModalReservation = ({
       handleClose();
     },
   });
-
+  console.log(getValues());
+  console.log(errors);
   const submitForm: SubmitHandler<ReservationsFormProps> = (
     values: ReservationsFormProps
   ) => {

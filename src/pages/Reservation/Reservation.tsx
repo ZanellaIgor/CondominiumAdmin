@@ -30,7 +30,7 @@ export default function ReservationsPage() {
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const { data, isFetching, error } = useFindManyReservation({ page });
-
+  console.log(data);
   const registerReservation = data?.data;
   const handleEdit = (reservation: any) => {
     setRegister(reservation);
@@ -68,7 +68,7 @@ export default function ReservationsPage() {
                     <TableRow>
                       <TableCell>Titulo</TableCell>
                       <TableCell>Espaço</TableCell>
-                      <TableCell>Finalidade</TableCell>
+                      <TableCell>Condomínio</TableCell>
                       <TableCell>Situação</TableCell>
                       <TableCell>Data</TableCell>
                       <TableCell></TableCell>
@@ -99,6 +99,17 @@ export default function ReservationsPage() {
                                 noWrap
                               >
                                 {reservation?.space?.name}
+                              </Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Typography
+                                variant="body1"
+                                fontWeight="bold"
+                                color="text.primary"
+                                gutterBottom
+                                noWrap
+                              >
+                                {reservation.condominiumId}
                               </Typography>
                             </TableCell>
                             <TableCell>
