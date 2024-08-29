@@ -8,8 +8,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import { InputDatePicker } from '@src/components/Inputs/InputDatePicker/InputDatePicker';
-import { InputTime } from '@src/components/Inputs/InputTime/InputTime';
+import { InputDateTime } from '@src/components/Inputs/InputDateTime/InputDateTime';
 import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
 import { EnumSituation } from '@src/utils/enum/situation.enum';
@@ -39,6 +38,7 @@ export const ModalReservation = ({
     handleSubmit,
     reset,
     getValues,
+    watch,
     formState: { errors },
   } = useForm<ReservationsFormProps>({
     defaultValues: reservationHelper(register),
@@ -61,8 +61,7 @@ export const ModalReservation = ({
       handleClose();
     },
   });
-  console.log(getValues());
-  console.log(errors);
+
   const submitForm: SubmitHandler<ReservationsFormProps> = (
     values: ReservationsFormProps
   ) => {
@@ -103,14 +102,6 @@ export const ModalReservation = ({
                 />
               </Grid>
             )}
-
-            <Grid item xs={6}>
-              <InputDatePicker
-                name="dateReservation"
-                control={control}
-                label="Data de Reserva"
-              />
-            </Grid>
             <Grid item xs={6}>
               <InputSelect
                 name="spaceReservationId"
@@ -127,15 +118,20 @@ export const ModalReservation = ({
                 ]}
               />
             </Grid>
+
             <Grid item xs={6}>
-              <InputTime
-                name="startTime"
+              <InputDateTime
+                name="startDateTime"
                 control={control}
-                label="Hora Inicial"
+                label="Data inicial da reserva"
               />
             </Grid>
             <Grid item xs={6}>
-              <InputTime name="endTime" control={control} label="Hora Final" />
+              <InputDateTime
+                name="endDateTime"
+                control={control}
+                label="Data final da Reserva"
+              />
             </Grid>
 
             <Grid item xs={6}>

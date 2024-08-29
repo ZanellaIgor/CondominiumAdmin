@@ -69,7 +69,7 @@ export const ModalWarning = ({
       <DialogContent>
         <form noValidate onSubmit={handleSubmit(submitForm)}>
           <Grid container spacing={3} padding={1}>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <InputField name="title" control={control} label="Título" />
             </Grid>
             <Grid item xs={6}>
