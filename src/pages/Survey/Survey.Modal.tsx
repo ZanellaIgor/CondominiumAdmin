@@ -30,9 +30,7 @@ export const ModalSurvey = ({
   });
   const submitForm: SubmitHandler<SurveyRegisterProps> = (
     values: SurveyRegisterProps
-  ) => {
-    console.log(values);
-  };
+  ) => {};
 
   useEffect(() => {
     reset(surveyHelper(register));

@@ -37,13 +37,13 @@ export const ModalReservation = ({
     control,
     handleSubmit,
     reset,
-    getValues,
-    watch,
     formState: { errors },
+    watch,
   } = useForm<ReservationsFormProps>({
     defaultValues: reservationHelper(register),
     resolver: zodResolver(reservationsSchema),
   });
+
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async (values: ReservationsFormProps) => {
@@ -54,7 +54,7 @@ export const ModalReservation = ({
     },
     onError: (error: any) => {
       console.error('Erro ao criar o Reserva:', error);
-      alert('Ocorreu um erro ao marcar a reserva. Tente novamente.');
+      alert('Ocorreu um erro ao gerar a reserva. Tente novamente.');
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [EnumQueries.RESERVATION] });

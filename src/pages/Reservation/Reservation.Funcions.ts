@@ -8,9 +8,12 @@ export function reservationHelper(
     title: data?.title ?? '',
     situation: data?.situation ?? '',
     dateReservation: data?.dateReservation ?? new Date(),
-    endDateTime: data?.endDateTime ?? undefined,
-    startDateTime: data?.startDateTime ?? undefined,
+    endDateTime: data?.endDateTime ? new Date(data?.endDateTime) : undefined,
+    startDateTime: data?.startDateTime
+      ? new Date(data?.startDateTime)
+      : undefined,
     spaceReservationId: data?.spaceReservationId ?? undefined,
   };
+
   return data;
 }

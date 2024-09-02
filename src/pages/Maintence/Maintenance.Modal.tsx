@@ -33,9 +33,7 @@ export const MaintenanceReservations = ({
   });
   const submitForm: SubmitHandler<MaintenanceRegisterProps> = (
     values: MaintenanceRegisterProps
-  ) => {
-    console.log(values);
-  };
+  ) => {};
 
   useEffect(() => {
     reset(reservationHelper(register));

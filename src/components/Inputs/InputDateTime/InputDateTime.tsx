@@ -21,6 +21,7 @@ export const InputDateTime = React.forwardRef<HTMLDivElement, InputFieldProps>(
           <>
             <DateTimePicker
               {...rest}
+              value={value ? new Date(value) : null}
               label={label}
               onChange={onChange}
               slotProps={{
@@ -31,6 +32,7 @@ export const InputDateTime = React.forwardRef<HTMLDivElement, InputFieldProps>(
                   error: !!error,
                   margin: 'dense',
                   inputRef: ref,
+                  value: value ? new Date(value) : null,
                 },
                 toolbar: {
                   sx: {
