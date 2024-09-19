@@ -24,6 +24,8 @@ const MaintenancePage = Loader(
 );
 const DocumentsPage = Loader(lazy(() => import('./pages/Documents/Documents')));
 
+const LoginPage = Loader(lazy(() => import('./pages/Login/Login')));
+
 export const routes: RouteObject[] = [
   {
     path: '',
@@ -57,4 +59,5 @@ export const routes: RouteObject[] = [
       },
     ],
   },
+  { path: '/login', element: <LoginPage /> },
 ];
