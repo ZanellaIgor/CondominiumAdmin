@@ -2,7 +2,7 @@ import ThemeProviderWrapper from '@components/Theme/ThemeProvider';
 import { CssBaseline } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useRoutes } from 'react-router-dom';
-import { routes } from './router';
+import { routes } from './routes/router';
 
 function App() {
   const queryClient = new QueryClient({

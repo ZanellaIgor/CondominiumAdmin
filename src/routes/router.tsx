@@ -2,34 +2,33 @@ import { RouteObject } from 'react-router';
 import { Navigate } from 'react-router-dom';
 
 import { SidebarLayout } from '@components/Layouts/SidebarLayout';
-import { ComponentType, FC, Suspense, lazy } from 'react';
+import { Loader } from '@src/components/Common/Loader';
+import { ProtectedRoute } from '@src/utils/protectedRoute/ProtectedRoute';
+import { lazy } from 'react';
 
-const Loader =
-  (Component: ComponentType<any>): FC =>
-  (props) =>
-    (
-      <Suspense fallback={<h1>Carregando</h1>}>
-        <Component {...props} />
-      </Suspense>
-    );
-
-const HomePage = Loader(lazy(() => import('./pages/Home/Home')));
-const WarningsPage = Loader(lazy(() => import('./pages/Warnings/Warnings')));
+const HomePage = Loader(lazy(() => import('../pages/Home/Home')));
+const WarningsPage = Loader(lazy(() => import('../pages/Warnings/Warnings')));
 const ReservationPage = Loader(
-  lazy(() => import('./pages/Reservation/Reservation'))
+  lazy(() => import('../pages/Reservation/Reservation'))
 );
-const UserPage = Loader(lazy(() => import('./pages/User/User')));
+const UserPage = Loader(lazy(() => import('../pages/User/User')));
 const MaintenancePage = Loader(
-  lazy(() => import('./pages/Maintence/Maintence'))
+  lazy(() => import('../pages/Maintence/Maintence'))
 );
-const DocumentsPage = Loader(lazy(() => import('./pages/Documents/Documents')));
+const DocumentsPage = Loader(
+  lazy(() => import('../pages/Documents/Documents'))
+);
 
-const LoginPage = Loader(lazy(() => import('./pages/Login/Login')));
+const LoginPage = Loader(lazy(() => import('../pages/Login/Login')));
 
 export const routes: RouteObject[] = [
   {
     path: '',
-    element: <SidebarLayout />,
+    element: (
+      <ProtectedRoute>
+        <SidebarLayout />,
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: '/',
@@ -60,4 +59,8 @@ export const routes: RouteObject[] = [
     ],
   },
   { path: '/login', element: <LoginPage /> },
+  {
+    path: '*',
+    element: <Navigate to="/" replace />,
+  },
 ];

@@ -1,5 +1,5 @@
 import { Box, useTheme } from '@mui/material';
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import Scrollbars from 'react-custom-scrollbars-2';
 
 interface IScrollbarProps {
@@ -7,7 +7,7 @@ interface IScrollbarProps {
   children?: ReactNode;
 }
 
-const Scrollbar: FC<IScrollbarProps> = ({ className, children, ...rest }) => {
+const Scrollbar = ({ className, children, ...rest }: IScrollbarProps) => {
   const theme = useTheme();
 
   return (

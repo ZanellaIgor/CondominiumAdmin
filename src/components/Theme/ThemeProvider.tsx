@@ -3,7 +3,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { de } from 'date-fns/locale/de';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
-import React, {
+import {
   ReactNode,
   createContext,
   useContext,
@@ -32,7 +32,7 @@ const ThemeContext = createContext<ThemeContextType>({
 
 export const useThemeContext = () => useContext(ThemeContext);
 
-const ThemeProviderWrapper: React.FC<IThemeProviderProps> = ({ children }) => {
+const ThemeProviderWrapper = ({ children }: IThemeProviderProps) => {
   const [themeName, setThemeName] = useState<ThemeName>('LightTheme');
 
   useEffect(() => {

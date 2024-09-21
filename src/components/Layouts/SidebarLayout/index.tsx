@@ -1,5 +1,5 @@
 import { Box, alpha, lighten, useTheme } from '@mui/material';
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import Header from './Header';
@@ -9,7 +9,7 @@ interface ISidebarLayoutProps {
   children?: ReactNode;
 }
 
-export const SidebarLayout: FC<ISidebarLayoutProps> = () => {
+export const SidebarLayout = ({ children }: ISidebarLayoutProps) => {
   const theme = useTheme();
 
   return (
