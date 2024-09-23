@@ -9,10 +9,11 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { api } from '@src/services/api.service';
+import { encryptData, EncryptedPayload } from '@src/utils/functions/crypto';
 import { useMutation } from '@tanstack/react-query';
 import { FormEvent, MouseEvent, useState } from 'react';
 import { z } from 'zod';
-import { ILoginFormProps, LoginSchema } from './Login.Schema';
+import { LoginSchema } from './Login.Schema';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -44,10 +45,13 @@ export default function Login() {
 
     try {
       LoginSchema.parse(values);
-      console.log('Dados válidos:');
+
       setError({ email: false, password: false });
       setErrorMessages({ email: '', password: '' });
-      mutation.mutate(values as ILoginFormProps);
+
+      const encryptedPayload = await encryptData(JSON.stringify(values));
+
+      mutation.mutate(encryptedPayload);
     } catch (error) {
       if (error instanceof z.ZodError) {
         const fieldErrors = error.errors.reduce(
@@ -69,8 +73,9 @@ export default function Login() {
   }
 
   const mutation = useMutation({
-    mutationFn: async (values: ILoginFormProps) => {
+    mutationFn: async (values: EncryptedPayload) => {
       const response = await api.post('/auth/login', values);
+      console.log(response.data);
       return response.data;
     },
     onError: (error: any) => {
