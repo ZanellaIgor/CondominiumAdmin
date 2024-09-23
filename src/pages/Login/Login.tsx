@@ -62,7 +62,10 @@ export default function Login() {
           },
           { email: '', password: '' } as { email: string; password: string }
         );
-
+        console.error(
+          'Erro durante a descriptografia ou parsing dos dados:',
+          error
+        );
         setError({
           email: !!fieldErrors.email,
           password: !!fieldErrors.password,
