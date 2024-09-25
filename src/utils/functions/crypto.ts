@@ -38,3 +38,52 @@ export async function encryptData(data: string): Promise<EncryptedPayload> {
 export function arrayBufferToBase64(buffer: Uint8Array): string {
   return btoa(String.fromCharCode(...buffer));
 }
+
+export async function decryptData({
+  encryptedData,
+  keyBase64,
+  ivBase64,
+  authTagBase64,
+}: {
+  encryptedData: string;
+  keyBase64: string;
+  ivBase64: string;
+  authTagBase64: string;
+}) {
+  const decoder = new TextDecoder();
+
+  const encryptedDataArray = Uint8Array.from(atob(encryptedData), (c) =>
+    c.charCodeAt(0)
+  );
+
+  const ivArray = Uint8Array.from(atob(ivBase64), (c) => c.charCodeAt(0));
+  const authTagArray = Uint8Array.from(atob(authTagBase64), (c) =>
+    c.charCodeAt(0)
+  );
+  const keyArray = Uint8Array.from(atob(keyBase64), (c) => c.charCodeAt(0));
+
+  const encryptedWithAuthTag = new Uint8Array(
+    encryptedDataArray.length + authTagArray.length
+  );
+  encryptedWithAuthTag.set(encryptedDataArray);
+  encryptedWithAuthTag.set(authTagArray, encryptedDataArray.length);
+
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw',
+    keyArray,
+    { name: 'AES-GCM' },
+    false,
+    ['decrypt']
+  );
+
+  const decryptedData = await crypto.subtle.decrypt(
+    {
+      name: 'AES-GCM',
+      iv: ivArray,
+    },
+    cryptoKey,
+    encryptedWithAuthTag
+  );
+
+  return decoder.decode(decryptedData);
+}

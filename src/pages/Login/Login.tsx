@@ -8,14 +8,23 @@ import FormLabel from '@mui/material/FormLabel';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import { useAuth } from '@src/hooks/useAuth';
 import { api } from '@src/services/api.service';
-import { encryptData, EncryptedPayload } from '@src/utils/functions/crypto';
+import {
+  decryptData,
+  encryptData,
+  EncryptedPayload,
+} from '@src/utils/functions/crypto';
+import { decodeJwt } from '@src/utils/functions/decodeJWT';
 import { useMutation } from '@tanstack/react-query';
 import { FormEvent, MouseEvent, useState } from 'react';
+import { ErrorResponse, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { LoginSchema } from './Login.Schema';
 
 export default function Login() {
+  const { setIsAuthenticated, setUserInfo } = useAuth();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState({ email: false, password: false });
   const [errorMessages, setErrorMessages] = useState({
@@ -34,7 +43,6 @@ export default function Login() {
   };
 
   async function submitForm(event: FormEvent<HTMLFormElement>) {
-    console.log(event);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
@@ -45,12 +53,10 @@ export default function Login() {
 
     try {
       LoginSchema.parse(values);
-
       setError({ email: false, password: false });
       setErrorMessages({ email: '', password: '' });
 
       const encryptedPayload = await encryptData(JSON.stringify(values));
-
       mutation.mutate(encryptedPayload);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -62,10 +68,7 @@ export default function Login() {
           },
           { email: '', password: '' } as { email: string; password: string }
         );
-        console.error(
-          'Erro durante a descriptografia ou parsing dos dados:',
-          error
-        );
+
         setError({
           email: !!fieldErrors.email,
           password: !!fieldErrors.password,
@@ -78,16 +81,27 @@ export default function Login() {
   const mutation = useMutation({
     mutationFn: async (values: EncryptedPayload) => {
       const response = await api.post('/auth/login', values);
-      console.log(response.data);
+
       return response.data;
     },
-    onError: (error: any) => {
-      console.error('Erro:', error);
+
+    onError: (error: ErrorResponse) => {
       alert('Ocorreu um erro ao salvar o aviso. Tente novamente.');
     },
-    onSuccess: () => {
-      /* queryClient.invalidateQueries({ queryKey: [EnumQueries.WARNING] });
-      handleClose(); */
+
+    onSuccess: async (data: EncryptedPayload) => {
+      localStorage.setItem('token', JSON.stringify(data));
+      const values = await decryptData({
+        encryptedData: data.data,
+        keyBase64: data.key,
+        ivBase64: data.iv,
+        authTagBase64: data.authTag,
+      });
+      const decodedValues = await decodeJwt(values);
+
+      setIsAuthenticated(true);
+      setUserInfo(decodedValues);
+      navigate('/');
     },
   });
 

@@ -7,14 +7,19 @@ import { ProtectedRoute } from '@src/utils/protectedRoute/ProtectedRoute';
 import { lazy } from 'react';
 
 const HomePage = Loader(lazy(() => import('../pages/Home/Home')));
+
 const WarningsPage = Loader(lazy(() => import('../pages/Warnings/Warnings')));
+
 const ReservationPage = Loader(
   lazy(() => import('../pages/Reservation/Reservation'))
 );
+
 const UserPage = Loader(lazy(() => import('../pages/User/User')));
+
 const MaintenancePage = Loader(
   lazy(() => import('../pages/Maintence/Maintence'))
 );
+
 const DocumentsPage = Loader(
   lazy(() => import('../pages/Documents/Documents'))
 );
@@ -34,7 +39,6 @@ export const routes: RouteObject[] = [
         path: '/',
         element: <HomePage />,
       },
-
       {
         path: '/warnings',
         element: <WarningsPage />,
