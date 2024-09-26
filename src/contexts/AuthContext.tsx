@@ -1,4 +1,3 @@
-import { decryptData } from '@src/utils/functions/crypto';
 import { decodeJwt } from '@src/utils/functions/decodeJWT';
 import React, { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -23,24 +22,32 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 );
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const token = localStorage.getItem('token');
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!token);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<User | undefined>(undefined);
   const navigate = useNavigate();
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+
     if (token) {
-      const data = JSON.parse(token);
-      decryptData({
-        encryptedData: data.data,
-        keyBase64: data.key,
-        ivBase64: data.iv,
-        authTagBase64: data.authTag,
-      }).then((values) => {
-        setIsAuthenticated(true);
-        const decodeValues = decodeJwt(values);
-        setUserInfo(decodeValues);
-      });
+      const handleTokenDecode = async () => {
+        try {
+          const decodedValues = await decodeJwt(token);
+          if (decodedValues) {
+            setIsAuthenticated(true);
+            setUserInfo(decodedValues);
+          } else {
+            throw new Error('Token inválido');
+          }
+        } catch (error) {
+          setIsAuthenticated(false);
+          setUserInfo(undefined);
+          localStorage.removeItem('token');
+          navigate('/login');
+        }
+      };
+
+      handleTokenDecode();
     } else {
       setIsAuthenticated(false);
       setUserInfo(undefined);

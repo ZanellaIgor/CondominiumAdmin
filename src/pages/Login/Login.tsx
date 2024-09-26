@@ -10,11 +10,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { useAuth } from '@src/hooks/useAuth';
 import { api } from '@src/services/api.service';
-import {
-  decryptData,
-  encryptData,
-  EncryptedPayload,
-} from '@src/utils/functions/crypto';
+import { encryptData, EncryptedPayload } from '@src/utils/functions/crypto';
 import { decodeJwt } from '@src/utils/functions/decodeJWT';
 import { useMutation } from '@tanstack/react-query';
 import { FormEvent, MouseEvent, useState } from 'react';
@@ -89,15 +85,9 @@ export default function Login() {
       alert('Ocorreu um erro ao salvar o aviso. Tente novamente.');
     },
 
-    onSuccess: async (data: EncryptedPayload) => {
-      localStorage.setItem('token', JSON.stringify(data));
-      const values = await decryptData({
-        encryptedData: data.data,
-        keyBase64: data.key,
-        ivBase64: data.iv,
-        authTagBase64: data.authTag,
-      });
-      const decodedValues = await decodeJwt(values);
+    onSuccess: async (data: any) => {
+      localStorage.setItem('token', data.acess_token);
+      const decodedValues = decodeJwt(data.acess_token);
 
       setIsAuthenticated(true);
       setUserInfo(decodedValues);
