@@ -57,12 +57,7 @@ export default function ReservationsPage() {
                   <TableHead>
                     <TableRow>
                       <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          /*  checked={selectedAllCryptoOrders}
-                          indeterminate={selectedSomeCryptoOrders}
-                          onChange={handleSelectAllCryptoOrders} */
-                        />
+                        <Checkbox color="primary" />
                       </TableCell>
                       <TableCell>Titulo</TableCell>
                       <TableCell>Espaço</TableCell>

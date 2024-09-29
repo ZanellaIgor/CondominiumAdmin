@@ -1,5 +1,4 @@
 import { useThemeContext } from '@components/Theme/ThemeProvider';
-import { Delete, Edit } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -7,23 +6,17 @@ import CardHeader from '@mui/material/CardHeader';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { DataTable } from '@src/components/Common/DataTable/DataTable';
 import { useFindManyWarnings } from '@src/hooks/queries/useWarning';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
-import { IWarningPageDataProps } from './Warnings.Interface';
+import { columnsWarning, IWarningPageDataProps } from './Warnings.Interface';
 import { ModalWarning } from './Warnings.Modal';
 import { IWarningFormProps } from './Warnings.Schema';
+import { ActionsOptions } from './cusomComponents/ActionsOptions';
 
 export default function WarningsPage() {
   const { theme } = useThemeContext();
@@ -71,53 +64,14 @@ export default function WarningsPage() {
           >
             <Grid item xs={12}>
               <Divider />
-              <TableContainer sx={{ minHeight: '40rem' }}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Título</TableCell>
-                      <TableCell>Categoria</TableCell>
-                      <TableCell>Situação</TableCell>
-                      <TableCell align="center">Data</TableCell>
-                      <TableCell></TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {registerWarnings?.map((warning: IWarningPageDataProps) => (
-                      <TableRow hover key={warning.id}>
-                        <TableCell>{warning.title}</TableCell>
-                        <TableCell>{warning.category}</TableCell>
-                        <TableCell>{warning.situation}</TableCell>
-                        <TableCell align="center">{'Create_At'}</TableCell>
-                        <TableCell align="right">
-                          <Tooltip title="Editar Aviso" arrow>
-                            <IconButton
-                              size="small"
-                              onClick={() => handleEdit(warning)}
-                            >
-                              <Edit />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title="Deletar Aviso" arrow>
-                            <IconButton
-                              sx={{
-                                '&:hover': {
-                                  background: theme.colors.error.lighter,
-                                },
-                                color: theme.palette.error.main,
-                              }}
-                              color="inherit"
-                              size="small"
-                            >
-                              <Delete />
-                            </IconButton>
-                          </Tooltip>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+              <DataTable
+                columns={columnsWarning}
+                register={registerWarnings}
+                actions={(reg) => (
+                  <ActionsOptions handleEdit={handleEdit} warning={reg} />
+                )}
+              />
+
               <Stack spacing={2} justifyContent="center" alignItems="center">
                 <Pagination
                   count={totalPagination({ totalCount: data?.totalCount ?? 0 })}
