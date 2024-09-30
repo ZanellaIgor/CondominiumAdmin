@@ -94,45 +94,35 @@ const SubMenuWrapper = styled(Box)(
             opacity: .8;
             font-size: ${theme.typography.pxToRem(20)};
           }
-
           &.active,
           &:hover {
             background-color: ${alpha(theme.colors.alpha.trueWhite[100], 0.06)};
             color: ${theme.colors.alpha.trueWhite[100]};
-
             .MuiButton-startIcon,
             .MuiButton-endIcon {
               color: ${theme.colors.alpha.trueWhite[100]};
             }
           }
         }
-
         &.Mui-children {
           flex-direction: column;
-
           .MuiBadge-root {
             position: absolute;
             right: ${theme.spacing(7)};
           }
         }
-
         .MuiCollapse-root {
           width: 100%;
-
           .MuiList-root {
             padding: ${theme.spacing(1, 0)};
           }
-
           .MuiListItem-root {
             padding: 1px 0;
-
             .MuiButton-root {
               padding: ${theme.spacing(0.8, 3)};
-
               .MuiBadge-root {
                 right: ${theme.spacing(3.2)};
               }
-
               &:before {
                 content: ' ';
                 background: ${theme.colors.alpha.trueWhite[100]};
@@ -148,10 +138,8 @@ const SubMenuWrapper = styled(Box)(
                 border-radius: 20px;
                 margin-right: ${theme.spacing(1.8)};
               }
-
               &.active,
               &:hover {
-
                 &:before {
                   transform: scale(1);
                   opacity: 1;

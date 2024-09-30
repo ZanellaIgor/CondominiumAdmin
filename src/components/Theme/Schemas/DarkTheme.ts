@@ -716,7 +716,6 @@ export const DarkTheme = createTheme({
           lineHeight: '24px',
           marginTop: -12,
           color: 'inherit',
-          textTransform: 'uppercase',
         },
       },
     },
@@ -832,7 +831,6 @@ export const DarkTheme = createTheme({
           minHeight: 38,
           borderRadius: 6,
           transition: 'color .2s',
-          textTransform: 'capitalize',
 
           '&.MuiButtonBase-root': {
             minWidth: 'auto',
@@ -981,7 +979,6 @@ export const DarkTheme = createTheme({
           fontSize: 14,
         },
         head: {
-          textTransform: 'uppercase',
           fontSize: 13,
           fontWeight: 'bold',
           color: colors.alpha.black[70],
@@ -1144,7 +1141,7 @@ export const DarkTheme = createTheme({
     },
     caption: {
       fontSize: 13,
-      textTransform: 'uppercase',
+
       color: colors.alpha.white[50],
     },
     subtitle1: {
@@ -1159,7 +1156,6 @@ export const DarkTheme = createTheme({
     overline: {
       fontSize: 13,
       fontWeight: 700,
-      textTransform: 'uppercase',
     },
   },
   shadows: [

@@ -717,7 +717,6 @@ export const LightTheme = createTheme({
           lineHeight: '24px',
           marginTop: -12,
           color: 'inherit',
-          textTransform: 'uppercase',
         },
       },
     },
@@ -833,7 +832,6 @@ export const LightTheme = createTheme({
           minHeight: 38,
           borderRadius: 6,
           transition: 'color .2s',
-          textTransform: 'capitalize',
 
           '&.MuiButtonBase-root': {
             minWidth: 'auto',
@@ -982,7 +980,6 @@ export const LightTheme = createTheme({
           fontSize: 14,
         },
         head: {
-          textTransform: 'uppercase',
           fontSize: 13,
           fontWeight: 'bold',
           color: colors.alpha.black[70],
@@ -1145,7 +1142,7 @@ export const LightTheme = createTheme({
     },
     caption: {
       fontSize: 13,
-      textTransform: 'uppercase',
+
       color: colors.alpha.black[50],
     },
     subtitle1: {
@@ -1160,7 +1157,6 @@ export const LightTheme = createTheme({
     overline: {
       fontSize: 13,
       fontWeight: 700,
-      textTransform: 'uppercase',
     },
   },
   shadows: [

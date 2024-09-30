@@ -1,3 +1,4 @@
+import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -30,17 +31,40 @@ export const DataTable = ({ register, columns, actions }: IDataTableProps) => {
 
     if (column.custom) return column.custom(register);
 
-    return <TableCell>{value}</TableCell>;
+    return (
+      <TableCell size="small" sx={{ padding: '.25rem .5rem' }}>
+        {value}
+      </TableCell>
+    );
   };
 
   return (
-    <TableContainer sx={{ minHeight: '40rem' }}>
+    <TableContainer
+      component={Paper}
+      sx={{
+        minHeight: '100%',
+        padding: '1rem',
+      }}
+    >
       <Table>
         <TableHead>
           <TableRow>
             {columns.map((column: any) => {
-              return <TableCell key={column.label}>{column.label}</TableCell>;
+              return (
+                <TableCell
+                  key={column.label}
+                  sx={{ fontWeight: 'bold', padding: '.5rem 1rem' }}
+                >
+                  {column.label}
+                </TableCell>
+              );
             })}
+
+            {actions && (
+              <TableCell
+                sx={{ fontWeight: 'bold', padding: '2 4' }}
+              ></TableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>

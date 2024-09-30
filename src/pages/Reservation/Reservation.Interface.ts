@@ -1,3 +1,4 @@
+import { IColumns } from '@src/components/Common/DataTable/DataTable';
 import { SituationReservation } from '@src/utils/enum/situationReservation.enum';
 import { ISpaceReservationPageDataProps } from '../SpaceReservation/Space.Interface';
 import { IUserPageDataProps } from '../User/User.Interface';
@@ -14,9 +15,8 @@ export interface IReservationDataProps {
   description?: string;
   userId: number;
   user: IUserPageDataProps;
-  startTime: string;
-  endTime: string;
-  dateReservation: Date;
+  startDateTime: Date;
+  endDateTime: Date;
   spaceReservationId: number;
   space: ISpaceReservationPageDataProps;
   situation: SituationReservation;
@@ -24,3 +24,24 @@ export interface IReservationDataProps {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export const columnsReservation: IColumns[] = [
+  {
+    label: 'Título',
+    value: 'title',
+  },
+  {
+    label: 'Condomínio',
+    value: 'condominium.name',
+  },
+  {
+    label: 'Espaço',
+    value: 'spaceReservation.name',
+  },
+  {
+    label: 'Situação',
+    value: 'situation',
+  },
+  { label: 'Data Inicial', value: 'startDateTime' },
+  { label: 'Data Final', value: 'endDateTime' },
+];

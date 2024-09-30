@@ -1,14 +1,14 @@
 import { useThemeContext } from '@components/Theme/ThemeProvider';
+import { Add, FilterAlt } from '@mui/icons-material';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
-import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions';
 import { DataTable } from '@src/components/Common/DataTable/DataTable';
 import { useFindManyWarnings } from '@src/hooks/queries/useWarning';
 import { totalPagination } from '@src/utils/functions/totalPagination';
@@ -16,7 +16,6 @@ import { useState } from 'react';
 import { columnsWarning, IWarningPageDataProps } from './Warnings.Interface';
 import { ModalWarning } from './Warnings.Modal';
 import { IWarningFormProps } from './Warnings.Schema';
-import { ActionsOptions } from './cusomComponents/ActionsOptions';
 
 export default function WarningsPage() {
   const { theme } = useThemeContext();
@@ -33,58 +32,75 @@ export default function WarningsPage() {
 
   if (error) return <Typography>Ocorreu um erro</Typography>;
   if (isFetching) return <Typography>Carregando...</Typography>;
-
+  console.log(theme.header.height);
   return (
-    <Container sx={{ mt: 1 }}>
+    <Box>
       <ModalWarning
         open={open}
         handleClose={() => setOpen(false)}
         register={register as unknown as IWarningFormProps}
       />
-      <Card>
+      <Card
+        sx={{
+          height: `calc(100vh - 150px)`,
+          display: 'flex',
+          flexDirection: 'column',
+          width: { xs: '100%', lg: '80%' },
+          margin: 'auto',
+          my: 2,
+        }}
+      >
         <CardHeader
-          title="Avisos"
+          title="Tabela de Avisos"
           action={
-            <Button
-              onClick={() => {
-                setRegister(undefined);
-                setOpen(true);
-              }}
-            >
-              Adicionar
-            </Button>
+            <Stack spacing={1} direction="row">
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                startIcon={<FilterAlt />}
+              >
+                Filtrar
+              </Button>
+              <Button
+                onClick={() => {
+                  setRegister(undefined);
+                  setOpen(true);
+                }}
+                color="success"
+                variant="contained"
+                size="small"
+                startIcon={<Add />}
+              >
+                Adicionar
+              </Button>
+            </Stack>
           }
         />
         <CardContent>
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="stretch"
-          >
-            <Grid item xs={12}>
-              <Divider />
-              <DataTable
-                columns={columnsWarning}
-                register={registerWarnings}
-                actions={(reg) => (
-                  <ActionsOptions handleEdit={handleEdit} warning={reg} />
-                )}
-              />
-
-              <Stack spacing={2} justifyContent="center" alignItems="center">
-                <Pagination
-                  count={totalPagination({ totalCount: data?.totalCount ?? 0 })}
-                  shape="rounded"
-                  onChange={(_, page) => setPage(page)}
-                  boundaryCount={1}
-                  page={page}
-                />
-              </Stack>
-            </Grid>
-          </Grid>
+          <DataTable
+            columns={columnsWarning}
+            register={registerWarnings}
+            actions={(reg) => (
+              <ActionsOptions handleEdit={handleEdit} item={reg} />
+            )}
+          />
         </CardContent>
       </Card>
-    </Container>
+      <Stack
+        spacing={2}
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Pagination
+          count={totalPagination({ totalCount: data?.totalCount ?? 0 })}
+          shape="rounded"
+          onChange={(_, page) => setPage(page)}
+          boundaryCount={1}
+          page={page}
+        />
+      </Stack>
+    </Box>
   );
 }

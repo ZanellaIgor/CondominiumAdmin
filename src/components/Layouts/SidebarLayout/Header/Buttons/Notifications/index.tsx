@@ -34,7 +34,7 @@ const NotificationsBadge = styled(Badge)(
             height: 100%;
             border-radius: 50%;
             box-shadow: 0 0 0 1px ${alpha(theme.palette.error.main, 0.3)};
-            content: "";
+         
         }
     }
 `
