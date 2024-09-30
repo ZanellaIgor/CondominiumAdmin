@@ -45,8 +45,9 @@ export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
   });
 
   const submitForm: SubmitHandler<IUserFormProps> = (values) => {
-    values.condominiumId = 1;
-    values.apartmentId = 1;
+    values.role = 'USER';
+    values.apartmentIds = [1];
+    values.condominiumIds = [1];
     mutation.mutate(values);
   };
 
@@ -88,7 +89,7 @@ export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
             </Button>
             <Button type="submit" color="success">
               {/*     {mutation.isPending ? 'Adicionando...' : 'Adicionar'} */}{' '}
-              Add
+              Adicionar
             </Button>
           </Stack>
         </form>

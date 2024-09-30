@@ -1,32 +1,22 @@
-import { useThemeContext } from '@components/Theme/ThemeProvider';
-import { Delete, Edit } from '@mui/icons-material';
+import { Add, FilterAlt } from '@mui/icons-material';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
-import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions';
+import { DataTable } from '@src/components/Common/DataTable/DataTable';
 import { useFindManyUsers } from '@src/hooks/queries/useUser';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
-import { IUserPageDataProps } from './User.Interface';
+import { columnsUser, IUserPageDataProps } from './User.Interface';
 import { ModalUser } from './User.Modal';
 import { IUserFormProps } from './User.Schema';
 
 export default function UserPage() {
-  const { theme } = useThemeContext();
   const [open, setOpen] = useState(false);
   const [register, setRegister] = useState<IUserPageDataProps | undefined>();
   const [page, setPage] = useState(1);
@@ -38,91 +28,78 @@ export default function UserPage() {
     setRegister(user);
     setOpen(true);
   };
+
   if (error) return <Typography>Ocorreu um erro</Typography>;
   if (isFetching) return <Typography>Carregando...</Typography>;
+
   return (
-    <Container sx={{ mt: 1 }}>
+    <Box>
       <ModalUser
         open={open}
         handleClose={() => setOpen(false)}
         register={register as unknown as IUserFormProps}
       />
-      <Card>
+      <Card
+        sx={{
+          height: `calc(100vh - 150px)`,
+          display: 'flex',
+          flexDirection: 'column',
+          width: { xs: '100%', lg: '80%' },
+          margin: 'auto',
+          my: 2,
+        }}
+      >
         <CardHeader
-          title="Avisos"
-          action={<Button onClick={() => setOpen(true)}>Adicionar</Button>}
+          title="Tabela de Avisos"
+          action={
+            <Stack spacing={1} direction="row">
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                startIcon={<FilterAlt />}
+              >
+                Filtrar
+              </Button>
+              <Button
+                onClick={() => {
+                  setRegister(undefined);
+                  setOpen(true);
+                }}
+                color="success"
+                variant="contained"
+                size="small"
+                startIcon={<Add />}
+              >
+                Adicionar
+              </Button>
+            </Stack>
+          }
         />
         <CardContent>
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="stretch"
-          >
-            <Grid item xs={12}>
-              <Divider />
-              <TableContainer sx={{ minHeight: '40rem' }}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Nome</TableCell>
-                      <TableCell>Email</TableCell>
-
-                      <TableCell></TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {registerUser?.map((user: IUserPageDataProps) => (
-                      <TableRow hover key={user.id}>
-                        <TableCell>{user.name}</TableCell>
-                        <TableCell>{user.email}</TableCell>
-
-                        <TableCell align="right">
-                          <Tooltip title="Editar Aviso" arrow>
-                            <IconButton
-                              size="small"
-                              onClick={() =>
-                                handleEdit(
-                                  user as unknown as IUserPageDataProps
-                                )
-                              }
-                            >
-                              <Edit />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title="Deletar Aviso" arrow>
-                            <IconButton
-                              sx={{
-                                '&:hover': {
-                                  background: theme.colors.error.lighter,
-                                },
-                                color: theme.palette.error.main,
-                              }}
-                              color="inherit"
-                              size="small"
-                            >
-                              <Delete />
-                            </IconButton>
-                          </Tooltip>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <Stack spacing={2} justifyContent="center" alignItems="center">
-                <Pagination
-                  count={totalPagination({ totalCount: data?.totalCount ?? 0 })}
-                  shape="rounded"
-                  onChange={(_, page) => setPage(page)}
-                  boundaryCount={1}
-                  page={page}
-                />
-              </Stack>
-            </Grid>
-          </Grid>
+          <DataTable
+            columns={columnsUser}
+            register={registerUser}
+            actions={(reg) => (
+              <ActionsOptions handleEdit={handleEdit} item={reg} />
+            )}
+          />
         </CardContent>
       </Card>
-    </Container>
+      <Stack
+        spacing={2}
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Pagination
+          count={totalPagination({ totalCount: data?.totalCount ?? 0 })}
+          shape="rounded"
+          onChange={(_, page) => setPage(page)}
+          boundaryCount={1}
+          page={page}
+        />
+      </Stack>
+    </Box>
   );
 }

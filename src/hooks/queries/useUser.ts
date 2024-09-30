@@ -35,7 +35,7 @@ export const useFindManyUsers = ({
   limit = paginationTake,
 }): UseQueryResult<IUserPageProps> => {
   return useQuery<IUserPageProps>({
-    queryKey: [EnumQueries.WARNING, page, limit],
+    queryKey: [EnumQueries.USER, page, limit],
     queryFn: () => getWarnings({ page, limit }),
     staleTime: 10000 * 60,
     placeholderData: keepPreviousData,
