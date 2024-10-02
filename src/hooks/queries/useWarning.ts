@@ -18,14 +18,12 @@ const getWarnings = async ({
   limit,
 }: GetWarningsParams): Promise<IWarningPageProps> => {
   try {
-    console.log(localStorage.getItem('token'));
     const response = await api.get(`/warnings`, {
       params: {
         page,
         limit,
       },
     });
-    console.log(response);
     return response.data;
   } catch (error) {
     throw new Error('Error fetching warnings');

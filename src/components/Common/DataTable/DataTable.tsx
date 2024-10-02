@@ -16,7 +16,7 @@ export interface IColumns {
   label: string;
   value: string;
   format?: IMaskTable;
-  custom?: (value: string) => JSX.Element;
+  custom?: (value: any) => JSX.Element;
 }
 
 export type IMaskTable = 'date' | 'time' | 'dateTime';
@@ -27,10 +27,10 @@ function getValueObj(obj: any, path: string) {
 
 export const DataTable = ({ register, columns, actions }: IDataTableProps) => {
   const renderCell = (reg: any, column: IColumns) => {
+    if (column.custom) {
+      return column.custom(reg[column.value]);
+    }
     const value = getValueObj(reg, column.value);
-
-    if (column.custom) return column.custom(register);
-
     return (
       <TableCell size="small" sx={{ padding: '.25rem .5rem' }}>
         {value}

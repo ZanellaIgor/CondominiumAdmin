@@ -1,4 +1,6 @@
+import { EnumRoles } from '@src/utils/enum/role.enum';
 import { z } from 'zod';
+
 export const userSchema = z.object({
   id: z
     .number()
@@ -10,8 +12,7 @@ export const userSchema = z.object({
   profilePhoto: z.string().optional(),
   apartmentIds: z.array(z.number()).optional(),
   condominiumIds: z.array(z.number()).optional(),
+  role: z.nativeEnum(EnumRoles),
 });
 
-export type IUserFormProps = z.infer<typeof userSchema> & {
-  role: string;
-};
+export type IUserFormProps = z.infer<typeof userSchema>;

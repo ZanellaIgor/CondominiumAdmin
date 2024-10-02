@@ -1,12 +1,15 @@
 import TextField from '@mui/material/TextField';
-import { forwardRef } from 'react';
-import { Controller } from 'react-hook-form';
-type InputFieldProps = {
-  name: string;
-  control: any;
+import { forwardRef, Ref } from 'react';
+import { Control, Controller, FieldValues, Path } from 'react-hook-form';
+
+type InputFieldProps<T> = {
+  name: Path<T>;
+  control: Control<any>;
 } & React.ComponentProps<typeof TextField>;
 
-export const InputField = forwardRef((props: InputFieldProps, ref) => {
+export const InputField = forwardRef(function InputField<
+  T extends FieldValues = any
+>(props: InputFieldProps<T>, ref: Ref<HTMLDivElement>) {
   const { name, control, ...rest } = props;
 
   return (

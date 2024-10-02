@@ -233,7 +233,7 @@ function SidebarMenu() {
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
-              Perfil
+              Administrador
             </ListSubheader>
           }
         >

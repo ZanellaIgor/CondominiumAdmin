@@ -21,7 +21,7 @@ export default function ReservationsPage() {
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const { data, isFetching, error } = useFindManyReservation({ page });
-  console.log(data);
+
   const registerReservation = data?.data;
   const handleEdit = (reservation: any) => {
     setRegister(reservation);

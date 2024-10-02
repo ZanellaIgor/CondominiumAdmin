@@ -11,13 +11,16 @@ import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions'
 import { DataTable } from '@src/components/Common/DataTable/DataTable';
 import { useFindManyUsers } from '@src/hooks/queries/useUser';
 import { totalPagination } from '@src/utils/functions/totalPagination';
-import { useState } from 'react';
+import { lazy, useState } from 'react';
 import { columnsUser, IUserPageDataProps } from './User.Interface';
-import { ModalUser } from './User.Modal';
 import { IUserFormProps } from './User.Schema';
 
+const LazyModalUser = lazy(() =>
+  import('./User.Modal').then((module) => ({ default: module.ModalUser }))
+);
+
 export default function UserPage() {
-  const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const [register, setRegister] = useState<IUserPageDataProps | undefined>();
   const [page, setPage] = useState(1);
   const { data, isFetching, error } = useFindManyUsers({ page });
@@ -26,7 +29,7 @@ export default function UserPage() {
 
   const handleEdit = (user: IUserPageDataProps) => {
     setRegister(user);
-    setOpen(true);
+    setOpenModal(true);
   };
 
   if (error) return <Typography>Ocorreu um erro</Typography>;
@@ -34,11 +37,12 @@ export default function UserPage() {
 
   return (
     <Box>
-      <ModalUser
-        open={open}
-        handleClose={() => setOpen(false)}
+      <LazyModalUser
+        open={openModal}
+        handleClose={() => setOpenModal(false)}
         register={register as unknown as IUserFormProps}
       />
+
       <Card
         sx={{
           height: `calc(100vh - 150px)`,
@@ -50,7 +54,7 @@ export default function UserPage() {
         }}
       >
         <CardHeader
-          title="Tabela de Avisos"
+          title="Tabela de Usários"
           action={
             <Stack spacing={1} direction="row">
               <Button
@@ -64,7 +68,7 @@ export default function UserPage() {
               <Button
                 onClick={() => {
                   setRegister(undefined);
-                  setOpen(true);
+                  setOpenModal(true);
                 }}
                 color="success"
                 variant="contained"

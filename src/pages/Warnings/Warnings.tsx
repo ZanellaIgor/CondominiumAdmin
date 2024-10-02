@@ -32,7 +32,7 @@ export default function WarningsPage() {
 
   if (error) return <Typography>Ocorreu um erro</Typography>;
   if (isFetching) return <Typography>Carregando...</Typography>;
-  console.log(theme.header.height);
+
   return (
     <Box>
       <ModalWarning

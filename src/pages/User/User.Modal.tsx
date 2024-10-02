@@ -6,9 +6,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { InputField } from '@src/components/Inputs/InputField/InputField';
+import { InputSelect } from '@src/components/Inputs/InputSelect/InputSelect';
 import { SwitchField } from '@src/components/Inputs/SwitchField/SwitchField';
 import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
+import { EnumRoles } from '@src/utils/enum/role.enum';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { userHelper } from './User.Funcions';
@@ -45,7 +47,6 @@ export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
   });
 
   const submitForm: SubmitHandler<IUserFormProps> = (values) => {
-    values.role = 'USER';
     values.apartmentIds = [1];
     values.condominiumIds = [1];
     mutation.mutate(values);
@@ -67,6 +68,17 @@ export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
             </Grid>
             <Grid item xs={12}>
               <InputField name="password" control={control} label="Password" />
+            </Grid>
+            <Grid item xs={12}>
+              <InputSelect
+                control={control}
+                name="role"
+                label="Cargo"
+                options={[
+                  { value: EnumRoles.USER, label: 'Usuário' },
+                  { value: EnumRoles.ADMIN, label: 'Administrador' },
+                ]}
+              />
             </Grid>
             {register?.id && (
               <Grid item xs={12}>
