@@ -1,8 +1,3 @@
-export interface ISpaceReservationPageDataProps {
-  id: number;
-  name: string;
-}
-
 import { IColumns } from '@src/components/Common/DataTable/DataTable';
 
 export interface ISpaceReservationPageProps {
