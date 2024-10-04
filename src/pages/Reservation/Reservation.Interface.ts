@@ -1,6 +1,7 @@
 import { IColumns } from '@src/components/Common/DataTable/DataTable';
 import { SituationReservation } from '@src/utils/enum/situationReservation.enum';
-import { ISpaceReservationPageDataProps } from '../SpaceReservation/Space.Interface';
+
+import { ISpaceReservationDataProps } from '../SpaceReservation/SpaceReservation.Interface';
 import { IUserPageDataProps } from '../User/User.Interface';
 
 export interface IReservationPageProps {
@@ -18,7 +19,7 @@ export interface IReservationDataProps {
   startDateTime: Date;
   endDateTime: Date;
   spaceReservationId: number;
-  space: ISpaceReservationPageDataProps;
+  space: ISpaceReservationDataProps;
   situation: SituationReservation;
   condominiumId: number;
   createdAt: Date;

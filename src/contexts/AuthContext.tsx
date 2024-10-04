@@ -1,3 +1,4 @@
+import { EnumRoles } from '@src/utils/enum/role.enum';
 import { decodeJwt } from '@src/utils/functions/decodeJWT';
 import React, { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -5,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 type User = {
   email: string;
   id: number;
-  isAdmin: boolean;
+  role: EnumRoles;
   condominiumIds: number[];
   apartmentIds: number[];
 };

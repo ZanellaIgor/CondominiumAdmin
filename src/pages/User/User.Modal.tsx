@@ -77,6 +77,7 @@ export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
                 options={[
                   { value: EnumRoles.USER, label: 'Usuário' },
                   { value: EnumRoles.ADMIN, label: 'Administrador' },
+                  { value: EnumRoles.MASTER, label: 'Master' },
                 ]}
               />
             </Grid>

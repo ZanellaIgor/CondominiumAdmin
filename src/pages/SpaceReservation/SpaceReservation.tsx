@@ -13,16 +13,15 @@ import { DataTable } from '@src/components/Common/DataTable/DataTable';
 import { useFindManySpaceReservation } from '@src/hooks/queries/useSpaceReservation';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
-import { columnsReservation } from './Reservation.Interface';
-import { ModalReservation } from './Reservation.Modal';
+import { columnsSpaceReservation } from './SpaceReservation.Interface';
 
-export default function ReservationsPage() {
+export default function SpaceReservationPage() {
   const [register, setRegister] = useState();
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const { data, isFetching, error } = useFindManySpaceReservation({ page });
 
-  const registerSpaceReservation = data?.data;
+  const registerReservation = data?.data;
   const handleEdit = (reservation: any) => {
     setRegister(reservation);
     setOpen(true);
@@ -33,11 +32,11 @@ export default function ReservationsPage() {
 
   return (
     <Box>
-      <ModalReservation
+      {/*  <ModalReservation
         open={open}
         handleClose={() => setOpen(false)}
         register={register}
-      />
+      /> */}
       <Card
         sx={{
           height: `calc(100vh - 150px)`,
@@ -49,7 +48,7 @@ export default function ReservationsPage() {
         }}
       >
         <CardHeader
-          title="Tabela de Reservas"
+          title="Áreas de lazer"
           action={
             <Stack spacing={1} direction="row">
               <Button
@@ -77,8 +76,8 @@ export default function ReservationsPage() {
         />
         <CardContent>
           <DataTable
-            columns={columnsReservation}
-            register={registerSpaceReservation}
+            columns={columnsSpaceReservation}
+            register={registerReservation}
             actions={(reg) => (
               <ActionsOptions handleEdit={handleEdit} item={reg} />
             )}

@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 
 import { SidebarLayout } from '@components/Layouts/SidebarLayout';
 import { Loader } from '@src/components/Common/Loader';
+
 import { ProtectedRoute } from '@src/utils/protectedRoute/ProtectedRoute';
 import { lazy } from 'react';
 
@@ -18,6 +19,10 @@ const UserPage = Loader(lazy(() => import('../pages/User/User')));
 
 const MaintenancePage = Loader(
   lazy(() => import('../pages/Maintence/Maintence'))
+);
+
+const SpaceReservationPage = Loader(
+  lazy(() => import('@src/pages/SpaceReservation/SpaceReservation'))
 );
 
 const DocumentsPage = Loader(
@@ -54,6 +59,10 @@ export const routes: RouteObject[] = [
       {
         path: '/documents',
         element: <DocumentsPage />,
+      },
+      {
+        path: '/space-reservation',
+        element: <SpaceReservationPage />,
       },
       { path: 'user', element: <UserPage /> },
       {

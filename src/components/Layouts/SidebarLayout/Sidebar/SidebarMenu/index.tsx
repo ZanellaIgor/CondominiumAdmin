@@ -13,13 +13,15 @@ import { NavLink as RouterLink } from 'react-router-dom';
 
 import {
   Announcement,
+  Celebration,
   Engineering,
   EventAvailable,
   Folder,
   Group,
+  HolidayVillage,
+  OtherHouses,
 } from '@mui/icons-material';
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
-import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTone';
 import MmsTwoToneIcon from '@mui/icons-material/MmsTwoTone';
 import { SidebarContext } from '../../../../../contexts/SidebarContext';
 
@@ -244,21 +246,10 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/management/profile/details"
+                  to="user/profile"
                   startIcon={<AccountCircleTwoToneIcon />}
                 >
-                  User Profile
-                </Button>
-              </ListItem>
-              <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/management/profile/settings"
-                  startIcon={<DisplaySettingsTwoToneIcon />}
-                >
-                  Account Settings
+                  Perfil
                 </Button>
               </ListItem>
               <ListItem component="div">
@@ -270,6 +261,39 @@ function SidebarMenu() {
                   startIcon={<Group />}
                 >
                   Usuários
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/space-reservation"
+                  startIcon={<Celebration />}
+                >
+                  Áreas de Lazer
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="condominium"
+                  startIcon={<HolidayVillage />}
+                >
+                  Condóminios
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="apartament"
+                  startIcon={<OtherHouses />}
+                >
+                  Apartamentos
                 </Button>
               </ListItem>
             </List>
