@@ -26,7 +26,7 @@ const getSpaceReservation = async ({
     });
     return response.data;
   } catch (error) {
-    throw new Error('Error fetching reservations');
+    throw new Error('Error fetching space reservation');
   }
 };
 
@@ -35,7 +35,7 @@ export const useFindManySpaceReservation = ({
   limit = paginationTake,
 }): UseQueryResult<ISpaceReservationPageProps> => {
   return useQuery<ISpaceReservationPageProps>({
-    queryKey: [EnumQueries.RESERVATION, page, limit],
+    queryKey: [EnumQueries.SPACE_RESERVATION, page, limit],
     queryFn: () => getSpaceReservation({ page, limit }),
     staleTime: 10000 * 60,
     placeholderData: keepPreviousData,

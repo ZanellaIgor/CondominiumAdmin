@@ -10,25 +10,23 @@ import Typography from '@mui/material/Typography';
 import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions';
 import { DataTable } from '@src/components/Common/DataTable/DataTable';
 
-import { useFindManySpaceReservation } from '@src/hooks/queries/useSpaceReservation';
+import { useFindManyApartament } from '@src/hooks/queries/useApartament';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
 import {
-  columnsSpaceReservation,
-  ISpaceReservationDataProps,
-} from './SpaceReservation.Interface';
+  columnsApartament,
+  IApartamentDataProps,
+} from './Apartament.Interface';
 
-export default function SpaceReservationPage() {
-  const [register, setRegister] = useState<
-    undefined | ISpaceReservationDataProps
-  >();
+export default function ApartamentPage() {
+  const [register, setRegister] = useState<IApartamentDataProps | undefined>();
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
-  const { data, isFetching, error } = useFindManySpaceReservation({ page });
+  const { data, isFetching, error } = useFindManyApartament({ page });
 
-  const registerSpaceReservation = data?.data;
-  const handleEdit = (spaceReservation: ISpaceReservationDataProps) => {
-    setRegister(spaceReservation);
+  const registerApartament = data?.data;
+  const handleEdit = (apartament: IApartamentDataProps) => {
+    setRegister(apartament);
     setOpen(true);
   };
 
@@ -37,11 +35,6 @@ export default function SpaceReservationPage() {
 
   return (
     <Box>
-      {/*  <ModalReservation
-        open={open}
-        handleClose={() => setOpen(false)}
-        register={register}
-      /> */}
       <Card
         sx={{
           height: `calc(100vh - 150px)`,
@@ -53,7 +46,7 @@ export default function SpaceReservationPage() {
         }}
       >
         <CardHeader
-          title="Áreas de lazer"
+          title="Apartamentos"
           action={
             <Stack spacing={1} direction="row">
               <Button
@@ -81,8 +74,8 @@ export default function SpaceReservationPage() {
         />
         <CardContent>
           <DataTable
-            columns={columnsSpaceReservation}
-            register={registerSpaceReservation}
+            columns={columnsApartament}
+            register={registerApartament}
             actions={(reg) => (
               <ActionsOptions handleEdit={handleEdit} item={reg} />
             )}
