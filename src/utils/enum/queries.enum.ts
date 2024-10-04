@@ -4,4 +4,5 @@ export enum EnumQueries {
   RESERVATION = 'reservation',
   SPACE_RESERVATION = 'spaceReservation',
   APARTAMENT = 'apartament',
+  CONDOMINUM = 'condominium',
 }
