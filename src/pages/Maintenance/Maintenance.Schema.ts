@@ -1,0 +1,12 @@
+import { EnumCategory } from '@src/utils/enum/category.enum';
+import { EnumSituation } from '@src/utils/enum/situation.enum';
+import { z } from 'zod';
+
+export const maintenanceSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  situation: z.nativeEnum(EnumSituation),
+  category: z.nativeEnum(EnumCategory),
+});
+
+export type MaintenanceRegisterProps = z.infer<typeof maintenanceSchema>;

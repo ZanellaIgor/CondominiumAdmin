@@ -18,11 +18,15 @@ const ReservationPage = Loader(
 const UserPage = Loader(lazy(() => import('../pages/User/User')));
 
 const MaintenancePage = Loader(
-  lazy(() => import('../pages/Maintence/Maintence'))
+  lazy(() => import('@src/pages/Maintenance/Maintenance'))
 );
 
 const SpaceReservationPage = Loader(
   lazy(() => import('@src/pages/SpaceReservation/SpaceReservation'))
+);
+
+const ApartamentPage = Loader(
+  lazy(() => import('@src/pages/Apartament/Apartament'))
 );
 
 const DocumentsPage = Loader(
@@ -64,6 +68,11 @@ export const routes: RouteObject[] = [
         path: '/space-reservation',
         element: <SpaceReservationPage />,
       },
+      {
+        path: '/apartament',
+        element: <ApartamentPage />,
+      },
+
       { path: 'user', element: <UserPage /> },
       {
         path: '*',
