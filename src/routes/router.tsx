@@ -29,6 +29,9 @@ const ApartamentPage = Loader(
   lazy(() => import('@src/pages/Apartament/Apartament'))
 );
 
+const CondominiumPage = Loader(
+  lazy(() => import('@src/pages/Condominium/Condominium'))
+);
 const DocumentsPage = Loader(
   lazy(() => import('../pages/Documents/Documents'))
 );
@@ -71,6 +74,10 @@ export const routes: RouteObject[] = [
       {
         path: '/apartament',
         element: <ApartamentPage />,
+      },
+      {
+        path: '/condominium',
+        element: <CondominiumPage />,
       },
 
       { path: 'user', element: <UserPage /> },

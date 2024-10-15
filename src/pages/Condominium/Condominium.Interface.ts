@@ -9,7 +9,7 @@ export interface ICondominiumPageProps {
 
 export interface ICondominiumDataProps {
   id: number;
-  name: number;
+  name: string;
 }
 
 export const columnsCondominium: IColumns[] = [

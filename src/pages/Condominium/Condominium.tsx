@@ -17,6 +17,7 @@ import {
   columnsCondominium,
   ICondominiumDataProps,
 } from './Condominium.Interface';
+import { ModalCondominium } from './Condominium.Modal';
 
 export default function CondominiumPage() {
   const [register, setRegister] = useState<ICondominiumDataProps | undefined>();
@@ -35,6 +36,11 @@ export default function CondominiumPage() {
 
   return (
     <Box>
+      <ModalCondominium
+        handleClose={() => setOpen(false)}
+        open={open}
+        register={register}
+      />
       <Card
         sx={{
           height: `calc(100vh - 150px)`,

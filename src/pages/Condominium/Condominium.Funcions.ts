@@ -1,12 +1,12 @@
-import { IApartamentDataProps } from '../Apartament/Apartament.Interface';
+import { ICondominiumDataProps } from './Condominium.Interface';
+import { ICondominiumFormProps } from './Condominium.Schema';
 
-export function condominiumSchemaHelper(
-  data: Partial<IApartamentDataProps> | undefined
-) {
-  data = {
-    id: data?.id ?? undefined,
-    name: data?.name ?? undefined,
+export function condominiumHelper(
+  data: Partial<ICondominiumDataProps> | undefined
+): ICondominiumFormProps {
+  const newValues = {
+    name: data?.name ?? '',
   };
 
-  return data;
+  return newValues as ICondominiumFormProps;
 }
