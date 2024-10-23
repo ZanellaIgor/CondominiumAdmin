@@ -10,56 +10,52 @@ import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { apartamentHelper } from './Apartament.Funcions';
+import { apartamentSchema, IApartamentFormProps } from './Apartament.Schema';
 
-import { condominiumHelper } from './Condominium.Functions';
-import { condominiumSchema, ICondominiumFormProps } from './Condominium.Schema';
-
-type ModalCondominiumProps = {
-  register: { id: number; name: string } | undefined;
+type ModalApartamentProps = {
+  register: { id: number; name: string; condominiumId: number } | undefined;
   open: boolean;
   handleClose: () => void;
 };
 
-export const ModalCondominium = ({
+export const ModalApartament = ({
   register,
   open,
   handleClose,
-}: ModalCondominiumProps) => {
+}: ModalApartamentProps) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: async (data: {
-      values: ICondominiumFormProps;
-      id?: number;
-    }) => {
+    mutationFn: async (data: { values: IApartamentFormProps; id?: number }) => {
       const { values, id } = data;
       const response = id
-        ? await api.patch(`/condominium/${id}`, values)
-        : await api.post('/condominium', values);
+        ? await api.patch(`/apartament/${id}`, values)
+        : await api.post('/apartament', values);
       return response.data;
     },
     onError: (error: any) => {
-      console.error('Erro ao criar o condomínio:', error);
-      alert('Ocorreu um erro ao salvar o aviso. Tente novamente.');
+      console.log(error);
+      alert('Ocorreu um erro ao salvar o apartamento. Tente novamente.');
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [EnumQueries.CONDOMINUM] });
+      queryClient.invalidateQueries({ queryKey: [EnumQueries.APARTAMENT] });
       handleClose();
     },
   });
 
-  const { control, handleSubmit } = useForm<ICondominiumFormProps>({
-    defaultValues: condominiumHelper(register),
-    resolver: zodResolver(condominiumSchema),
+  const { control, handleSubmit } = useForm<IApartamentFormProps>({
+    defaultValues: apartamentHelper(register),
+    resolver: zodResolver(apartamentSchema),
   });
 
-  const submitForm: SubmitHandler<ICondominiumFormProps> = (values) => {
+  const submitForm: SubmitHandler<IApartamentFormProps> = (values) => {
     mutation.mutate({ values, id: register?.id });
   };
 
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle sx={{ textAlign: 'center' }}>
-        {register ? 'Edite o Condomínio' : 'Adicione um novo Condomínio'}
+        {register ? 'Edite o Apartamento' : 'Adicione um novo Apartamento'}
       </DialogTitle>
       <DialogContent>
         <form noValidate onSubmit={handleSubmit(submitForm)}>

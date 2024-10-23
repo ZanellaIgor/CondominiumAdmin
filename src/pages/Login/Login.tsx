@@ -82,6 +82,7 @@ export default function Login() {
     },
 
     onError: (error: ErrorResponse) => {
+      console.log(error);
       alert('Ocorreu um erro ao salvar o aviso. Tente novamente.');
     },
 

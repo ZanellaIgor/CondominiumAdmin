@@ -4,8 +4,7 @@ export function spaceReservationHelper(
   data: Partial<ISpaceReservationDataProps> | undefined
 ) {
   data = {
-    id: data?.id ?? undefined,
-    name: data?.name ?? undefined,
+    name: data?.name ?? '',
     condominiumId: data?.condominiumId ?? undefined,
   };
 

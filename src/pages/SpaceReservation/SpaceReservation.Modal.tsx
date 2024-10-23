@@ -11,39 +11,42 @@ import Stack from '@mui/material/Stack';
 import { InputDateTime } from '@src/components/Inputs/InputDateTime/InputDateTime';
 import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
-import { EnumSituation } from '@src/utils/enum/situation.enum';
 import { optionsSituationReservation } from '@src/utils/options/situationReservation.options';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { reservationHelper } from './Reservation.Funcions';
-import {
-  ReservationsFormProps,
-  reservationsSchema,
-} from './Reservation.Schema';
 
-type ModalReservationProps = {
-  register: ReservationsFormProps | undefined;
+import { spaceReservationHelper } from './SpaceReservation.Funcions';
+import { ISpaceReservationDataProps } from './SpaceReservation.Interface';
+import {
+  ISpaceReservationFormProps,
+  spaceReservationSchema,
+} from './SpaceReservation.Schema';
+
+type ModalSpaceReservationProps = {
+  register: ISpaceReservationDataProps | undefined;
   open: boolean;
   handleClose: () => void;
 };
 
-export const ModalReservation = ({
+export const ModalSpaceReservation = ({
   register,
   open,
   handleClose,
-}: ModalReservationProps) => {
-  const { control, handleSubmit, reset } = useForm<ReservationsFormProps>({
-    defaultValues: reservationHelper(register),
-    resolver: zodResolver(reservationsSchema),
+}: ModalSpaceReservationProps) => {
+  const { control, handleSubmit, reset } = useForm<ISpaceReservationFormProps>({
+    defaultValues: spaceReservationHelper(register),
+    resolver: zodResolver(spaceReservationSchema),
   });
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: async (values: ReservationsFormProps) => {
+    mutationFn: async (
+      values: ISpaceReservationFormProps & { id?: number }
+    ) => {
       const response = values.id
-        ? await api.patch(`/reservation/${values.id}`, values)
-        : await api.post('/reservation', values);
+        ? await api.patch(`/space-reservation/${values.id}`, values)
+        : await api.post('/space-reservation', values);
       return response.data;
     },
     onError: (error: any) => {
@@ -56,23 +59,16 @@ export const ModalReservation = ({
     },
   });
 
-  const submitForm: SubmitHandler<ReservationsFormProps> = (
-    values: ReservationsFormProps
+  const submitForm: SubmitHandler<ISpaceReservationFormProps> = (
+    values: ISpaceReservationFormProps
   ) => {
     values.condominiumId = 1;
-    values.apartmentId = 1;
-    values.userId = 1;
-    values.spaceReservationId = 1;
-    values.situation = EnumSituation.ABERTO;
 
-    mutation.mutate(values);
+    mutation.mutate({ ...values, id: register?.id });
   };
 
   useEffect(() => {
-    reset(reservationHelper(register));
-    return () => {
-      reset(reservationHelper(undefined));
-    };
+    reset(spaceReservationHelper(register));
   }, [register]);
 
   return (
@@ -147,7 +143,6 @@ export const ModalReservation = ({
               <Button
                 onClick={() => {
                   handleClose();
-                  reset(reservationHelper(undefined));
                 }}
               >
                 Voltar

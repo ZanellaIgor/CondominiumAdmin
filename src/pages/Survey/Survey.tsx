@@ -1,4 +1,3 @@
-import { useThemeContext } from '@components/Theme/ThemeProvider';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -17,14 +16,14 @@ import { useState } from 'react';
 import { ModalSurvey } from './Survey.Modal';
 
 export default function SurveyPage() {
-  const { theme } = useThemeContext();
-  const [register, setRegister] = useState();
+  const [register] = useState();
   const [open, setOpen] = useState(false);
 
-  const handleEdit = (reservation: any) => {
+  /*   const handleEdit = (reservation: any) => {
     setRegister(reservation);
     setOpen(true);
-  };
+  }; */
+
   return (
     <Container>
       <ModalSurvey

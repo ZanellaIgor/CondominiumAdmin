@@ -1,4 +1,3 @@
-import { useThemeContext } from '@components/Theme/ThemeProvider';
 import { Add, FilterAlt } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -18,7 +17,6 @@ import { ModalWarning } from './Warnings.Modal';
 import { IWarningFormProps } from './Warnings.Schema';
 
 export default function WarningsPage() {
-  const { theme } = useThemeContext();
   const [open, setOpen] = useState(false);
   const [register, setRegister] = useState<IWarningPageDataProps | undefined>();
   const [page, setPage] = useState(1);

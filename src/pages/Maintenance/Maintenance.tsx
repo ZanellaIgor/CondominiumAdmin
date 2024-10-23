@@ -19,7 +19,7 @@ export default function ReservationsPage() {
 
   const [register, setRegister] = useState();
   const [open, setOpen] = useState(false);
-  const { data, isFetching, error } = useFindManyMaintenance({ page });
+  const { data } = useFindManyMaintenance({ page });
   const registerMaintenance = data?.data;
 
   const handleEdit = (reservation: any) => {

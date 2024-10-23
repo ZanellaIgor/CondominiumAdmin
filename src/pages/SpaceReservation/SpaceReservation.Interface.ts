@@ -9,7 +9,7 @@ export interface ISpaceReservationPageProps {
 
 export interface ISpaceReservationDataProps {
   id: number;
-  name: number;
+  name: string;
   condominiumId: number;
 }
 

@@ -1,10 +1,9 @@
 import { IApartamentDataProps } from './Apartament.Interface';
 
-export function apartamentSchemaHelper(
+export function apartamentHelper(
   data: Partial<IApartamentDataProps> | undefined
 ) {
   data = {
-    id: data?.id ?? undefined,
     name: data?.name ?? undefined,
     condominiumId: data?.condominiumId ?? undefined,
   };

@@ -17,6 +17,7 @@ import {
   columnsSpaceReservation,
   ISpaceReservationDataProps,
 } from './SpaceReservation.Interface';
+import { ModalSpaceReservation } from './SpaceReservation.Modal';
 
 export default function SpaceReservationPage() {
   const [register, setRegister] = useState<
@@ -37,11 +38,11 @@ export default function SpaceReservationPage() {
 
   return (
     <Box>
-      {/*  <ModalReservation
-        open={open}
+      <ModalSpaceReservation
         handleClose={() => setOpen(false)}
+        open={open}
         register={register}
-      /> */}
+      />
       <Card
         sx={{
           height: `calc(100vh - 150px)`,

@@ -9,7 +9,7 @@ export interface IApartamentPageProps {
 
 export interface IApartamentDataProps {
   id: number;
-  name: number;
+  name: string;
   condominiumId: number;
 }
 

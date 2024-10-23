@@ -1,15 +1,10 @@
 import { Box, alpha, lighten, useTheme } from '@mui/material';
-import { ReactNode } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import Header from './Header';
 import Sidebar from './Sidebar';
 
-interface ISidebarLayoutProps {
-  children?: ReactNode;
-}
-
-export const SidebarLayout = ({ children }: ISidebarLayoutProps) => {
+export const SidebarLayout = () => {
   const theme = useTheme();
 
   return (

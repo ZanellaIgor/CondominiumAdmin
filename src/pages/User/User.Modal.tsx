@@ -41,7 +41,7 @@ export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
     },
   });
 
-  const { control, handleSubmit, reset } = useForm<IUserFormProps>({
+  const { control, handleSubmit } = useForm<IUserFormProps>({
     defaultValues: userHelper(register),
     resolver: zodResolver(userSchema),
   });
