@@ -6,9 +6,10 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions';
 import { DataTable } from '@src/components/Common/DataTable/DataTable';
+import { Error } from '@src/components/Common/Error/Error';
+import { Loading } from '@src/components/Common/Loading/Loading';
 import { useFindManyWarnings } from '@src/hooks/queries/useWarning';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
@@ -28,8 +29,8 @@ export default function WarningsPage() {
     setOpen(true);
   };
 
-  if (error) return <Typography>Ocorreu um erro</Typography>;
-  if (isFetching) return <Typography>Carregando...</Typography>;
+  if (error) return <Error />;
+  if (isFetching) return <Loading />;
 
   return (
     <Box>
