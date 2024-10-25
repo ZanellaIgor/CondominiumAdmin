@@ -1,16 +1,20 @@
 import Paper from '@mui/material/Paper';
+import Skeleton from '@mui/material/Skeleton';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import React from 'react';
 
 interface IDataTableProps {
   register: any;
   columns: IColumns[];
   actions?: (reg: any) => JSX.Element;
+  loading?: boolean;
 }
 export interface IColumns {
   label: string;
@@ -25,10 +29,42 @@ function getValueObj(obj: any, path: string) {
   return path.split('.').reduce((acc, part) => acc?.[part], obj);
 }
 
-export const DataTable = ({ register, columns, actions }: IDataTableProps) => {
+function formatValues(reg: any, typeFormat: IMaskTable) {
+  const date = new Date(reg);
+
+  if (isNaN(date.getTime())) {
+    return 'Data inválida';
+  }
+
+  switch (typeFormat) {
+    case 'date':
+      return format(date, 'dd/MM/yyyy', { locale: ptBR });
+    case 'time':
+      return format(date, 'HH:mm', { locale: ptBR });
+    case 'dateTime':
+      return format(date, "dd 'de' MMMM 'de' yyyy, HH:mm", { locale: ptBR });
+    default:
+      return reg;
+  }
+}
+
+export const DataTable = ({
+  register,
+  columns,
+  actions,
+  loading = false,
+}: IDataTableProps) => {
   const renderCell = (reg: any, column: IColumns) => {
     if (column.custom) {
       return column.custom(reg[column.value]);
+    }
+
+    if (!!column.format) {
+      return (
+        <TableCell size="small" sx={{ padding: '.25rem .5rem' }}>
+          {formatValues(reg[column.value], column.format).toString()}
+        </TableCell>
+      );
     }
     const value = getValueObj(reg, column.value);
     return (
@@ -59,7 +95,6 @@ export const DataTable = ({ register, columns, actions }: IDataTableProps) => {
                 </TableCell>
               );
             })}
-
             {actions && (
               <TableCell
                 sx={{ fontWeight: 'bold', padding: '2 4' }}
@@ -68,20 +103,31 @@ export const DataTable = ({ register, columns, actions }: IDataTableProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {register?.map((reg: any) => {
-            return (
-              <TableRow hover key={reg.id}>
-                {columns?.map((column: any) => {
-                  return (
+          {loading
+            ? Array.from({ length: 5 }).map((_, index) => (
+                <TableRow key={index}>
+                  {columns.map((column) => (
+                    <TableCell key={column.label}>
+                      <Skeleton variant="text" width="100%" />
+                    </TableCell>
+                  ))}
+                  {actions && (
+                    <TableCell>
+                      <Skeleton variant="text" width="50%" />
+                    </TableCell>
+                  )}
+                </TableRow>
+              ))
+            : register?.map((reg: any) => (
+                <TableRow hover key={reg.id}>
+                  {columns.map((column) => (
                     <React.Fragment key={column.value}>
                       {renderCell(reg, column)}
                     </React.Fragment>
-                  );
-                })}
-                {actions && actions(reg)}
-              </TableRow>
-            );
-          })}
+                  ))}
+                  {!!reg && actions && actions(reg)}
+                </TableRow>
+              ))}
         </TableBody>
       </Table>
     </TableContainer>

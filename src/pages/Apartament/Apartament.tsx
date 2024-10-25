@@ -10,7 +10,6 @@ import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions'
 import { DataTable } from '@src/components/Common/DataTable/DataTable';
 
 import { Error } from '@src/components/Common/Error/Error';
-import { Loading } from '@src/components/Common/Loading/Loading';
 import { useFindManyApartament } from '@src/hooks/queries/useApartament';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
@@ -33,7 +32,6 @@ export default function ApartamentPage() {
   };
 
   if (error) return <Error />;
-  if (isFetching) return <Loading />;
 
   return (
     <Box>
@@ -83,6 +81,7 @@ export default function ApartamentPage() {
           <DataTable
             columns={columnsApartament}
             register={registerApartament}
+            loading={isFetching}
             actions={(reg) => (
               <ActionsOptions handleEdit={handleEdit} item={reg} />
             )}

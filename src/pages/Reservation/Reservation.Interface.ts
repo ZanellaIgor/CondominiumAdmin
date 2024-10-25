@@ -10,6 +10,7 @@ export interface IReservationPageProps {
   page: number;
   limit: number;
 }
+
 export interface IReservationDataProps {
   id: number;
   title: string;
@@ -43,6 +44,6 @@ export const columnsReservation: IColumns[] = [
     label: 'Situação',
     value: 'situation',
   },
-  { label: 'Data Inicial', value: 'startDateTime' },
-  { label: 'Data Final', value: 'endDateTime' },
+  { label: 'Data Inicial', value: 'startDateTime', format: 'dateTime' },
+  { label: 'Data Final', value: 'endDateTime', format: 'dateTime' },
 ];

@@ -9,7 +9,6 @@ import Stack from '@mui/material/Stack';
 import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions';
 import { DataTable } from '@src/components/Common/DataTable/DataTable';
 import { Error } from '@src/components/Common/Error/Error';
-import { Loading } from '@src/components/Common/Loading/Loading';
 import { useFindManyUsers } from '@src/hooks/queries/useUser';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { lazy, useState } from 'react';
@@ -34,7 +33,6 @@ export default function UserPage() {
   };
 
   if (error) return <Error />;
-  if (isFetching) return <Loading />;
 
   return (
     <Box>
@@ -85,6 +83,7 @@ export default function UserPage() {
           <DataTable
             columns={columnsUser}
             register={registerUser}
+            loading={isFetching}
             actions={(reg) => (
               <ActionsOptions handleEdit={handleEdit} item={reg} />
             )}

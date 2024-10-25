@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const handleTokenDecode = async () => {
         try {
           const decodedValues = (await jwtDecode(token)) as User;
-          console.log(decodedValues);
+
           if (decodedValues) {
             setIsAuthenticated(true);
             setUserInfo(decodedValues);

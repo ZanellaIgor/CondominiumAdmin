@@ -9,7 +9,6 @@ import Stack from '@mui/material/Stack';
 import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions';
 import { DataTable } from '@src/components/Common/DataTable/DataTable';
 import { Error } from '@src/components/Common/Error/Error';
-import { Loading } from '@src/components/Common/Loading/Loading';
 import { useFindManyWarnings } from '@src/hooks/queries/useWarning';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
@@ -24,13 +23,13 @@ export default function WarningsPage() {
   const { data, isFetching, error } = useFindManyWarnings({ page });
 
   const registerWarnings = data?.data;
+
   const handleEdit = (warning: IWarningPageDataProps) => {
     setRegister(warning);
     setOpen(true);
   };
 
   if (error) return <Error />;
-  if (isFetching) return <Loading />;
 
   return (
     <Box>
@@ -80,6 +79,7 @@ export default function WarningsPage() {
           <DataTable
             columns={columnsWarning}
             register={registerWarnings}
+            loading={isFetching}
             actions={(reg) => (
               <ActionsOptions handleEdit={handleEdit} item={reg} />
             )}

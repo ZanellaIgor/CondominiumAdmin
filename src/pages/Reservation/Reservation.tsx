@@ -10,8 +10,7 @@ import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions'
 import { DataTable } from '@src/components/Common/DataTable/DataTable';
 
 import { Error } from '@src/components/Common/Error/Error';
-import { Loading } from '@src/components/Common/Loading/Loading';
-import { useFindManySpaceReservation } from '@src/hooks/queries/useSpaceReservation';
+import { useFindManyReservation } from '@src/hooks/queries/useReservation';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
 import { columnsReservation } from './Reservation.Interface';
@@ -21,16 +20,16 @@ export default function ReservationsPage() {
   const [register, setRegister] = useState();
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
-  const { data, isFetching, error } = useFindManySpaceReservation({ page });
+  const { data, isFetching, error } = useFindManyReservation({ page });
 
   const registerSpaceReservation = data?.data;
+
   const handleEdit = (reservation: any) => {
     setRegister(reservation);
     setOpen(true);
   };
 
   if (error) return <Error />;
-  if (isFetching) return <Loading />;
 
   return (
     <Box>
@@ -80,6 +79,7 @@ export default function ReservationsPage() {
           <DataTable
             columns={columnsReservation}
             register={registerSpaceReservation}
+            loading={isFetching}
             actions={(reg) => (
               <ActionsOptions handleEdit={handleEdit} item={reg} />
             )}
