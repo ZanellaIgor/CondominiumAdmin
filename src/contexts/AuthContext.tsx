@@ -1,5 +1,5 @@
 import { EnumRoles } from '@src/utils/enum/role.enum';
-import { decodeJwt } from '@src/utils/functions/decodeJWT';
+import { jwtDecode } from 'jwt-decode';
 import React, { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -33,7 +33,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (token) {
       const handleTokenDecode = async () => {
         try {
-          const decodedValues = await decodeJwt(token);
+          const decodedValues = (await jwtDecode(token)) as User;
+          console.log(decodedValues);
           if (decodedValues) {
             setIsAuthenticated(true);
             setUserInfo(decodedValues);

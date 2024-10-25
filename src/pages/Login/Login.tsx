@@ -10,13 +10,11 @@ import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { useAuth } from '@src/hooks/useAuth';
 import { api } from '@src/services/api.service';
-import { encryptData, EncryptedPayload } from '@src/utils/functions/crypto';
-import { decodeJwt } from '@src/utils/functions/decodeJWT';
 import { useMutation } from '@tanstack/react-query';
 import { FormEvent, MouseEvent, useState } from 'react';
 import { ErrorResponse, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
-import { LoginSchema } from './Login.Schema';
+import { ILoginFormProps, LoginSchema } from './Login.Schema';
 
 export default function Login() {
   const { setIsAuthenticated, setUserInfo } = useAuth();
@@ -43,8 +41,8 @@ export default function Login() {
     const data = new FormData(event.currentTarget);
 
     const values = {
-      email: data.get('email')?.toString(),
-      password: data.get('password')?.toString(),
+      email: data.get('email')?.toString() ?? '',
+      password: data.get('password')?.toString() ?? '',
     };
 
     try {
@@ -52,8 +50,8 @@ export default function Login() {
       setError({ email: false, password: false });
       setErrorMessages({ email: '', password: '' });
 
-      const encryptedPayload = await encryptData(JSON.stringify(values));
-      mutation.mutate(encryptedPayload);
+      //const encryptedPayload = await encryptData(JSON.stringify(values));
+      mutation.mutate(values);
     } catch (error) {
       if (error instanceof z.ZodError) {
         const fieldErrors = error.errors.reduce(
@@ -75,8 +73,8 @@ export default function Login() {
   }
 
   const mutation = useMutation({
-    mutationFn: async (values: EncryptedPayload) => {
-      const response = await api.post('/auth/login', values);
+    mutationFn: async (values: ILoginFormProps) => {
+      const response = await api.post('/login', values);
 
       return response.data;
     },
@@ -88,10 +86,9 @@ export default function Login() {
 
     onSuccess: async (data: any) => {
       localStorage.setItem('token', data.acess_token);
-      const decodedValues = decodeJwt(data.acess_token);
 
       setIsAuthenticated(true);
-      setUserInfo(decodedValues);
+      setUserInfo(data.acess_token);
       navigate('/');
     },
   });
