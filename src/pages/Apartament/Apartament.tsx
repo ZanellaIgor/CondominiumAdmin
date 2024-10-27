@@ -35,11 +35,13 @@ export default function ApartamentPage() {
 
   return (
     <Box>
-      <ModalApartament
-        handleClose={() => setOpen(false)}
-        open={open}
-        register={register}
-      />
+      {open && (
+        <ModalApartament
+          handleClose={() => setOpen(false)}
+          open={open}
+          register={register}
+        />
+      )}
       <Card
         sx={{
           height: `calc(100vh - 150px)`,

@@ -57,7 +57,7 @@ export const ModalCondominium = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={handleClose} fullWidth>
       <DialogTitle sx={{ textAlign: 'center' }}>
         {register ? 'Edite o Condomínio' : 'Adicione um novo Condomínio'}
       </DialogTitle>

@@ -12,6 +12,11 @@ type InputSelectProps = {
   name: string;
   label: string;
   options: OptionType[];
+  isLoading?: boolean;
+  onInputChange?: (
+    event: React.SyntheticEvent<Element, Event>,
+    value: string
+  ) => void;
 };
 
 export const InputSelect = ({
@@ -19,6 +24,8 @@ export const InputSelect = ({
   name,
   options,
   label,
+  onInputChange,
+  isLoading,
   ...rest
 }: InputSelectProps) => {
   return (
@@ -30,6 +37,7 @@ export const InputSelect = ({
           options.find((option) => option.value === field.value) || null;
         return (
           <Autocomplete
+            loading={isLoading}
             options={options}
             isOptionEqualToValue={(option, value) => {
               return option.value === value?.value;
@@ -39,6 +47,7 @@ export const InputSelect = ({
               field.onChange(newValue?.value);
             }}
             value={currentValue}
+            onInputChange={onInputChange}
             renderInput={(params) => (
               <TextField
                 {...params}

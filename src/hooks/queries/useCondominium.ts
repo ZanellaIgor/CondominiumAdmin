@@ -8,20 +8,26 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query';
 
+interface IFilters {
+  name?: string;
+}
 interface IGetCondominiumParams {
   page: number;
   limit: number;
+  filter?: IFilters;
 }
 
 const getCondominium = async ({
   page,
   limit,
+  filter,
 }: IGetCondominiumParams): Promise<ICondominiumPageProps> => {
   try {
     const response = await api.get(`/condominium`, {
       params: {
         page,
         limit,
+        ...filter,
       },
     });
     return response.data;
@@ -33,10 +39,15 @@ const getCondominium = async ({
 export const useFindManyCondominium = ({
   page = 1,
   limit = paginationTake,
+  filters,
+}: {
+  page?: number;
+  limit?: number;
+  filters?: IFilters;
 }): UseQueryResult<ICondominiumPageProps> => {
   return useQuery<ICondominiumPageProps>({
-    queryKey: [EnumQueries.CONDOMINUM, page, limit],
-    queryFn: () => getCondominium({ page, limit }),
+    queryKey: [EnumQueries.CONDOMINUM, page, limit, filters],
+    queryFn: () => getCondominium({ page, limit, filter: filters }),
     staleTime: 10000 * 60,
     placeholderData: keepPreviousData,
   });

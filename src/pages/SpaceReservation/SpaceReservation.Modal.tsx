@@ -1,6 +1,5 @@
 import { InputField } from '@components/Inputs/InputField/InputField';
 import { InputSelect } from '@components/Inputs/InputSelect/InputSelect';
-import { SwitchField } from '@components/Inputs/SwitchField/SwitchField';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -8,14 +7,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import { InputDateTime } from '@src/components/Inputs/InputDateTime/InputDateTime';
 import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
-import { optionsSituationReservation } from '@src/utils/options/situationReservation.options';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
+import { debounce } from '@src/utils/functions/debounce';
 import { spaceReservationHelper } from './SpaceReservation.Funcions';
 import { ISpaceReservationDataProps } from './SpaceReservation.Interface';
 import {
@@ -38,6 +37,17 @@ export const ModalSpaceReservation = ({
     defaultValues: spaceReservationHelper(register),
     resolver: zodResolver(spaceReservationSchema),
   });
+  const [filterName, setFilterName] = useState('');
+  const { data, isLoading } = useFindManyCondominium({
+    page: 1,
+    limit: 100,
+    filters: { name: filterName },
+  });
+
+  const optionsCondominium = data?.data?.map((condominium) => ({
+    label: condominium.name,
+    value: condominium.id,
+  }));
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -67,74 +77,36 @@ export const ModalSpaceReservation = ({
     mutation.mutate({ ...values, id: register?.id });
   };
 
+  const handleInputChange = useCallback(
+    debounce((__: React.SyntheticEvent, value: string) => {
+      setFilterName(value);
+    }, 500),
+    []
+  );
+
   useEffect(() => {
     reset(spaceReservationHelper(register));
   }, [register]);
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={handleClose} fullWidth>
       <DialogContent>
         <DialogTitle sx={{ textAlign: 'center' }}>
           {register ? 'Edite a reserva' : 'Adicione uma nova reserva'}
         </DialogTitle>
         <form noValidate onSubmit={handleSubmit(submitForm)}>
-          <Grid container spacing={2} padding={1}>
+          <Grid container spacing={3} padding={1}>
             <Grid item xs={6}>
-              <InputField name="title" control={control} label="Título" />
+              <InputField name="name" control={control} label="Nome" />
             </Grid>
-            {register?.id && (
-              <Grid item xs={6}>
-                <InputSelect
-                  name="situation"
-                  control={control}
-                  label="Situação"
-                  options={optionsSituationReservation}
-                />
-              </Grid>
-            )}
             <Grid item xs={6}>
               <InputSelect
-                name="spaceReservationId"
+                options={optionsCondominium || []}
+                name="condominiumId"
                 control={control}
-                label="Local"
-                options={[
-                  { label: 'Salão de Festas - 2º andar', value: 1 },
-                  { label: 'Salão de Festas - Terreo', value: 2 },
-                  { label: 'Piscina', value: 3 },
-                  { label: 'Churrasqueira - 1', value: 4 },
-                  { label: 'Churrasqueira - 2', value: 5 },
-                  { label: 'Churrasqueira - 3', value: 6 },
-                  { label: 'Churrasqueira - 4', value: 7 },
-                ]}
-              />
-            </Grid>
-
-            <Grid item xs={6}>
-              <InputDateTime
-                name="startDateTime"
-                control={control}
-                label="Data inicial da reserva"
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <InputDateTime
-                name="endDateTime"
-                control={control}
-                label="Data final da Reserva"
-              />
-            </Grid>
-
-            <Grid item xs={6}>
-              <SwitchField name="status" control={control} label="Ativo" />
-            </Grid>
-
-            <Grid item xs={12}>
-              <InputField
-                name="description"
-                control={control}
-                label="Descrição"
-                multiline
-                rows={4}
+                label="Condomínio"
+                onInputChange={handleInputChange}
+                isLoading={isLoading}
               />
             </Grid>
           </Grid>

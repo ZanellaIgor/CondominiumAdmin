@@ -39,7 +39,7 @@ export const columnsReservation: IColumns[] = [
   },
   {
     label: 'Espaço',
-    value: 'spaceReservation.name',
+    value: 'space.name',
   },
   {
     label: 'Situação',
