@@ -1,8 +1,9 @@
 import { IColumns } from '@src/components/Common/DataTable/DataTable';
-import { SituationReservation } from '@src/utils/enum/situationReservation.enum';
+import { EnumSituationReservation } from '@src/utils/enum/situationReservation.enum';
 
 import { ISpaceReservationDataProps } from '../SpaceReservation/SpaceReservation.Interface';
 import { IUserPageDataProps } from '../User/User.Interface';
+import { WChipTableSituation } from './Reservation.Components';
 
 export interface IReservationPageProps {
   data: IReservationDataProps[];
@@ -21,7 +22,7 @@ export interface IReservationDataProps {
   endDateTime: Date;
   spaceReservationId: number;
   space: ISpaceReservationDataProps;
-  situation: SituationReservation;
+  situation: EnumSituationReservation;
   condominiumId: number;
   createdAt: Date;
   updatedAt: Date;
@@ -43,6 +44,7 @@ export const columnsReservation: IColumns[] = [
   {
     label: 'Situação',
     value: 'situation',
+    custom: (value) => WChipTableSituation(value),
   },
   { label: 'Data Inicial', value: 'startDateTime', format: 'dateTime' },
   { label: 'Data Final', value: 'endDateTime', format: 'dateTime' },

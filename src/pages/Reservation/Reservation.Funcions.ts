@@ -1,3 +1,4 @@
+import { EnumSituationReservation } from '@src/utils/enum/situationReservation.enum';
 import { ReservationsFormProps } from './Reservation.Schema';
 
 export function reservationHelper(
@@ -16,4 +17,21 @@ export function reservationHelper(
   };
 
   return data;
+}
+
+export function reservationChipTableCategory(
+  value: EnumSituationReservation | undefined
+) {
+  console.log(value);
+  switch (value) {
+    case EnumSituationReservation.ABERTO:
+      return { label: 'Alta', color: 'primary' };
+    case EnumSituationReservation.ANALISE:
+      return { label: 'Crítica', color: 'warning' };
+    case EnumSituationReservation.CONFIRMADO:
+      return { label: 'Média', color: 'success' };
+
+    default:
+      return { label: 'Não informado', color: 'primary' };
+  }
 }

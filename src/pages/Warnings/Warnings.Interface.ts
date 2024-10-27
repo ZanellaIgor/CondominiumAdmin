@@ -1,4 +1,5 @@
 import { IColumns } from '@src/components/Common/DataTable/DataTable';
+import { WChipTabelCategory, WChipTableSituation } from './Warnings.Components';
 
 export interface IWarningPageProps {
   data: IWarningPageDataProps[];
@@ -24,9 +25,11 @@ export const columnsWarning: IColumns[] = [
   {
     label: 'Categoria',
     value: 'category',
+    custom: (value) => WChipTabelCategory(value),
   },
   {
     label: 'Situação',
     value: 'situation',
+    custom: (value) => WChipTableSituation(value),
   },
 ];

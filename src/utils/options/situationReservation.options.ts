@@ -1,7 +1,7 @@
-import { SituationReservation } from '../enum/situationReservation.enum';
+import { EnumSituationReservation } from '../enum/situationReservation.enum';
 
 export const optionsSituationReservation = [
-  { value: SituationReservation.ABERTO, label: 'Aberto' },
-  { value: SituationReservation.ANALISE, label: 'Análise' },
-  { value: SituationReservation.CONFIRMADO, label: 'Confirmado' },
+  { value: EnumSituationReservation.ABERTO, label: 'Aberto' },
+  { value: EnumSituationReservation.ANALISE, label: 'Análise' },
+  { value: EnumSituationReservation.CONFIRMADO, label: 'Confirmado' },
 ];
