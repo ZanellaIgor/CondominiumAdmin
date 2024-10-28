@@ -20,12 +20,13 @@ export const InputField = forwardRef(function InputField<
         <TextField
           {...field}
           {...rest}
-          value={field.value}
+          value={field.value ?? ''}
           error={!!error}
           helperText={error?.message}
           InputLabelProps={{
             shrink: !!field?.value,
           }}
+          onChange={field.onChange}
           inputRef={ref}
           sx={{ display: 'flex', justifyContent: 'center' }}
         />

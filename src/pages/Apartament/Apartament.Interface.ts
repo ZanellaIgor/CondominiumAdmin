@@ -11,6 +11,10 @@ export interface IApartamentDataProps {
   id: number;
   name: string;
   condominiumId: number;
+  condominium: {
+    id: number;
+    name: string;
+  };
 }
 
 export const columnsApartament: IColumns[] = [

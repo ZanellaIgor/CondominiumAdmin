@@ -8,6 +8,8 @@ import Stack from '@mui/material/Stack';
 import { InputField } from '@src/components/Inputs/InputField/InputField';
 import { InputSelect } from '@src/components/Inputs/InputSelect/InputSelect';
 import { SwitchField } from '@src/components/Inputs/SwitchField/SwitchField';
+import { useFindManyApartament } from '@src/hooks/queries/useApartament';
+import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
 import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
 import { EnumRoles } from '@src/utils/enum/role.enum';
@@ -24,6 +26,27 @@ type ModalUserProps = {
 
 export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
   const queryClient = useQueryClient();
+  const { data: dataCondominium, isLoading: loadingCondominium } =
+    useFindManyCondominium({
+      page: 1,
+      limit: 100,
+    });
+  const { data: dataApartament, isLoading: isLoadingApartament } =
+    useFindManyApartament({
+      page: 1,
+      limit: 100,
+    });
+
+  const optionsCondominium = dataCondominium?.data.map((condominium) => ({
+    label: condominium.name,
+    value: condominium.id,
+  }));
+
+  const optionsApartment = dataApartament?.data.map((apartment) => ({
+    label: apartment.condominium.name + ' - ' + apartment.name,
+    value: apartment.id,
+  }));
+
   const mutation = useMutation({
     mutationFn: async (values: IUserFormProps) => {
       const response = values.id
@@ -41,14 +64,12 @@ export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
     },
   });
 
-  const { control, handleSubmit } = useForm<IUserFormProps>({
+  const { control, handleSubmit, watch } = useForm<IUserFormProps>({
     defaultValues: userHelper(register),
     resolver: zodResolver(userSchema),
   });
 
   const submitForm: SubmitHandler<IUserFormProps> = (values) => {
-    values.apartmentIds = [1];
-    values.condominiumIds = [1];
     mutation.mutate(values);
   };
 
@@ -81,6 +102,30 @@ export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
                 ]}
               />
             </Grid>
+
+            {watch('role') === EnumRoles.ADMIN && (
+              <Grid item xs={12}>
+                <InputSelect
+                  control={control}
+                  name="condominiumId"
+                  label="Condomínio"
+                  isLoading={loadingCondominium}
+                  options={optionsCondominium || []}
+                  multiple
+                />
+              </Grid>
+            )}
+            {watch('role') === EnumRoles.USER && (
+              <Grid item xs={12}>
+                <InputSelect
+                  control={control}
+                  name="apartmentIds"
+                  label="Apartamento"
+                  isLoading={isLoadingApartament}
+                  options={optionsApartment || []}
+                />
+              </Grid>
+            )}
             {register?.id && (
               <Grid item xs={12}>
                 <SwitchField control={control} name="status" label="Status" />

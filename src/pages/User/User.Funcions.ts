@@ -4,6 +4,8 @@ export function userHelper(data: any) {
     name: data?.name ?? '',
     email: data?.email ?? '',
     status: data?.id ? data.status : true,
+    condominiumIds: data?.condominiumIds ?? [],
+    apartmentIds: data?.apartmentIds ?? [],
   };
   return data;
 }

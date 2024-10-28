@@ -60,7 +60,7 @@ export const ModalSpaceReservation = ({
       return response.data;
     },
     onError: (error: any) => {
-      console.error('Erro ao criar o Reserva:', error);
+      console.error('Erro ao criar o Area de Lazer:', error);
       alert('Ocorreu um erro ao gerar a reserva. Tente novamente.');
     },
     onSuccess: () => {

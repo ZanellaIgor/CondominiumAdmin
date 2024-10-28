@@ -1,5 +1,6 @@
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import { forwardRef } from 'react';
 import { Control, Controller } from 'react-hook-form';
 
 type OptionType = {
@@ -13,54 +14,72 @@ type InputSelectProps = {
   label: string;
   options: OptionType[];
   isLoading?: boolean;
+  multiple?: boolean;
   onInputChange?: (
     event: React.SyntheticEvent<Element, Event>,
     value: string
   ) => void;
 };
 
-export const InputSelect = ({
-  control,
-  name,
-  options,
-  label,
-  onInputChange,
-  isLoading,
-  ...rest
-}: InputSelectProps) => {
-  return (
-    <Controller
-      control={control}
-      name={name}
-      render={({ field, fieldState: { error } }) => {
-        const currentValue =
-          options.find((option) => option.value === field.value) || null;
-        return (
-          <Autocomplete
-            loading={isLoading}
-            options={options}
-            isOptionEqualToValue={(option, value) => {
-              return option.value === value?.value;
-            }}
-            getOptionLabel={(option) => option.label}
-            onChange={(_, newValue) => {
-              field.onChange(newValue?.value);
-            }}
-            value={currentValue}
-            onInputChange={onInputChange}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label={label}
-                error={!!error}
-                helperText={error?.message}
-                sx={{ margin: 0 }}
-              />
-            )}
-            {...rest}
-          />
-        );
-      }}
-    />
-  );
-};
+export const InputSelect = forwardRef(
+  (
+    {
+      control,
+      name,
+      options,
+      label,
+      onInputChange,
+      isLoading,
+      multiple = false,
+      ...rest
+    }: InputSelectProps,
+    ref
+  ) => {
+    return (
+      <Controller
+        control={control}
+        name={name}
+        render={({ field, fieldState: { error } }) => {
+          const currentValue = multiple
+            ? options.filter((option) => field.value?.includes(option.value))
+            : options.find((option) => option.value === field.value) || null;
+
+          return (
+            <Autocomplete
+              {...field}
+              ref={ref}
+              loading={isLoading}
+              options={options}
+              multiple={multiple}
+              isOptionEqualToValue={(option, value) =>
+                option.value === value?.value
+              }
+              getOptionLabel={(option) => option.label}
+              onChange={(_, newValue) => {
+                if (multiple) {
+                  field.onChange(
+                    (newValue as OptionType[])?.map((item) => item.value)
+                  );
+                } else {
+                  field.onChange((newValue as OptionType)?.value);
+                }
+              }}
+              value={currentValue}
+              onInputChange={onInputChange}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label={label}
+                  error={!!error}
+                  helperText={error?.message}
+                  sx={{ margin: 0 }}
+                />
+              )}
+              {...rest}
+            />
+          );
+        }}
+      />
+    );
+  }
+);
