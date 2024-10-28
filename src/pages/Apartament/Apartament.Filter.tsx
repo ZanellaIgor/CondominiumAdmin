@@ -1,4 +1,3 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -8,57 +7,31 @@ import Stack from '@mui/material/Stack';
 import { InputField } from '@src/components/Inputs/InputField/InputField';
 import { InputSelect } from '@src/components/Inputs/InputSelect/InputSelect';
 import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
-import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
-import { api } from '@src/services/api.service';
-import { EnumQueries } from '@src/utils/enum/queries.enum';
 import { debounce } from '@src/utils/functions/debounce';
 
-import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import { useCallback, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { apartamentHelper } from './Apartament.Funcions';
-import { apartamentSchema, IApartamentFormProps } from './Apartament.Schema';
+import { IApartamentFormProps } from './Apartament.Schema';
 
-type ModalApartmentProps = {
-  register: { id: number; name: string; condominiumId: number } | undefined;
+type ModalApartamentProps = {
+  valuesFilter: Record<string, any> | undefined;
+  setValuesFilter: React.Dispatch<
+    React.SetStateAction<undefined | Record<string, any>>
+  >;
   open: boolean;
   handleClose: () => void;
 };
 
-export const ModalApartment = ({
-  register,
+export const FilterApartment = ({
+  valuesFilter,
+  setValuesFilter,
   open,
   handleClose,
-}: ModalApartmentProps) => {
-  const { showSnackbar } = useSnackbarStore();
-  const queryClient = useQueryClient();
+}: ModalApartamentProps) => {
   const [filterName, setFilterName] = useState('');
-  const mutation = useMutation({
-    mutationFn: async (data: { values: IApartamentFormProps; id?: number }) => {
-      const { values, id } = data;
-      const response = id
-        ? await api.patch(`/apartament/${id}`, values)
-        : await api.post('/apartament', values);
-      return response.data;
-    },
-    onError: (error: AxiosError<ApiResponse>) => {
-      showSnackbar(
-        error?.response?.data?.message ?? 'Erro não especificado',
-        'error'
-      );
-    },
-    onSuccess: (response: ApiResponse) => {
-      queryClient.invalidateQueries({ queryKey: [EnumQueries.APARTAMENT] });
-      showSnackbar(response.message, 'success');
-      handleClose();
-    },
-  });
 
   const { control, handleSubmit } = useForm<IApartamentFormProps>({
-    defaultValues: apartamentHelper(register),
-    resolver: zodResolver(apartamentSchema),
+    defaultValues: valuesFilter,
   });
   const { data, isLoading } = useFindManyCondominium({
     page: 1,
@@ -72,7 +45,8 @@ export const ModalApartment = ({
   }));
 
   const submitForm: SubmitHandler<IApartamentFormProps> = async (values) => {
-    mutation.mutate({ values, id: register?.id });
+    setValuesFilter(values);
+    handleClose();
   };
 
   const handleInputChange = useCallback(
@@ -85,7 +59,7 @@ export const ModalApartment = ({
   return (
     <Dialog open={open} onClose={handleClose} fullWidth>
       <DialogTitle sx={{ textAlign: 'center' }}>
-        {register ? 'Edite o Apartamento' : 'Adicione um novo Apartamento'}
+        Filtrar Apartamento
       </DialogTitle>
       <DialogContent>
         <form noValidate onSubmit={handleSubmit(submitForm)}>
@@ -114,12 +88,11 @@ export const ModalApartment = ({
               onClick={() => {
                 handleClose();
               }}
-              disabled={mutation.isPending}
             >
               Voltar
             </Button>
-            <Button type="submit" color="success">
-              {mutation.isPending ? 'Adicionando...' : 'Adicionar'}
+            <Button type="submit" color="primary">
+              Filtrar
             </Button>
           </Stack>
         </form>

@@ -14,6 +14,7 @@ import { Loading } from '@src/components/Common/Loading/Loading';
 import { useFindManySpaceReservation } from '@src/hooks/queries/useSpaceReservation';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
+import { FilterSpaceReservation } from './SpaceReservation.Filter';
 import {
   columnsSpaceReservation,
   ISpaceReservationDataProps,
@@ -24,14 +25,16 @@ export default function SpaceReservationPage() {
   const [register, setRegister] = useState<
     undefined | ISpaceReservationDataProps
   >();
-  const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const [page, setPage] = useState(1);
+  const [openFilter, setOpenFilter] = useState(false);
+  const [valuesFilter, setValuesFilter] = useState<Record<string, any>>();
   const { data, isFetching, error } = useFindManySpaceReservation({ page });
 
   const registerSpaceReservation = data?.data;
   const handleEdit = (spaceReservation: ISpaceReservationDataProps) => {
     setRegister(spaceReservation);
-    setOpen(true);
+    setOpenModal(true);
   };
 
   if (error) return <Error />;
@@ -39,11 +42,21 @@ export default function SpaceReservationPage() {
 
   return (
     <Box>
-      <ModalSpaceReservation
-        handleClose={() => setOpen(false)}
-        open={open}
-        register={register}
-      />
+      {openModal && (
+        <ModalSpaceReservation
+          handleClose={() => setOpenModal(false)}
+          open={openModal}
+          register={register}
+        />
+      )}
+      {openFilter && (
+        <FilterSpaceReservation
+          handleClose={() => setOpenFilter(false)}
+          open={openFilter}
+          setValuesFilter={setValuesFilter}
+          valuesFilter={valuesFilter}
+        />
+      )}
       <Card
         sx={{
           height: `calc(100vh - 150px)`,
@@ -63,13 +76,14 @@ export default function SpaceReservationPage() {
                 color="primary"
                 size="small"
                 startIcon={<FilterAlt />}
+                onClick={() => setOpenFilter(true)}
               >
                 Filtrar
               </Button>
               <Button
                 onClick={() => {
                   setRegister(undefined);
-                  setOpen(true);
+                  setOpenModal(true);
                 }}
                 color="success"
                 variant="contained"

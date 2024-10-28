@@ -13,6 +13,7 @@ import { Error } from '@src/components/Common/Error/Error';
 import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
+import { FilterCondominium } from './Condominium.Filter';
 import {
   columnsCondominium,
   ICondominiumDataProps,
@@ -21,25 +22,43 @@ import { ModalCondominium } from './Condominium.Modal';
 
 export default function CondominiumPage() {
   const [register, setRegister] = useState<ICondominiumDataProps | undefined>();
-  const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const [page, setPage] = useState(1);
-  const { data, isFetching, error } = useFindManyCondominium({ page });
+  const [openFilter, setOpenFilter] = useState(false);
+  const [valuesFilter, setValuesFilter] = useState<Record<string, any>>();
+
+  const { data, isFetching, error } = useFindManyCondominium({
+    page,
+    filters: valuesFilter,
+  });
 
   const registerCondominium = data?.data;
   const handleEdit = (condominium: ICondominiumDataProps) => {
     setRegister(condominium);
-    setOpen(true);
+    setOpenModal(true);
   };
 
   if (error) return <Error />;
-
+  console.log(valuesFilter);
   return (
     <Box>
-      <ModalCondominium
-        handleClose={() => setOpen(false)}
-        open={open}
-        register={register}
-      />
+      {openModal && (
+        <ModalCondominium
+          handleClose={() => setOpenModal(false)}
+          open={openModal}
+          register={register}
+        />
+      )}
+
+      {openFilter && (
+        <FilterCondominium
+          handleClose={() => setOpenFilter(false)}
+          open={openFilter}
+          setValuesFilter={setValuesFilter}
+          valuesFilter={valuesFilter}
+        />
+      )}
+
       <Card
         sx={{
           height: `calc(100vh - 150px)`,
@@ -59,13 +78,14 @@ export default function CondominiumPage() {
                 color="primary"
                 size="small"
                 startIcon={<FilterAlt />}
+                onClick={() => setOpenFilter(true)}
               >
                 Filtrar
               </Button>
               <Button
                 onClick={() => {
                   setRegister(undefined);
-                  setOpen(true);
+                  setOpenModal(true);
                 }}
                 color="success"
                 variant="contained"

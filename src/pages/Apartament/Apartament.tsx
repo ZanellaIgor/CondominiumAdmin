@@ -13,18 +13,24 @@ import { Error } from '@src/components/Common/Error/Error';
 import { useFindManyApartament } from '@src/hooks/queries/useApartament';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
+import { FilterApartment } from './Apartament.Filter';
 import {
   columnsApartament,
   IApartamentDataProps,
 } from './Apartament.Interface';
-import { ModalApartament } from './Apartament.Modal';
+import { ModalApartment } from './Apartament.Modal';
 
 export default function ApartamentPage() {
   const [register, setRegister] = useState<IApartamentDataProps | undefined>();
   const [openModal, setOpenModal] = useState(false);
+  const [openFilter, setOpenFilter] = useState(false);
+  const [valuesFilter, setValuesFilter] = useState<Record<string, any>>();
   const [page, setPage] = useState(1);
 
-  const { data, isFetching, error } = useFindManyApartament({ page });
+  const { data, isFetching, error } = useFindManyApartament({
+    page,
+    filters: valuesFilter,
+  });
   const registerApartament = data?.data;
 
   const handleEdit = (apartament: IApartamentDataProps) => {
@@ -37,10 +43,18 @@ export default function ApartamentPage() {
   return (
     <Box>
       {openModal && (
-        <ModalApartament
+        <ModalApartment
           handleClose={() => setOpenModal(false)}
           open={openModal}
           register={register}
+        />
+      )}
+      {openFilter && (
+        <FilterApartment
+          handleClose={() => setOpenFilter(false)}
+          open={openFilter}
+          setValuesFilter={setValuesFilter}
+          valuesFilter={valuesFilter}
         />
       )}
       <Card
@@ -62,6 +76,9 @@ export default function ApartamentPage() {
                 color="primary"
                 size="small"
                 startIcon={<FilterAlt />}
+                onClick={() => {
+                  setOpenFilter(true);
+                }}
               >
                 Filtrar
               </Button>
