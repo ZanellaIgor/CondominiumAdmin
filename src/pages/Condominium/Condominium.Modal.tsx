@@ -11,6 +11,9 @@ import { EnumQueries } from '@src/utils/enum/queries.enum';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
+import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
+import { AxiosError } from 'axios';
 import { condominiumHelper } from './Condominium.Functions';
 import { condominiumSchema, ICondominiumFormProps } from './Condominium.Schema';
 
@@ -25,6 +28,7 @@ export const ModalCondominium = ({
   open,
   handleClose,
 }: ModalCondominiumProps) => {
+  const { showSnackbar } = useSnackbarStore();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async (data: {
@@ -37,12 +41,15 @@ export const ModalCondominium = ({
         : await api.post('/condominium', values);
       return response.data;
     },
-    onError: (error: any) => {
-      console.error('Erro ao criar o condomínio:', error);
-      alert('Ocorreu um erro ao salvar o aviso. Tente novamente.');
+    onError: (error: AxiosError<ApiResponse>) => {
+      showSnackbar(
+        error?.response?.data?.message ?? 'Erro não especificado',
+        'error'
+      );
     },
-    onSuccess: () => {
+    onSuccess: (response: ApiResponse) => {
       queryClient.invalidateQueries({ queryKey: [EnumQueries.CONDOMINUM] });
+      showSnackbar(response.message, 'success');
       handleClose();
     },
   });

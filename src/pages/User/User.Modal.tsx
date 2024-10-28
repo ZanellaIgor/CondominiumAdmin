@@ -10,10 +10,13 @@ import { InputSelect } from '@src/components/Inputs/InputSelect/InputSelect';
 import { SwitchField } from '@src/components/Inputs/SwitchField/SwitchField';
 import { useFindManyApartament } from '@src/hooks/queries/useApartament';
 import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
+import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
 import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
 import { EnumRoles } from '@src/utils/enum/role.enum';
+import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { userHelper } from './User.Funcions';
 import { IUserFormProps, userSchema } from './User.Schema';
@@ -25,6 +28,7 @@ type ModalUserProps = {
 };
 
 export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
+  const { showSnackbar } = useSnackbarStore();
   const queryClient = useQueryClient();
   const { data: dataCondominium, isLoading: loadingCondominium } =
     useFindManyCondominium({
@@ -54,12 +58,15 @@ export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
         : await api.post('/user', values);
       return response.data;
     },
-    onError: (error: any) => {
-      console.error('Erro ao criar o usuário:', error);
-      alert('Ocorreu um erro ao salvar o aviso. Tente novamente.');
+    onError: (error: AxiosError<ApiResponse>) => {
+      showSnackbar(
+        error?.response?.data?.message ?? 'Erro não especificado',
+        'error'
+      );
     },
-    onSuccess: () => {
+    onSuccess: (response: ApiResponse) => {
       queryClient.invalidateQueries({ queryKey: [EnumQueries.USER] });
+      showSnackbar(response.message, 'success');
       handleClose();
     },
   });

@@ -8,10 +8,14 @@ import Stack from '@mui/material/Stack';
 import { InputField } from '@src/components/Inputs/InputField/InputField';
 import { InputSelect } from '@src/components/Inputs/InputSelect/InputSelect';
 import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
+import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
 import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
 import { debounce } from '@src/utils/functions/debounce';
+
+import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useCallback, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { apartamentHelper } from './Apartament.Funcions';
@@ -28,6 +32,7 @@ export const ModalApartament = ({
   open,
   handleClose,
 }: ModalApartamentProps) => {
+  const { showSnackbar } = useSnackbarStore();
   const queryClient = useQueryClient();
   const [filterName, setFilterName] = useState('');
   const mutation = useMutation({
@@ -38,12 +43,15 @@ export const ModalApartament = ({
         : await api.post('/apartament', values);
       return response.data;
     },
-    onError: (error: any) => {
-      console.log(error);
-      alert('Ocorreu um erro ao salvar o apartamento. Tente novamente.');
+    onError: (error: AxiosError<ApiResponse>) => {
+      showSnackbar(
+        error?.response?.data?.message ?? 'Erro não especificado',
+        'error'
+      );
     },
-    onSuccess: () => {
+    onSuccess: (response: ApiResponse) => {
       queryClient.invalidateQueries({ queryKey: [EnumQueries.APARTAMENT] });
+      showSnackbar(response.message, 'success');
       handleClose();
     },
   });
@@ -63,7 +71,7 @@ export const ModalApartament = ({
     value: condominium.id,
   }));
 
-  const submitForm: SubmitHandler<IApartamentFormProps> = (values) => {
+  const submitForm: SubmitHandler<IApartamentFormProps> = async (values) => {
     mutation.mutate({ values, id: register?.id });
   };
 

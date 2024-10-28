@@ -14,7 +14,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
+import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
 import { debounce } from '@src/utils/functions/debounce';
+import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
+import { AxiosError } from 'axios';
 import { spaceReservationHelper } from './SpaceReservation.Funcions';
 import { ISpaceReservationDataProps } from './SpaceReservation.Interface';
 import {
@@ -33,6 +36,7 @@ export const ModalSpaceReservation = ({
   open,
   handleClose,
 }: ModalSpaceReservationProps) => {
+  const { showSnackbar } = useSnackbarStore();
   const { control, handleSubmit, reset } = useForm<ISpaceReservationFormProps>({
     defaultValues: spaceReservationHelper(register),
     resolver: zodResolver(spaceReservationSchema),
@@ -59,12 +63,15 @@ export const ModalSpaceReservation = ({
         : await api.post('/space-reservation', values);
       return response.data;
     },
-    onError: (error: any) => {
-      console.error('Erro ao criar o Area de Lazer:', error);
-      alert('Ocorreu um erro ao gerar a reserva. Tente novamente.');
+    onError: (error: AxiosError<ApiResponse>) => {
+      showSnackbar(
+        error?.response?.data?.message ?? 'Erro não especificado',
+        'error'
+      );
     },
-    onSuccess: () => {
+    onSuccess: (response: ApiResponse) => {
       queryClient.invalidateQueries({ queryKey: [EnumQueries.RESERVATION] });
+      showSnackbar(response.message, 'success');
       handleClose();
     },
   });

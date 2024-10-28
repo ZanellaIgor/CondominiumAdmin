@@ -21,24 +21,25 @@ import { ModalApartament } from './Apartament.Modal';
 
 export default function ApartamentPage() {
   const [register, setRegister] = useState<IApartamentDataProps | undefined>();
-  const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const [page, setPage] = useState(1);
-  const { data, isFetching, error } = useFindManyApartament({ page });
 
+  const { data, isFetching, error } = useFindManyApartament({ page });
   const registerApartament = data?.data;
+
   const handleEdit = (apartament: IApartamentDataProps) => {
     setRegister(apartament);
-    setOpen(true);
+    setOpenModal(true);
   };
 
   if (error) return <Error />;
 
   return (
     <Box>
-      {open && (
+      {openModal && (
         <ModalApartament
-          handleClose={() => setOpen(false)}
-          open={open}
+          handleClose={() => setOpenModal(false)}
+          open={openModal}
           register={register}
         />
       )}
@@ -67,7 +68,7 @@ export default function ApartamentPage() {
               <Button
                 onClick={() => {
                   setRegister(undefined);
-                  setOpen(true);
+                  setOpenModal(true);
                 }}
                 color="success"
                 variant="contained"
