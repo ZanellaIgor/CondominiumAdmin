@@ -10,31 +10,28 @@ import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions'
 import { DataTable } from '@src/components/Common/DataTable/DataTable';
 
 import { Error } from '@src/components/Common/Error/Error';
-import { useFindManyApartament } from '@src/hooks/queries/useApartament';
+import { useFindManyApartment } from '@src/hooks/queries/useApartment';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
-import { FilterApartment } from './Apartament.Filter';
-import {
-  columnsApartament,
-  IApartamentDataProps,
-} from './Apartament.Interface';
-import { ModalApartment } from './Apartament.Modal';
+import { FilterApartment } from './Apartment.Filter';
+import { columnsApartment, IApartmentDataProps } from './Apartment.Interface';
+import { ModalApartment } from './Apartment.Modal';
 
-export default function ApartamentPage() {
-  const [register, setRegister] = useState<IApartamentDataProps | undefined>();
+export default function ApartmentPage() {
+  const [register, setRegister] = useState<IApartmentDataProps | undefined>();
   const [openModal, setOpenModal] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
   const [valuesFilter, setValuesFilter] = useState<Record<string, any>>();
   const [page, setPage] = useState(1);
 
-  const { data, isFetching, error } = useFindManyApartament({
+  const { data, isFetching, error } = useFindManyApartment({
     page,
     filters: valuesFilter,
   });
-  const registerApartament = data?.data;
+  const registerApartment = data?.data;
 
-  const handleEdit = (apartament: IApartamentDataProps) => {
-    setRegister(apartament);
+  const handleEdit = (apartment: IApartmentDataProps) => {
+    setRegister(apartment);
     setOpenModal(true);
   };
 
@@ -99,8 +96,8 @@ export default function ApartamentPage() {
         />
         <CardContent>
           <DataTable
-            columns={columnsApartament}
-            register={registerApartament}
+            columns={columnsApartment}
+            register={registerApartment}
             loading={isFetching}
             actions={(reg) => (
               <ActionsOptions handleEdit={handleEdit} item={reg} />

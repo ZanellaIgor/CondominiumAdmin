@@ -1,4 +1,4 @@
-import { IApartamentPageProps } from '@src/pages/Apartament/Apartament.Interface';
+import { IApartmentPageProps } from '@src/pages/Apartment/Apartment.Interface';
 import { api } from '@src/services/api.service';
 import { paginationTake } from '@src/utils/const/paginationTake';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
@@ -8,23 +8,23 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query';
 
-interface IFiltersApartament {
+interface IFiltersApartment {
   condominiumIds?: number[];
   name?: string;
 }
-interface IGetApartamentParams {
+interface IGetApartmentParams {
   page: number;
   limit: number;
-  filters?: IFiltersApartament;
+  filters?: IFiltersApartment;
 }
 
-const getApartament = async ({
+const getApartment = async ({
   page,
   limit,
   filters,
-}: IGetApartamentParams): Promise<IApartamentPageProps> => {
+}: IGetApartmentParams): Promise<IApartmentPageProps> => {
   try {
-    const response = await api.get(`/apartament`, {
+    const response = await api.get(`/apartment`, {
       params: {
         page,
         limit,
@@ -33,22 +33,22 @@ const getApartament = async ({
     });
     return response.data;
   } catch (error) {
-    throw new Error('Error fetching apartament');
+    throw new Error('Error fetching apartment');
   }
 };
 
-export const useFindManyApartament = ({
+export const useFindManyApartment = ({
   page = 1,
   limit = paginationTake,
   filters,
 }: {
   page?: number;
   limit?: number;
-  filters?: IFiltersApartament;
-}): UseQueryResult<IApartamentPageProps> => {
-  return useQuery<IApartamentPageProps>({
-    queryKey: [EnumQueries.APARTAMENT, page, limit, filters],
-    queryFn: () => getApartament({ page, limit, filters }),
+  filters?: IFiltersApartment;
+}): UseQueryResult<IApartmentPageProps> => {
+  return useQuery<IApartmentPageProps>({
+    queryKey: [EnumQueries.APARTMENT, page, limit, filters],
+    queryFn: () => getApartment({ page, limit, filters }),
     staleTime: 10000 * 60,
     placeholderData: keepPreviousData,
   });

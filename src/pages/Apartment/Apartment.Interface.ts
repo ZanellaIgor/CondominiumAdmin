@@ -1,13 +1,13 @@
 import { IColumns } from '@src/components/Common/DataTable/DataTable';
 
-export interface IApartamentPageProps {
-  data: IApartamentDataProps[];
+export interface IApartmentPageProps {
+  data: IApartmentDataProps[];
   totalCount: number;
   page: number;
   limit: number;
 }
 
-export interface IApartamentDataProps {
+export interface IApartmentDataProps {
   id: number;
   name: string;
   condominiumId: number;
@@ -17,7 +17,7 @@ export interface IApartamentDataProps {
   };
 }
 
-export const columnsApartament: IColumns[] = [
+export const columnsApartment: IColumns[] = [
   {
     label: 'Apartamento',
     value: 'name',

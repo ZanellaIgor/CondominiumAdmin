@@ -3,7 +3,7 @@ export enum EnumQueries {
   USER = 'user',
   RESERVATION = 'reservation',
   SPACE_RESERVATION = 'spaceReservation',
-  APARTAMENT = 'apartament',
+  APARTMENT = 'apartment',
   CONDOMINUM = 'condominium',
   MAINTENANCE = 'maintenance',
 }

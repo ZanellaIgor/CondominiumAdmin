@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack';
 import { InputField } from '@src/components/Inputs/InputField/InputField';
 import { InputSelect } from '@src/components/Inputs/InputSelect/InputSelect';
 import { SwitchField } from '@src/components/Inputs/SwitchField/SwitchField';
-import { useFindManyApartament } from '@src/hooks/queries/useApartament';
+import { useFindManyApartment } from '@src/hooks/queries/useApartment';
 import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
 import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
 import { api } from '@src/services/api.service';
@@ -35,8 +35,8 @@ export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
       page: 1,
       limit: 100,
     });
-  const { data: dataApartament, isLoading: isLoadingApartament } =
-    useFindManyApartament({
+  const { data: dataApartment, isLoading: isLoadingApartment } =
+    useFindManyApartment({
       page: 1,
       limit: 100,
     });
@@ -46,7 +46,7 @@ export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
     value: condominium.id,
   }));
 
-  const optionsApartment = dataApartament?.data.map((apartment) => ({
+  const optionsApartment = dataApartment?.data.map((apartment) => ({
     label: apartment.condominium.name + ' - ' + apartment.name,
     value: apartment.id,
   }));
@@ -128,7 +128,7 @@ export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
                   control={control}
                   name="apartmentIds"
                   label="Apartamento"
-                  isLoading={isLoadingApartament}
+                  isLoading={isLoadingApartment}
                   options={optionsApartment || []}
                 />
               </Grid>

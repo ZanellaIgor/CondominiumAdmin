@@ -290,7 +290,7 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="apartament"
+                  to="apartment"
                   startIcon={<OtherHouses />}
                 >
                   Apartamentos

@@ -1,6 +1,6 @@
 import { IColumns } from '@src/components/Common/DataTable/DataTable';
 import { EnumRoles } from '@src/utils/enum/role.enum';
-import { TableCellApartaments, TableCellCondominiuns } from './User.components';
+import { TableCellApartments, TableCellCondominiuns } from './User.components';
 
 export interface IUserPageProps {
   data: IUserPageDataProps[];
@@ -48,6 +48,6 @@ export const columnsUser: IColumns[] = [
   {
     label: 'Apartamento',
     value: 'apartments',
-    custom: (val) => TableCellApartaments(val),
+    custom: (val) => TableCellApartments(val),
   },
 ];

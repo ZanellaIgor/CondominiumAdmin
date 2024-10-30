@@ -25,8 +25,8 @@ const SpaceReservationPage = Loader(
   lazy(() => import('@src/pages/SpaceReservation/SpaceReservation'))
 );
 
-const ApartamentPage = Loader(
-  lazy(() => import('@src/pages/Apartament/Apartament'))
+const ApartmentPage = Loader(
+  lazy(() => import('@src/pages/Apartment/Apartment'))
 );
 
 const CondominiumPage = Loader(
@@ -72,8 +72,8 @@ export const routes: RouteObject[] = [
         element: <SpaceReservationPage />,
       },
       {
-        path: '/apartament',
-        element: <ApartamentPage />,
+        path: '/Apartment',
+        element: <ApartmentPage />,
       },
       {
         path: '/condominium',

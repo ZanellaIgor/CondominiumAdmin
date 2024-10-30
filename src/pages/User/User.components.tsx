@@ -9,8 +9,8 @@ export const TableCellCondominiuns = (data: IUserCondominium[]) => {
   );
 };
 
-export const TableCellApartaments = (data: IUserApartments[]) => {
-  const apartaments = data.map((item) => item.name).join(', ');
+export const TableCellApartments = (data: IUserApartments[]) => {
+  const apartments = data.map((item) => item.name).join(', ');
 
-  return <TableCell sx={{ textOverflow: 'ellipsis' }}>{apartaments}</TableCell>;
+  return <TableCell sx={{ textOverflow: 'ellipsis' }}>{apartments}</TableCell>;
 };

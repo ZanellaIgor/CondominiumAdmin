@@ -13,7 +13,7 @@ interface IGetMaintenanceParams {
   limit: number;
 }
 
-const getApartament = async ({
+const getApartment = async ({
   page,
   limit,
 }: IGetMaintenanceParams): Promise<IMaintenancePageProps> => {
@@ -35,8 +35,8 @@ export const useFindManyMaintenance = ({
   limit = paginationTake,
 }): UseQueryResult<IMaintenancePageProps> => {
   return useQuery<IMaintenancePageProps>({
-    queryKey: [EnumQueries.APARTAMENT, page, limit],
-    queryFn: () => getApartament({ page, limit }),
+    queryKey: [EnumQueries.APARTMENT, page, limit],
+    queryFn: () => getApartment({ page, limit }),
     staleTime: 10000 * 60,
     placeholderData: keepPreviousData,
   });
