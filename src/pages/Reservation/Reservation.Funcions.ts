@@ -22,7 +22,6 @@ export function reservationHelper(
 export function reservationChipTableCategory(
   value: EnumSituationReservation | undefined
 ) {
-  console.log(value);
   switch (value) {
     case EnumSituationReservation.ABERTO:
       return { label: 'Alta', color: 'primary' };

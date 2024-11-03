@@ -39,7 +39,7 @@ export default function CondominiumPage() {
   };
 
   if (error) return <Error />;
-  console.log(valuesFilter);
+
   return (
     <Box>
       {openModal && (

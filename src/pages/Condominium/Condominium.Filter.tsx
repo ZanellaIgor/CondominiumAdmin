@@ -27,7 +27,7 @@ export const FilterCondominium = ({
   const { control, handleSubmit } = useForm<ICondominiumFormProps>({
     defaultValues: valuesFilter,
   });
-  console.log(valuesFilter);
+
   const submitForm: SubmitHandler<ICondominiumFormProps> = (values) => {
     setValuesFilter(values);
     handleClose();

@@ -52,9 +52,9 @@ export const FilterSpaceReservation = ({
   };
 
   const handleInputChange = useCallback(
-    debounce((__: React.SyntheticEvent, value: string) => {
-      setFilterName(value);
-    }, 500),
+    debounce((__: React.SyntheticEvent | null, value: string) => {
+      setFilterName(value || '');
+    }, 300),
     []
   );
 

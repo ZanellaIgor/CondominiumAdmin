@@ -8,20 +8,28 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query';
 
+interface IFilters {
+  name?: string;
+  condominiumId?: number;
+}
+
 interface IGetSpaceReservationParams {
   page: number;
   limit: number;
+  filter?: IFilters;
 }
 
 const getSpaceReservation = async ({
   page,
   limit,
+  filter,
 }: IGetSpaceReservationParams): Promise<ISpaceReservationPageProps> => {
   try {
     const response = await api.get(`/space-reservation`, {
       params: {
         page,
         limit,
+        ...filter,
       },
     });
     return response.data;
@@ -33,10 +41,15 @@ const getSpaceReservation = async ({
 export const useFindManySpaceReservation = ({
   page = 1,
   limit = paginationTake,
+  filters,
+}: {
+  page?: number;
+  limit?: number;
+  filters?: IFilters;
 }): UseQueryResult<ISpaceReservationPageProps> => {
   return useQuery<ISpaceReservationPageProps>({
-    queryKey: [EnumQueries.SPACE_RESERVATION, page, limit],
-    queryFn: () => getSpaceReservation({ page, limit }),
+    queryKey: [EnumQueries.SPACE_RESERVATION, page, limit, filters],
+    queryFn: () => getSpaceReservation({ page, limit, filter: filters }),
     staleTime: 10000 * 60,
     placeholderData: keepPreviousData,
   });

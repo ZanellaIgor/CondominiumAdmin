@@ -16,7 +16,7 @@ type InputSelectProps = {
   isLoading?: boolean;
   multiple?: boolean;
   onInputChange?: (
-    event: React.SyntheticEvent<Element, Event>,
+    event: React.SyntheticEvent<Element, Event> | null,
     value: string
   ) => void;
 };
@@ -55,17 +55,15 @@ export const InputSelect = forwardRef(
                 option.value === value?.value
               }
               getOptionLabel={(option) => option.label}
+              value={currentValue}
               onChange={(_, newValue) => {
-                if (multiple) {
-                  field.onChange(
-                    (newValue as OptionType[])?.map((item) => item.value)
-                  );
+                if (newValue === null) {
+                  field.onChange(null);
+                  onInputChange?.(null, '');
                 } else {
-                  field.onChange((newValue as OptionType)?.value);
+                  field.onChange((newValue as OptionType).value);
                 }
               }}
-              value={currentValue}
-              onInputChange={onInputChange}
               renderInput={(params) => (
                 <TextField
                   {...params}

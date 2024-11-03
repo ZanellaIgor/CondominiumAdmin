@@ -29,7 +29,10 @@ export default function SpaceReservationPage() {
   const [page, setPage] = useState(1);
   const [openFilter, setOpenFilter] = useState(false);
   const [valuesFilter, setValuesFilter] = useState<Record<string, any>>();
-  const { data, isFetching, error } = useFindManySpaceReservation({ page });
+  const { data, isFetching, error } = useFindManySpaceReservation({
+    page,
+    filters: valuesFilter,
+  });
 
   const registerSpaceReservation = data?.data;
   const handleEdit = (spaceReservation: ISpaceReservationDataProps) => {
