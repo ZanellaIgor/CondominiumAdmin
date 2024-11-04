@@ -51,9 +51,10 @@ export const InputSelect = forwardRef(
               loading={isLoading}
               options={options}
               multiple={multiple}
-              isOptionEqualToValue={(option, value) =>
-                option.value === value?.value
-              }
+              isOptionEqualToValue={(option, value) => {
+                console.log(option, value);
+                return option.value === value?.value;
+              }}
               getOptionLabel={(option) => option.label}
               value={currentValue}
               onChange={(_, newValue) => {
@@ -61,7 +62,13 @@ export const InputSelect = forwardRef(
                   field.onChange(null);
                   onInputChange?.(null, '');
                 } else {
-                  field.onChange((newValue as OptionType).value);
+                  if (multiple) {
+                    field.onChange(
+                      (newValue as OptionType[]).map((option) => option.value)
+                    );
+                  } else {
+                    field.onChange((newValue as OptionType).value);
+                  }
                 }
               }}
               renderInput={(params) => (

@@ -12,6 +12,7 @@ import { Error } from '@src/components/Common/Error/Error';
 import { useFindManyUsers } from '@src/hooks/queries/useUser';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { lazy, useState } from 'react';
+import { FilterUser } from './User.Filter';
 import { columnsUser, IUserPageDataProps } from './User.Interface';
 import { IUserFormProps } from './User.Schema';
 
@@ -23,7 +24,12 @@ export default function UserPage() {
   const [openModal, setOpenModal] = useState(false);
   const [register, setRegister] = useState<IUserPageDataProps | undefined>();
   const [page, setPage] = useState(1);
-  const { data, isFetching, error } = useFindManyUsers({ page });
+  const [openFilter, setOpenFilter] = useState(false);
+  const [valuesFilter, setValuesFilter] = useState<Record<string, any>>();
+  const { data, isFetching, error } = useFindManyUsers({
+    page,
+    filters: valuesFilter,
+  });
 
   const registerUser = data?.data;
 
@@ -36,11 +42,22 @@ export default function UserPage() {
 
   return (
     <Box>
-      <LazyModalUser
-        open={openModal}
-        handleClose={() => setOpenModal(false)}
-        register={register as unknown as IUserFormProps}
-      />
+      {openModal && (
+        <LazyModalUser
+          open={openModal}
+          handleClose={() => setOpenModal(false)}
+          register={register as unknown as IUserFormProps}
+        />
+      )}
+
+      {openFilter && (
+        <FilterUser
+          handleClose={() => setOpenFilter(false)}
+          open={openFilter}
+          setValuesFilter={setValuesFilter}
+          valuesFilter={valuesFilter}
+        />
+      )}
 
       <Card
         sx={{
@@ -61,6 +78,7 @@ export default function UserPage() {
                 color="primary"
                 size="small"
                 startIcon={<FilterAlt />}
+                onClick={() => setOpenFilter(true)}
               >
                 Filtrar
               </Button>

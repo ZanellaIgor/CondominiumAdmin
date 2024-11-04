@@ -1,6 +1,6 @@
 import { IColumns } from '@src/components/Common/DataTable/DataTable';
 import { EnumRoles } from '@src/utils/enum/role.enum';
-import { TableCellApartments, TableCellCondominiuns } from './User.components';
+import { TableCellApartments, TableCellCondominiuns } from './User.Components';
 
 export interface IUserPageProps {
   data: IUserPageDataProps[];
