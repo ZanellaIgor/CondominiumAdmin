@@ -10,9 +10,6 @@ export const WarningsSchema = z.object({
   description: z.string(),
   category: z.nativeEnum(EnumCategory),
   situation: z.nativeEnum(EnumSituation),
-  created_at: z.string().optional(),
+  condominiumId: z.number().optional(),
 });
-export type IWarningFormProps = z.infer<typeof WarningsSchema> & {
-  userId: number;
-  condominiumId: number;
-};
+export type IWarningFormProps = z.infer<typeof WarningsSchema>;

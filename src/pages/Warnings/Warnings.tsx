@@ -12,32 +12,48 @@ import { Error } from '@src/components/Common/Error/Error';
 import { useFindManyWarnings } from '@src/hooks/queries/useWarning';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
+import { FilterWarning } from './Warnings.Filter';
 import { columnsWarning, IWarningPageDataProps } from './Warnings.Interface';
 import { ModalWarning } from './Warnings.Modal';
 import { IWarningFormProps } from './Warnings.Schema';
 
 export default function WarningsPage() {
-  const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const [register, setRegister] = useState<IWarningPageDataProps | undefined>();
   const [page, setPage] = useState(1);
-  const { data, isFetching, error } = useFindManyWarnings({ page });
+  const [openFilter, setOpenFilter] = useState(false);
+  const [valuesFilter, setValuesFilter] = useState<Record<string, any>>();
+  const { data, isFetching, error } = useFindManyWarnings({
+    page,
+    filters: valuesFilter,
+  });
 
   const registerWarnings = data?.data;
 
   const handleEdit = (warning: IWarningPageDataProps) => {
     setRegister(warning);
-    setOpen(true);
+    setOpenModal(true);
   };
 
   if (error) return <Error />;
 
   return (
     <Box>
-      <ModalWarning
-        open={open}
-        handleClose={() => setOpen(false)}
-        register={register as unknown as IWarningFormProps}
-      />
+      {openModal && (
+        <ModalWarning
+          open={openModal}
+          handleClose={() => setOpenModal(false)}
+          register={register as unknown as IWarningFormProps}
+        />
+      )}
+      {openFilter && (
+        <FilterWarning
+          handleClose={() => setOpenFilter(false)}
+          open={openFilter}
+          setValuesFilter={setValuesFilter}
+          valuesFilter={valuesFilter}
+        />
+      )}
       <Card
         sx={{
           height: `calc(100vh - 150px)`,
@@ -57,13 +73,14 @@ export default function WarningsPage() {
                 color="primary"
                 size="small"
                 startIcon={<FilterAlt />}
+                onClick={() => setOpenFilter(true)}
               >
                 Filtrar
               </Button>
               <Button
                 onClick={() => {
                   setRegister(undefined);
-                  setOpen(true);
+                  setOpenModal(true);
                 }}
                 color="success"
                 variant="contained"

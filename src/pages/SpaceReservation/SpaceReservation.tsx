@@ -10,7 +10,6 @@ import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions'
 import { DataTable } from '@src/components/Common/DataTable/DataTable';
 
 import { Error } from '@src/components/Common/Error/Error';
-import { Loading } from '@src/components/Common/Loading/Loading';
 import { useFindManySpaceReservation } from '@src/hooks/queries/useSpaceReservation';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
@@ -41,7 +40,6 @@ export default function SpaceReservationPage() {
   };
 
   if (error) return <Error />;
-  if (isFetching) return <Loading />;
 
   return (
     <Box>
@@ -102,6 +100,7 @@ export default function SpaceReservationPage() {
           <DataTable
             columns={columnsSpaceReservation}
             register={registerSpaceReservation}
+            loading={isFetching}
             actions={(reg) => (
               <ActionsOptions handleEdit={handleEdit} item={reg} />
             )}

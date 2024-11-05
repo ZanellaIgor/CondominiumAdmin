@@ -9,9 +9,6 @@ export function warningHelper(data: IWarningFormProps | undefined) {
     category: data?.category ?? EnumCategory.MEDIA,
     description: data?.description ?? '',
     situation: data?.situation ?? EnumSituation.ABERTO,
-    created_at: data?.created_at ?? '',
-    userId: 1,
-    condominiumId: 1,
   };
   return data;
 }
