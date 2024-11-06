@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 type User = {
   email: string;
-  id: number;
+  userId: number;
   role: EnumRoles;
   condominiumIds: number[];
   apartmentIds: number[];

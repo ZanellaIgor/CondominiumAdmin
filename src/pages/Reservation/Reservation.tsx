@@ -13,20 +13,26 @@ import { Error } from '@src/components/Common/Error/Error';
 import { useFindManyReservation } from '@src/hooks/queries/useReservation';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
+import { FilterReservation } from './Reservation.Filter';
 import { columnsReservation } from './Reservation.Interface';
 import { ModalReservation } from './Reservation.Modal';
 
 export default function ReservationsPage() {
   const [register, setRegister] = useState();
-  const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const [page, setPage] = useState(1);
-  const { data, isFetching, error } = useFindManyReservation({ page });
+  const [openFilter, setOpenFilter] = useState(false);
+  const [valuesFilter, setValuesFilter] = useState<Record<string, any>>();
+  const { data, isFetching, error } = useFindManyReservation({
+    page,
+    filters: valuesFilter,
+  });
 
   const registerSpaceReservation = data?.data;
 
   const handleEdit = (reservation: any) => {
     setRegister(reservation);
-    setOpen(true);
+    setOpenModal(true);
   };
 
   if (error) return <Error />;
@@ -34,10 +40,18 @@ export default function ReservationsPage() {
   return (
     <Box>
       <ModalReservation
-        open={open}
-        handleClose={() => setOpen(false)}
+        open={openModal}
+        handleClose={() => setOpenModal(false)}
         register={register}
       />
+      {openFilter && (
+        <FilterReservation
+          handleClose={() => setOpenFilter(false)}
+          open={openFilter}
+          setValuesFilter={setValuesFilter}
+          valuesFilter={valuesFilter}
+        />
+      )}
       <Card
         sx={{
           height: `calc(100vh - 150px)`,
@@ -57,13 +71,14 @@ export default function ReservationsPage() {
                 color="primary"
                 size="small"
                 startIcon={<FilterAlt />}
+                onClick={() => setOpenFilter(true)}
               >
                 Filtrar
               </Button>
               <Button
                 onClick={() => {
                   setRegister(undefined);
-                  setOpen(true);
+                  setOpenModal(true);
                 }}
                 color="success"
                 variant="contained"

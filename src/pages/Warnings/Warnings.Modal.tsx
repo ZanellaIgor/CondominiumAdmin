@@ -29,6 +29,7 @@ export const ModalWarning = ({
   handleClose,
 }: ModalWarningProps) => {
   const queryClient = useQueryClient();
+
   const mutation = useMutation({
     mutationFn: async (values: IWarningFormProps) => {
       const response = values.id
@@ -52,8 +53,6 @@ export const ModalWarning = ({
   });
 
   const submitForm: SubmitHandler<IWarningFormProps> = (values) => {
-    values.userId = 1;
-    values.condominiumId = 1;
     mutation.mutate(values);
   };
 
