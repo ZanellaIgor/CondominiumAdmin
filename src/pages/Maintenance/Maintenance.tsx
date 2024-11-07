@@ -11,6 +11,7 @@ import { DataTable } from '@src/components/Common/DataTable/DataTable';
 import { useFindManyMaintenance } from '@src/hooks/queries/useMaintenance';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
+import { FilterMaintenance } from './Maintenance.Filter';
 import { columnsMaintenance } from './Maintenance.Inteface';
 import { MaintenanceModal } from './Maintenance.Modal';
 
@@ -18,21 +19,31 @@ export default function ReservationsPage() {
   const [page, setPage] = useState(1);
 
   const [register, setRegister] = useState();
-  const [open, setOpen] = useState(false);
-  const { data } = useFindManyMaintenance({ page });
+  const [openModal, setOpenModal] = useState(false);
+  const [openFilter, setOpenFilter] = useState(false);
+  const [valuesFilter, setValuesFilter] = useState<Record<string, any>>();
+  const { data } = useFindManyMaintenance({ page, filters: valuesFilter });
   const registerMaintenance = data?.data;
 
   const handleEdit = (reservation: any) => {
     setRegister(reservation);
-    setOpen(true);
+    setOpenModal(true);
   };
   return (
     <Box>
       <MaintenanceModal
-        open={open}
-        handleClose={() => setOpen(false)}
+        open={openModal}
+        handleClose={() => setOpenModal(false)}
         register={register}
       />
+      {openFilter && (
+        <FilterMaintenance
+          handleClose={() => setOpenFilter(false)}
+          open={openFilter}
+          setValuesFilter={setValuesFilter}
+          valuesFilter={valuesFilter}
+        />
+      )}
       <Card
         sx={{
           height: `calc(100vh - 150px)`,
@@ -52,13 +63,14 @@ export default function ReservationsPage() {
                 color="primary"
                 size="small"
                 startIcon={<FilterAlt />}
+                onClick={() => setOpenFilter(true)}
               >
                 Filtrar
               </Button>
               <Button
                 onClick={() => {
                   setRegister(undefined);
-                  setOpen(true);
+                  setOpenModal(true);
                 }}
                 color="success"
                 variant="contained"
