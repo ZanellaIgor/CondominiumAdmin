@@ -16,7 +16,8 @@ export interface IMaintenanceDataProps {
   category: EnumCategory;
   situation: EnumSituation;
   condominiumId: number;
-  user: {
+  userId: number;
+  condominium: {
     id: number;
     name: string;
   };
@@ -24,11 +25,19 @@ export interface IMaintenanceDataProps {
 
 export const columnsMaintenance: IColumns[] = [
   {
-    label: 'Local',
-    value: 'name',
+    label: 'Titulo',
+    value: 'title',
   },
   {
     label: 'Condomínio',
     value: 'condominium.name',
+  },
+  {
+    label: 'Categoria',
+    value: 'category',
+  },
+  {
+    label: 'Situação',
+    value: 'situation',
   },
 ];

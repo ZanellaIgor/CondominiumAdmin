@@ -23,6 +23,7 @@ import {
 } from '@mui/icons-material';
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
 import MmsTwoToneIcon from '@mui/icons-material/MmsTwoTone';
+import { useAuth } from '@src/hooks/useAuth';
 import { SidebarContext } from '../../../../../contexts/SidebarContext';
 
 const MenuWrapper = styled(Box)(
@@ -157,7 +158,8 @@ const SubMenuWrapper = styled(Box)(
 
 function SidebarMenu() {
   const { closeSidebar } = useContext(SidebarContext);
-
+  const { userInfo } = useAuth();
+  console.log(userInfo);
   return (
     <>
       <MenuWrapper>
@@ -230,75 +232,76 @@ function SidebarMenu() {
             </List>
           </SubMenuWrapper>
         </List>
-
-        <List
-          component="div"
-          subheader={
-            <ListSubheader component="div" disableSticky>
-              Administrador
-            </ListSubheader>
-          }
-        >
-          <SubMenuWrapper>
-            <List component="div">
-              <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="user/profile"
-                  startIcon={<AccountCircleTwoToneIcon />}
-                >
-                  Perfil
-                </Button>
-              </ListItem>
-              <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/user"
-                  startIcon={<Group />}
-                >
-                  Usuários
-                </Button>
-              </ListItem>
-              <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/space-reservation"
-                  startIcon={<Celebration />}
-                >
-                  Áreas de Lazer
-                </Button>
-              </ListItem>
-              <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="condominium"
-                  startIcon={<HolidayVillage />}
-                >
-                  Condóminios
-                </Button>
-              </ListItem>
-              <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="apartment"
-                  startIcon={<OtherHouses />}
-                >
-                  Apartamentos
-                </Button>
-              </ListItem>
-            </List>
-          </SubMenuWrapper>
-        </List>
+        {(userInfo?.role == 'ADMIN' || userInfo?.role == 'MASTER') && (
+          <List
+            component="div"
+            subheader={
+              <ListSubheader component="div" disableSticky>
+                Administrador
+              </ListSubheader>
+            }
+          >
+            <SubMenuWrapper>
+              <List component="div">
+                <ListItem component="div">
+                  <Button
+                    disableRipple
+                    component={RouterLink}
+                    onClick={closeSidebar}
+                    to="user/profile"
+                    startIcon={<AccountCircleTwoToneIcon />}
+                  >
+                    Perfil
+                  </Button>
+                </ListItem>
+                <ListItem component="div">
+                  <Button
+                    disableRipple
+                    component={RouterLink}
+                    onClick={closeSidebar}
+                    to="/user"
+                    startIcon={<Group />}
+                  >
+                    Usuários
+                  </Button>
+                </ListItem>
+                <ListItem component="div">
+                  <Button
+                    disableRipple
+                    component={RouterLink}
+                    onClick={closeSidebar}
+                    to="/space-reservation"
+                    startIcon={<Celebration />}
+                  >
+                    Áreas de Lazer
+                  </Button>
+                </ListItem>
+                <ListItem component="div">
+                  <Button
+                    disableRipple
+                    component={RouterLink}
+                    onClick={closeSidebar}
+                    to="condominium"
+                    startIcon={<HolidayVillage />}
+                  >
+                    Condóminios
+                  </Button>
+                </ListItem>
+                <ListItem component="div">
+                  <Button
+                    disableRipple
+                    component={RouterLink}
+                    onClick={closeSidebar}
+                    to="apartment"
+                    startIcon={<OtherHouses />}
+                  >
+                    Apartamentos
+                  </Button>
+                </ListItem>
+              </List>
+            </SubMenuWrapper>
+          </List>
+        )}
       </MenuWrapper>
     </>
   );
