@@ -1,6 +1,10 @@
 import { IColumns } from '@src/components/Common/DataTable/DataTable';
 import { EnumCategory } from '@src/utils/enum/category.enum';
 import { EnumSituation } from '@src/utils/enum/situation.enum';
+import {
+  WChipTableCategory,
+  WChipTableSituation,
+} from './Maintenance.Components';
 
 export interface IMaintenancePageProps {
   data: IMaintenanceDataProps[];
@@ -35,9 +39,11 @@ export const columnsMaintenance: IColumns[] = [
   {
     label: 'Categoria',
     value: 'category',
+    custom: (value) => WChipTableCategory(value),
   },
   {
     label: 'Situação',
     value: 'situation',
+    custom: (value) => WChipTableSituation(value),
   },
 ];

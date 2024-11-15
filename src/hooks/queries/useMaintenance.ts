@@ -20,7 +20,7 @@ interface IGetMaintenanceParams {
   filters?: IFilters;
 }
 
-const getApartment = async ({
+const getMaintenance = async ({
   page,
   limit,
   filters,
@@ -45,8 +45,8 @@ export const useFindManyMaintenance = ({
   filters,
 }: IGetMaintenanceParams): UseQueryResult<IMaintenancePageProps> => {
   return useQuery<IMaintenancePageProps>({
-    queryKey: [EnumQueries.APARTMENT, page, limit, filters],
-    queryFn: () => getApartment({ page, limit, filters }),
+    queryKey: [EnumQueries.MAINTENANCE, page, limit, filters],
+    queryFn: () => getMaintenance({ page, limit, filters }),
     staleTime: 10000 * 60,
     placeholderData: keepPreviousData,
   });
