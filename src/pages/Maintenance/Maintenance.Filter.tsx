@@ -9,7 +9,7 @@ import Stack from '@mui/material/Stack';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { optionsSituation } from '@src/utils/options/situation.options';
-import { MaintenanceRegisterProps } from './Maintenance.Schema';
+import { IMaintenanceFormProps } from './Maintenance.Schema';
 
 type FilterlMaintenanceProps = {
   valuesFilter: Record<string, any> | undefined;
@@ -26,12 +26,12 @@ export const FilterMaintenance = ({
   open,
   handleClose,
 }: FilterlMaintenanceProps) => {
-  const { control, handleSubmit } = useForm<MaintenanceRegisterProps>({
+  const { control, handleSubmit } = useForm<IMaintenanceFormProps>({
     defaultValues: valuesFilter,
   });
 
-  const submitForm: SubmitHandler<MaintenanceRegisterProps> = (
-    values: MaintenanceRegisterProps
+  const submitForm: SubmitHandler<IMaintenanceFormProps> = (
+    values: IMaintenanceFormProps
   ) => {
     setValuesFilter(values);
     handleClose();

@@ -16,13 +16,11 @@ import { optionsCategory } from '@src/utils/options/category.options';
 import { optionsSituation } from '@src/utils/options/situation.options';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { maintenanceHelper } from './Maintenance.Funcions';
-import {
-  MaintenanceRegisterProps,
-  maintenanceSchema,
-} from './Maintenance.Schema';
+import { IMaintenanceDataProps } from './Maintenance.Inteface';
+import { IMaintenanceFormProps, maintenanceSchema } from './Maintenance.Schema';
 
 type ModalMaintenanceProps = {
-  register: MaintenanceRegisterProps | undefined;
+  register: IMaintenanceDataProps | null;
   open: boolean;
   handleClose: () => void;
 };
@@ -32,7 +30,7 @@ export const MaintenanceModal = ({
   open,
   handleClose,
 }: ModalMaintenanceProps) => {
-  const { control, handleSubmit, reset } = useForm<MaintenanceRegisterProps>({
+  const { control, handleSubmit, reset } = useForm<IMaintenanceFormProps>({
     defaultValues: maintenanceHelper(register),
     resolver: zodResolver(maintenanceSchema),
   });
@@ -54,8 +52,8 @@ export const MaintenanceModal = ({
     },
   });
 
-  const submitForm: SubmitHandler<MaintenanceRegisterProps> = (
-    values: MaintenanceRegisterProps
+  const submitForm: SubmitHandler<IMaintenanceFormProps> = (
+    values: IMaintenanceFormProps
   ) => {
     mutation.mutate(values);
   };
@@ -63,7 +61,7 @@ export const MaintenanceModal = ({
   useEffect(() => {
     reset(maintenanceHelper(register));
     return () => {
-      reset(maintenanceHelper(undefined));
+      reset(maintenanceHelper(null));
     };
   }, [register]);
 
@@ -110,7 +108,7 @@ export const MaintenanceModal = ({
               <Button
                 onClick={() => {
                   handleClose();
-                  reset(maintenanceHelper(undefined));
+                  reset(maintenanceHelper(null));
                 }}
               >
                 Voltar

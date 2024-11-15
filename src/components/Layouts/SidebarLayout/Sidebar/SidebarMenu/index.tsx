@@ -13,16 +13,15 @@ import { NavLink as RouterLink } from 'react-router-dom';
 
 import {
   Announcement,
+  Ballot,
   Celebration,
   Engineering,
   EventAvailable,
-  Folder,
   Group,
   HolidayVillage,
   OtherHouses,
 } from '@mui/icons-material';
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
-import MmsTwoToneIcon from '@mui/icons-material/MmsTwoTone';
 import { useAuth } from '@src/hooks/useAuth';
 import { SidebarContext } from '../../../../../contexts/SidebarContext';
 
@@ -201,17 +200,6 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/dashboards/messenger"
-                  startIcon={<MmsTwoToneIcon />}
-                >
-                  Chamados
-                </Button>
-              </ListItem>
-              <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
                   to="/maintenance"
                   startIcon={<Engineering />}
                 >
@@ -223,10 +211,10 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/documents"
-                  startIcon={<Folder />}
+                  to="/survey"
+                  startIcon={<Ballot />}
                 >
-                  Documentos
+                  Enquetes
                 </Button>
               </ListItem>
             </List>

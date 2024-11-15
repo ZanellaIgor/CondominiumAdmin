@@ -9,4 +9,4 @@ export const maintenanceSchema = z.object({
   category: z.nativeEnum(EnumCategory),
 });
 
-export type MaintenanceRegisterProps = z.infer<typeof maintenanceSchema>;
+export type IMaintenanceFormProps = z.infer<typeof maintenanceSchema>;

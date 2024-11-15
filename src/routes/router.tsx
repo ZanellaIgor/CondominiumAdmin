@@ -32,9 +32,7 @@ const ApartmentPage = Loader(
 const CondominiumPage = Loader(
   lazy(() => import('@src/pages/Condominium/Condominium'))
 );
-const DocumentsPage = Loader(
-  lazy(() => import('../pages/Documents/Documents'))
-);
+const SurveyPage = Loader(lazy(() => import('../pages/Survey/Survey')));
 
 const LoginPage = Loader(lazy(() => import('../pages/Login/Login')));
 
@@ -64,8 +62,8 @@ export const routes: RouteObject[] = [
         element: <MaintenancePage />,
       },
       {
-        path: '/documents',
-        element: <DocumentsPage />,
+        path: '/survey',
+        element: <SurveyPage />,
       },
       {
         path: '/space-reservation',

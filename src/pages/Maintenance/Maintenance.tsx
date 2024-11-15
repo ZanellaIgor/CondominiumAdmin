@@ -12,23 +12,27 @@ import { useFindManyMaintenance } from '@src/hooks/queries/useMaintenance';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
 import { FilterMaintenance } from './Maintenance.Filter';
-import { columnsMaintenance } from './Maintenance.Inteface';
+import {
+  columnsMaintenance,
+  IMaintenanceDataProps,
+} from './Maintenance.Inteface';
 import { MaintenanceModal } from './Maintenance.Modal';
 
 export default function ReservationsPage() {
   const [page, setPage] = useState(1);
 
-  const [register, setRegister] = useState();
+  const [register, setRegister] = useState<IMaintenanceDataProps | null>(null);
   const [openModal, setOpenModal] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
   const [valuesFilter, setValuesFilter] = useState<Record<string, any>>();
   const { data } = useFindManyMaintenance({ page, filters: valuesFilter });
   const registerMaintenance = data?.data;
 
-  const handleEdit = (reservation: any) => {
+  const handleEdit = (reservation: IMaintenanceDataProps) => {
     setRegister(reservation);
     setOpenModal(true);
   };
+
   return (
     <Box>
       <MaintenanceModal
@@ -69,7 +73,7 @@ export default function ReservationsPage() {
               </Button>
               <Button
                 onClick={() => {
-                  setRegister(undefined);
+                  setRegister(null);
                   setOpenModal(true);
                 }}
                 color="success"

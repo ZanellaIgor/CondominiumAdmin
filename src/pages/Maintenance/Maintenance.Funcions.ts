@@ -1,20 +1,27 @@
+import { ChipProps } from '@mui/material/Chip';
 import { EnumCategory } from '@src/utils/enum/category.enum';
 import { EnumSituation } from '@src/utils/enum/situation.enum';
-import { MaintenanceRegisterProps } from './Maintenance.Schema';
+import { IMaintenanceDataProps } from './Maintenance.Inteface';
+import { IMaintenanceFormProps } from './Maintenance.Schema';
 
-export function maintenanceHelper(data: MaintenanceRegisterProps | undefined) {
-  data = {
+export function maintenanceHelper(
+  data: IMaintenanceDataProps | null
+): IMaintenanceFormProps {
+  const newValues = {
     title: data?.title ?? '',
     description: data?.description ?? '',
     situation: data?.situation ?? EnumSituation.ABERTO,
     category: data?.category ?? EnumCategory.MEDIA,
   };
-  return data;
+  return newValues;
 }
 
 export function maintenanceChipTableSituation(
   value: EnumSituation | undefined
-) {
+): {
+  label: string;
+  color: ChipProps['color'];
+} {
   switch (value) {
     case EnumSituation.ABERTO:
       return { label: 'Aberto', color: 'primary' };
@@ -24,12 +31,17 @@ export function maintenanceChipTableSituation(
       return { label: 'Reaberto', color: 'warning' };
     case EnumSituation.SUSPENSO:
       return { label: 'Suspenso', color: 'error' };
+    case EnumSituation.ANALISE:
+      return { label: 'Em análise', color: 'info' };
     default:
       return { label: 'Não informado', color: 'primary' };
   }
 }
 
-export function maintenanceChipTableCategory(value: EnumCategory | undefined) {
+export function maintenanceChipTableCategory(value: EnumCategory | undefined): {
+  label: string;
+  color: ChipProps['color'];
+} {
   console.log(value);
   switch (value) {
     case EnumCategory.ALTA:
