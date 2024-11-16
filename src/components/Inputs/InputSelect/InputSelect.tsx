@@ -52,7 +52,6 @@ export const InputSelect = forwardRef(
               options={options}
               multiple={multiple}
               isOptionEqualToValue={(option, value) => {
-                console.log(option, value);
                 return option.value === value?.value;
               }}
               getOptionLabel={(option) => option.label}

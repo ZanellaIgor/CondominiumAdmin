@@ -1,3 +1,4 @@
+import { ChipProps } from '@mui/material/Chip';
 import { EnumCategory } from '@src/utils/enum/category.enum';
 import { EnumSituation } from '@src/utils/enum/situation.enum';
 import { IWarningFormProps } from './Warnings.Schema';
@@ -13,7 +14,10 @@ export function warningHelper(data: IWarningFormProps | undefined) {
   return data;
 }
 
-export function warningChipTableSituation(value: EnumSituation | undefined) {
+export function warningChipTableSituation(value: EnumSituation | undefined): {
+  label: string;
+  color: ChipProps['color'];
+} {
   switch (value) {
     case EnumSituation.ABERTO:
       return { label: 'Aberto', color: 'primary' };
@@ -28,8 +32,10 @@ export function warningChipTableSituation(value: EnumSituation | undefined) {
   }
 }
 
-export function warningChipTableCategory(value: EnumCategory | undefined) {
-  console.log(value);
+export function warningChipTableCategory(value: EnumCategory | undefined): {
+  label: string;
+  color: ChipProps['color'];
+} {
   switch (value) {
     case EnumCategory.ALTA:
       return { label: 'Alta', color: 'secondary' };

@@ -42,7 +42,6 @@ export function maintenanceChipTableCategory(value: EnumCategory | undefined): {
   label: string;
   color: ChipProps['color'];
 } {
-  console.log(value);
   switch (value) {
     case EnumCategory.ALTA:
       return { label: 'Alta', color: 'secondary' };

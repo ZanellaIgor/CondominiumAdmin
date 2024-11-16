@@ -158,7 +158,7 @@ const SubMenuWrapper = styled(Box)(
 function SidebarMenu() {
   const { closeSidebar } = useContext(SidebarContext);
   const { userInfo } = useAuth();
-  console.log(userInfo);
+
   return (
     <>
       <MenuWrapper>

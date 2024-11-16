@@ -1,9 +1,10 @@
 import { IColumns } from '@src/components/Common/DataTable/DataTable';
 import { EnumSituationReservation } from '@src/utils/enum/situationReservation.enum';
 
+import { chipTableWrapper } from '@src/components/Common/DataTable/TableCellChipWrapper';
 import { ISpaceReservationDataProps } from '../SpaceReservation/SpaceReservation.Interface';
 import { IUserPageDataProps } from '../User/User.Interface';
-import { WChipTableSituation } from './Reservation.Components';
+import { reservationChipTableCategory } from './Reservation.Funcions';
 
 export interface IReservationPageProps {
   data: IReservationDataProps[];
@@ -44,7 +45,11 @@ export const columnsReservation: IColumns[] = [
   {
     label: 'Situação',
     value: 'situation',
-    custom: (value) => WChipTableSituation(value),
+    custom: (value: EnumSituationReservation) =>
+      chipTableWrapper({
+        value,
+        getLabelAndColor: reservationChipTableCategory,
+      }),
   },
   { label: 'Data Inicial', value: 'startDateTime', format: 'dateTime' },
   { label: 'Data Final', value: 'endDateTime', format: 'dateTime' },

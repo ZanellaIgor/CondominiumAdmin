@@ -1,3 +1,4 @@
+import { ChipProps } from '@mui/material/Chip';
 import { EnumSituationReservation } from '@src/utils/enum/situationReservation.enum';
 import { ReservationsFormProps } from './Reservation.Schema';
 
@@ -21,7 +22,10 @@ export function reservationHelper(
 
 export function reservationChipTableCategory(
   value: EnumSituationReservation | undefined
-) {
+): {
+  label: string;
+  color: ChipProps['color'];
+} {
   switch (value) {
     case EnumSituationReservation.ABERTO:
       return { label: 'Alta', color: 'primary' };

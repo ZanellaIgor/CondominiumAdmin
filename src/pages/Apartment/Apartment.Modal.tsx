@@ -76,7 +76,7 @@ export const ModalApartment = ({
   };
 
   const handleInputChange = useCallback(
-    debounce((__: React.SyntheticEvent, value: string) => {
+    debounce((__: React.SyntheticEvent | null, value: string) => {
       setFilterName(value);
     }, 500),
     []

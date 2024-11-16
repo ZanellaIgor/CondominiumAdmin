@@ -1,10 +1,11 @@
 import { IColumns } from '@src/components/Common/DataTable/DataTable';
+import { chipTableWrapper } from '@src/components/Common/DataTable/TableCellChipWrapper';
 import { EnumCategory } from '@src/utils/enum/category.enum';
 import { EnumSituation } from '@src/utils/enum/situation.enum';
 import {
-  WChipTableCategory,
-  WChipTableSituation,
-} from './Maintenance.Components';
+  maintenanceChipTableCategory,
+  maintenanceChipTableSituation,
+} from './Maintenance.Funcions';
 
 export interface IMaintenancePageProps {
   data: IMaintenanceDataProps[];
@@ -39,11 +40,20 @@ export const columnsMaintenance: IColumns[] = [
   {
     label: 'Categoria',
     value: 'category',
-    custom: (value) => WChipTableCategory(value),
+    custom: (value: EnumCategory) =>
+      chipTableWrapper({
+        value,
+        getLabelAndColor: maintenanceChipTableCategory,
+      }),
   },
+
   {
     label: 'Situação',
     value: 'situation',
-    custom: (value) => WChipTableSituation(value),
+    custom: (value: EnumSituation) =>
+      chipTableWrapper({
+        value,
+        getLabelAndColor: maintenanceChipTableSituation,
+      }),
   },
 ];
