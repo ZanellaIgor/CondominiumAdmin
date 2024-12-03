@@ -7,11 +7,14 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { InputField } from '@src/components/Inputs/InputField/InputField';
 import { InputSelect } from '@src/components/Inputs/InputSelect/InputSelect';
+import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
 import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
+import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
 import { optionsCategory } from '@src/utils/options/category.options';
 import { optionsSituation } from '@src/utils/options/situation.options';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { warningHelper } from './Warnings.Funcions';
@@ -29,7 +32,7 @@ export const ModalWarning = ({
   handleClose,
 }: ModalWarningProps) => {
   const queryClient = useQueryClient();
-
+  const { showSnackbar } = useSnackbarStore();
   const mutation = useMutation({
     mutationFn: async (values: IWarningFormProps) => {
       const response = values.id
@@ -37,12 +40,15 @@ export const ModalWarning = ({
         : await api.post('/warnings', values);
       return response.data;
     },
-    onError: (error: any) => {
-      console.error('Erro ao criar o aviso:', error);
-      alert('Ocorreu um erro ao salvar o aviso. Tente novamente.');
+    onError: (error: AxiosError<ApiResponse>) => {
+      showSnackbar(
+        error?.response?.data?.message ?? 'Erro não especificado',
+        'error'
+      );
     },
-    onSuccess: () => {
+    onSuccess: (response: ApiResponse) => {
       queryClient.invalidateQueries({ queryKey: [EnumQueries.WARNING] });
+      showSnackbar(response.message, 'success');
       handleClose();
     },
   });

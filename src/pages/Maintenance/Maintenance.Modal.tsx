@@ -7,14 +7,16 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import { useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-
+import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
 import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
+import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
 import { optionsCategory } from '@src/utils/options/category.options';
 import { optionsSituation } from '@src/utils/options/situation.options';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { useEffect } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { maintenanceHelper } from './Maintenance.Funcions';
 import { IMaintenanceDataProps } from './Maintenance.Inteface';
 import { IMaintenanceFormProps, maintenanceSchema } from './Maintenance.Schema';
@@ -34,6 +36,7 @@ export const MaintenanceModal = ({
     defaultValues: maintenanceHelper(register),
     resolver: zodResolver(maintenanceSchema),
   });
+  const { showSnackbar } = useSnackbarStore();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async (values: any) => {
@@ -42,12 +45,15 @@ export const MaintenanceModal = ({
         : await api.post('/maintenance', values);
       return response.data;
     },
-    onError: (error: any) => {
-      console.error('Erro ao registrar o Manutenção:', error);
-      alert('Ocorreu um erro ao gerar a manutenção. Tente novamente.');
+    onError: (error: AxiosError<ApiResponse>) => {
+      showSnackbar(
+        error?.response?.data?.message ?? 'Erro não especificado',
+        'error'
+      );
     },
-    onSuccess: () => {
+    onSuccess: (response: ApiResponse) => {
       queryClient.invalidateQueries({ queryKey: [EnumQueries.MAINTENANCE] });
+      showSnackbar(response.message, 'success');
       handleClose();
     },
   });

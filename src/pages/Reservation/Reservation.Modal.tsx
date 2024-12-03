@@ -9,11 +9,14 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { InputDateTime } from '@src/components/Inputs/InputDateTime/InputDateTime';
+import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
 import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
 import { EnumSituation } from '@src/utils/enum/situation.enum';
+import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
 import { optionsSituationReservation } from '@src/utils/options/situationReservation.options';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { reservationHelper } from './Reservation.Funcions';
@@ -37,7 +40,7 @@ export const ModalReservation = ({
     defaultValues: reservationHelper(register),
     resolver: zodResolver(reservationsSchema),
   });
-
+  const { showSnackbar } = useSnackbarStore();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async (values: ReservationsFormProps) => {
@@ -46,12 +49,15 @@ export const ModalReservation = ({
         : await api.post('/reservation', values);
       return response.data;
     },
-    onError: (error: any) => {
-      console.error('Erro ao criar o Reserva:', error);
-      alert('Ocorreu um erro ao gerar a reserva. Tente novamente.');
+    onError: (error: AxiosError<ApiResponse>) => {
+      showSnackbar(
+        error?.response?.data?.message ?? 'Erro não especificado',
+        'error'
+      );
     },
-    onSuccess: () => {
+    onSuccess: (response: ApiResponse) => {
       queryClient.invalidateQueries({ queryKey: [EnumQueries.RESERVATION] });
+      showSnackbar(response.message, 'success');
       handleClose();
     },
   });

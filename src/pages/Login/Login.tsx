@@ -8,17 +8,21 @@ import FormLabel from '@mui/material/FormLabel';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
 import { useAuth } from '@src/hooks/useAuth';
 import { api } from '@src/services/api.service';
+import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
 import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { FormEvent, MouseEvent, useState } from 'react';
-import { ErrorResponse, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { ILoginFormProps, LoginSchema } from './Login.Schema';
 
 export default function Login() {
   const { setIsAuthenticated, setUserInfo } = useAuth();
   const navigate = useNavigate();
+  const { showSnackbar } = useSnackbarStore();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState({ email: false, password: false });
   const [errorMessages, setErrorMessages] = useState({
@@ -49,8 +53,6 @@ export default function Login() {
       LoginSchema.parse(values);
       setError({ email: false, password: false });
       setErrorMessages({ email: '', password: '' });
-
-      //const encryptedPayload = await encryptData(JSON.stringify(values));
       mutation.mutate(values);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -79,9 +81,11 @@ export default function Login() {
       return response.data;
     },
 
-    onError: (error: ErrorResponse) => {
-      console.log(error);
-      alert('Ocorreu um erro ao salvar o aviso. Tente novamente.');
+    onError: (error: AxiosError<ApiResponse>) => {
+      showSnackbar(
+        error?.response?.data?.message ?? 'Erro não especificado',
+        'error'
+      );
     },
 
     onSuccess: async (data: any) => {
