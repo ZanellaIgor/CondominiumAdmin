@@ -7,6 +7,7 @@ import {
   IconButton,
   Stack,
   Tooltip,
+  Typography,
   alpha,
   lighten,
   styled,
@@ -17,7 +18,6 @@ import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
 
 import { SidebarContext } from '../../../../contexts/SidebarContext';
 import HeaderButtons from './Buttons';
-import HeaderMenu from './Menu';
 import HeaderUserbox from './Userbox';
 
 const HeaderWrapper = styled(Box)(
@@ -69,7 +69,7 @@ function Header() {
         alignItems="center"
         spacing={2}
       >
-        <HeaderMenu />
+        <Typography variant="h3">Meu condomínio</Typography>
       </Stack>
       <Box display="flex" alignItems="center">
         <HeaderButtons />

@@ -3,7 +3,6 @@ import { useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import {
-  Avatar,
   Box,
   Button,
   Divider,
@@ -22,6 +21,7 @@ import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import InboxTwoToneIcon from '@mui/icons-material/InboxTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import { styled } from '@mui/material/styles';
+import { useAuth } from '@src/hooks/useAuth';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -59,12 +59,9 @@ const UserBoxDescription = styled(Typography)(
 );
 
 function HeaderUserbox() {
-  const user = {
-    name: 'Catherine Pike',
-    avatar: '/static/images/avatars/1.jpg',
-    jobtitle: 'Project Manager',
-  };
+  const { userInfo } = useAuth();
 
+  console.log(userInfo);
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
 
@@ -79,12 +76,11 @@ function HeaderUserbox() {
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Avatar variant="rounded" alt={user.name} src={user.avatar} />
         <Hidden mdDown>
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{userInfo?.name}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user.jobtitle}
+              {userInfo?.email}
             </UserBoxDescription>
           </UserBoxText>
         </Hidden>
@@ -106,11 +102,10 @@ function HeaderUserbox() {
         }}
       >
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
-          <Avatar variant="rounded" alt={user.name} src={user.avatar} />
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{userInfo?.name}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user.jobtitle}
+              {userInfo?.email}
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
