@@ -60,8 +60,6 @@ const UserBoxDescription = styled(Typography)(
 
 function HeaderUserbox() {
   const { userInfo } = useAuth();
-
-  console.log(userInfo);
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
 

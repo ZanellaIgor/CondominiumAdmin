@@ -6,4 +6,5 @@ export enum EnumQueries {
   APARTMENT = 'apartment',
   CONDOMINUM = 'condominium',
   MAINTENANCE = 'maintenance',
+  SURVEY = 'survey',
 }
