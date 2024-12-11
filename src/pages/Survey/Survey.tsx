@@ -11,33 +11,50 @@ import { DataTable } from '@src/components/Common/DataTable/DataTable';
 import { useFindManySurvey } from '@src/hooks/queries/useSurvey';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
-import { columnsSurvey, ISurveyPageDataProps } from './Survey.Interface';
-import { ModalSurvey } from './Survey.Modal';
+import { FilterSurvey } from './Survey.Filter';
+import {
+  columnsSurvey,
+  ISurveyPageDataProps,
+  IvaluesFormFilter,
+} from './Survey.Interface';
+import { ModalSurveyForm } from './Survey.Modal';
 
 export default function SurveyPage() {
-  const [register, setRegister] = useState<ISurveyPageDataProps | null>(null);
+  const [selectedRegister, setSelectedRegister] = useState<number | null>(null);
   const [openModal, setOpenModal] = useState(false);
   const [page, setPage] = useState(1);
   const [openFilter, setOpenFilter] = useState(false);
-  const [valuesFilter, setValuesFilter] = useState<Record<string, any>>();
-  const { data, isFetching, error } = useFindManySurvey({
+  const [valuesFilter, setValuesFilter] = useState<
+    IvaluesFormFilter | null | undefined
+  >(null);
+  const { data, isFetching } = useFindManySurvey({
     page,
     filters: valuesFilter,
   });
 
   const registerSurvey = data?.data;
   const handleEdit = (survey: ISurveyPageDataProps) => {
-    setRegister(survey);
+    setSelectedRegister(survey.id);
     setOpenModal(true);
   };
 
   return (
     <Box>
-      <ModalSurvey
-        open={openModal}
-        handleClose={() => setOpenModal(false)}
-        register={registerSurvey as any}
-      />
+      {openModal && (
+        <ModalSurveyForm
+          open={openModal}
+          handleClose={() => setOpenModal(false)}
+          register={selectedRegister}
+        />
+      )}
+      {openFilter && (
+        <FilterSurvey
+          handleClose={() => setOpenFilter(false)}
+          open={openFilter}
+          setValuesFilter={setValuesFilter}
+          valuesFilter={valuesFilter}
+        />
+      )}
       <Card
         sx={{
           height: `calc(100vh - 150px)`,
@@ -63,7 +80,7 @@ export default function SurveyPage() {
               </Button>
               <Button
                 onClick={() => {
-                  setRegister(null);
+                  setSelectedRegister(null);
                   setOpenModal(true);
                 }}
                 color="success"

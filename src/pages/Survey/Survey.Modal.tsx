@@ -8,44 +8,44 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { surveyHelper } from './Survey.Funcions';
-import { SurveyRegisterProps, surveySchema } from './Survey.Schema';
+import { surveyHelper } from './Survey.Functions';
+import { SurveyForm, surveySchema } from './Survey.Schema';
 
 type ModalSurveySchemaeProps = {
-  register: SurveyRegisterProps | undefined;
+  register: number | null;
   open: boolean;
   handleClose: () => void;
 };
 
-export const ModalSurvey = ({
+export const ModalSurveyForm = ({
   register,
   open,
   handleClose,
 }: ModalSurveySchemaeProps) => {
-  const { control, handleSubmit, reset } = useForm<SurveyRegisterProps>({
-    defaultValues: surveyHelper(register),
+  /*  const { data, isFetching } = useFindOneSurvey(register); */
+
+  const { control, handleSubmit, reset } = useForm<SurveyForm>({
+    defaultValues: {},
     resolver: zodResolver(surveySchema),
   });
-  const submitForm: SubmitHandler<SurveyRegisterProps> = (
-    values: SurveyRegisterProps
-  ) => {
+
+  const submitForm: SubmitHandler<SurveyForm> = (values: SurveyForm) => {
     console.log(values);
   };
 
-  useEffect(() => {
+  /*  useEffect(() => {
     reset(surveyHelper(register));
     return () => {
       reset(surveyHelper(undefined));
     };
   }, [register]);
-
+ */
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogContent>
         <DialogTitle sx={{ textAlign: 'center' }}>
-          {register ? 'Edite a solicitação' : 'Adicione uma nova solicitação'}
+          {register ? 'Edite a enquete' : 'Adicione uma nova enquete'}
         </DialogTitle>
         <form noValidate onSubmit={handleSubmit(submitForm)}>
           <Grid container spacing={2}>

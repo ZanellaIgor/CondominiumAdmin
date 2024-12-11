@@ -9,14 +9,14 @@ import {
 } from '@tanstack/react-query';
 
 interface IFilters {
-  name?: string;
-  condominiumId?: number;
+  title?: string | null;
+  description?: string | null;
 }
 
 interface IGetSurveyParams {
   page: number;
   limit: number;
-  filter?: IFilters;
+  filter?: IFilters | null;
 }
 
 const getSurvey = async ({
@@ -45,7 +45,7 @@ export const useFindManySurvey = ({
 }: {
   page?: number;
   limit?: number;
-  filters?: IFilters;
+  filters?: IFilters | null;
 }): UseQueryResult<ISurveyPageProps> => {
   return useQuery<ISurveyPageProps>({
     queryKey: [EnumQueries.SURVEY, page, limit, filters],

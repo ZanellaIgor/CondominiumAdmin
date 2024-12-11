@@ -17,7 +17,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { maintenanceHelper } from './Maintenance.Funcions';
+import { maintenanceHelper } from './Maintenance.Functions';
 import { IMaintenanceDataProps } from './Maintenance.Inteface';
 import { IMaintenanceFormProps, maintenanceSchema } from './Maintenance.Schema';
 

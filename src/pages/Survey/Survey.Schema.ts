@@ -11,4 +11,5 @@ export const surveySchema = z.object({
   created_at: z.string().optional(),
   dateReservation: z.string().optional(),
 });
-export type SurveyRegisterProps = z.infer<typeof surveySchema>;
+
+export type SurveyForm = z.infer<typeof surveySchema>;

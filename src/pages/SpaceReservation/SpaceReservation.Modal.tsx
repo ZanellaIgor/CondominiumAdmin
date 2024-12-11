@@ -18,7 +18,7 @@ import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
 import { debounce } from '@src/utils/functions/debounce';
 import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
 import { AxiosError } from 'axios';
-import { spaceReservationHelper } from './SpaceReservation.Funcions';
+import { spaceReservationHelper } from './SpaceReservation.Functions';
 import { ISpaceReservationDataProps } from './SpaceReservation.Interface';
 import {
   ISpaceReservationFormProps,

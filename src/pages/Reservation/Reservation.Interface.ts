@@ -4,7 +4,7 @@ import { EnumSituationReservation } from '@src/utils/enum/situationReservation.e
 import { chipTableWrapper } from '@src/components/Common/DataTable/TableCellChipWrapper';
 import { ISpaceReservationDataProps } from '../SpaceReservation/SpaceReservation.Interface';
 import { IUserPageDataProps } from '../User/User.Interface';
-import { reservationChipTableCategory } from './Reservation.Funcions';
+import { reservationChipTableCategory } from './Reservation.Functions';
 
 export interface IReservationPageProps {
   data: IReservationDataProps[];

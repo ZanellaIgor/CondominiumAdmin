@@ -5,7 +5,7 @@ import { EnumSituation } from '@src/utils/enum/situation.enum';
 import {
   warningChipTableCategory,
   warningChipTableSituation,
-} from './Warnings.Funcions';
+} from './Warnings.Functions';
 
 export interface IWarningPageProps {
   data: IWarningPageDataProps[];

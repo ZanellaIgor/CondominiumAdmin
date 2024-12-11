@@ -5,7 +5,7 @@ import { EnumSituation } from '@src/utils/enum/situation.enum';
 import {
   maintenanceChipTableCategory,
   maintenanceChipTableSituation,
-} from './Maintenance.Funcions';
+} from './Maintenance.Functions';
 
 export interface IMaintenancePageProps {
   data: IMaintenanceDataProps[];

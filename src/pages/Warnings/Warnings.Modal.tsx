@@ -17,7 +17,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { warningHelper } from './Warnings.Funcions';
+import { warningHelper } from './Warnings.Functions';
 import { IWarningFormProps, WarningsSchema } from './Warnings.Schema';
 
 type ModalWarningProps = {

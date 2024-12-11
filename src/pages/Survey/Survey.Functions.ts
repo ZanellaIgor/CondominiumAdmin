@@ -1,6 +1,6 @@
-import { SurveyRegisterProps } from './Survey.Schema';
+import { SurveyForm } from './Survey.Schema';
 
-export function surveyHelper(data: SurveyRegisterProps | undefined) {
+export function surveyHelper(data: SurveyForm | undefined) {
   data = {
     id: data?.id ?? undefined,
     title: data?.title ?? '',

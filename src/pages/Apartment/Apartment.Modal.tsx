@@ -18,7 +18,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useCallback, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { apartmentHelper } from './Apartment.Funcions';
+import { apartmentHelper } from './Apartment.Functions';
 import { apartmentSchema, IApartmentFormProps } from './Apartment.Schema';
 
 type ModalApartmentProps = {

@@ -18,7 +18,7 @@ import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { userHelper } from './User.Funcions';
+import { userHelper } from './User.Functions';
 import { IUserFormProps, userSchema } from './User.Schema';
 
 type ModalUserProps = {

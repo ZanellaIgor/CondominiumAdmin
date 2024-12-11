@@ -19,7 +19,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { reservationHelper } from './Reservation.Funcions';
+import { reservationHelper } from './Reservation.Functions';
 import {
   ReservationsFormProps,
   reservationsSchema,
