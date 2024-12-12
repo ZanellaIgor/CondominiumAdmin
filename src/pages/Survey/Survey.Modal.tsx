@@ -1,6 +1,4 @@
 import { InputField } from '@components/Inputs/InputField/InputField';
-import { InputSelect } from '@components/Inputs/InputSelect/InputSelect';
-import { SwitchField } from '@components/Inputs/SwitchField/SwitchField';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -8,7 +6,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
+import { api } from '@src/services/api.service';
+import { EnumQueries } from '@src/utils/enum/queries.enum';
+import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { surveyHelper } from './Survey.Functions';
 import { SurveyForm, surveySchema } from './Survey.Schema';
 
@@ -24,14 +28,63 @@ export const ModalSurveyForm = ({
   handleClose,
 }: ModalSurveySchemaeProps) => {
   /*  const { data, isFetching } = useFindOneSurvey(register); */
-
+  const { showSnackbar } = useSnackbarStore();
   const { control, handleSubmit, reset } = useForm<SurveyForm>({
-    defaultValues: {},
+    defaultValues: {
+      title: '',
+      condominiumId: 1,
+      questions: [
+        {
+          text: 'Pergunta 1',
+          type: 'text',
+        },
+        {
+          text: 'Pergunta 2',
+        },
+      ],
+    },
     resolver: zodResolver(surveySchema),
+  });
+
+  const { fields, append } = useFieldArray({
+    control,
+    name: 'questions',
+  });
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async (values: any & { id?: number }) => {
+      const response = values.id
+        ? await api.patch(`/survey/${values.id}`, values)
+        : await api.post('/survey', values);
+      return response.data;
+    },
+    onError: (error: AxiosError<ApiResponse>) => {
+      showSnackbar(
+        error?.response?.data?.message ?? 'Erro não especificado',
+        'error'
+      );
+    },
+    onSuccess: (response: ApiResponse) => {
+      queryClient.invalidateQueries({ queryKey: [EnumQueries.SURVEY] });
+      showSnackbar(response.message, 'success');
+      handleClose();
+    },
   });
 
   const submitForm: SubmitHandler<SurveyForm> = (values: SurveyForm) => {
     console.log(values);
+    values.questions = [
+      {
+        text: 'Pergunta 1',
+      },
+      {
+        text: 'Pergunta 2',
+      },
+    ];
+    values.condominiumId = 1;
+    console.log(values);
+    mutation.mutate({ ...values });
   };
 
   /*  useEffect(() => {
@@ -53,35 +106,9 @@ export const ModalSurveyForm = ({
               <InputField name="title" control={control} label="Título" />
             </Grid>
 
-            <Grid item xs={6}>
-              <InputField name="purpose" control={control} label="Finalidade" />
-            </Grid>
             {/*  <Grid item xs={6}>
-              <InputDatePicker
-                name="dateReservation"
-                control={control}
-                label="Ativo"
-              />
-            </Grid> */}
-            <Grid item xs={6}>
-              <InputSelect
-                name="space"
-                control={control}
-                label="Local"
-                options={[
-                  { label: 'Salão de Festas - 2º andar', value: 1 },
-                  { label: 'Salão de Festas - Terreo', value: 2 },
-                  { label: 'Piscina', value: 3 },
-                  { label: 'Churrasqueira - 1', value: 4 },
-                  { label: 'Churrasqueira - 2', value: 5 },
-                  { label: 'Churrasqueira - 3', value: 6 },
-                  { label: 'Churrasqueira - 4', value: 7 },
-                ]}
-              />
-            </Grid>
-            <Grid item xs={6}>
               <SwitchField name="status" control={control} label="Ativo" />
-            </Grid>
+            </Grid> */}
 
             <Grid item xs={12}>
               <InputField
