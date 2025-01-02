@@ -11,17 +11,16 @@ import { DataTable } from '@src/components/Common/DataTable/DataTable';
 import { useFindManySurvey } from '@src/hooks/queries/useSurvey';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { FilterSurvey } from './Survey.Filter';
 import {
   columnsSurvey,
   ISurveyPageDataProps,
   IvaluesFormFilter,
 } from './Survey.Interface';
-import { ModalSurveyForm } from './Survey.Modal';
 
 export default function SurveyPage() {
-  const [selectedRegister, setSelectedRegister] = useState<number | null>(null);
-  const [openModal, setOpenModal] = useState(false);
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [openFilter, setOpenFilter] = useState(false);
   const [valuesFilter, setValuesFilter] = useState<
@@ -34,19 +33,11 @@ export default function SurveyPage() {
 
   const registerSurvey = data?.data;
   const handleEdit = (survey: ISurveyPageDataProps) => {
-    setSelectedRegister(survey.id);
-    setOpenModal(true);
+    navigate(`/survey/edit/${survey.id}`);
   };
 
   return (
     <Box>
-      {openModal && (
-        <ModalSurveyForm
-          open={openModal}
-          handleClose={() => setOpenModal(false)}
-          register={selectedRegister}
-        />
-      )}
       {openFilter && (
         <FilterSurvey
           handleClose={() => setOpenFilter(false)}
@@ -79,14 +70,12 @@ export default function SurveyPage() {
                 Filtrar
               </Button>
               <Button
-                onClick={() => {
-                  setSelectedRegister(null);
-                  setOpenModal(true);
-                }}
                 color="success"
                 variant="contained"
                 size="small"
                 startIcon={<Add />}
+                component={Link}
+                to="/survey/create"
               >
                 Adicionar
               </Button>

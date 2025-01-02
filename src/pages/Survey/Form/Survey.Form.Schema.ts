@@ -4,4 +4,4 @@ export const surveySchema = z.object({
   description: z.string(),
 });
 
-export type SurveyForm = z.infer<typeof surveySchema>;
+export type ISurveyForm = z.infer<typeof surveySchema>;

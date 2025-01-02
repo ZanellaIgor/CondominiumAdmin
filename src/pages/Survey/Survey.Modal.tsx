@@ -14,7 +14,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { surveyHelper } from './Survey.Functions';
-import { SurveyForm, surveySchema } from './Survey.Schema';
+import { ISurveyForm, surveySchema } from './Survey.Schema';
 
 type ModalSurveySchemaeProps = {
   register: number | null;
@@ -29,7 +29,7 @@ export const ModalSurveyForm = ({
 }: ModalSurveySchemaeProps) => {
   /*  const { data, isFetching } = useFindOneSurvey(register); */
   const { showSnackbar } = useSnackbarStore();
-  const { control, handleSubmit, reset } = useForm<SurveyForm>({
+  const { control, handleSubmit, reset } = useForm<ISurveyForm>({
     defaultValues: {
       title: '',
       condominiumId: 1,
@@ -72,7 +72,7 @@ export const ModalSurveyForm = ({
     },
   });
 
-  const submitForm: SubmitHandler<SurveyForm> = (values: SurveyForm) => {
+  const submitForm: SubmitHandler<ISurveyForm> = (values: ISurveyForm) => {
     console.log(values);
     values.questions = [
       {

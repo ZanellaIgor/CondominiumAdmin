@@ -34,6 +34,10 @@ const CondominiumPage = Loader(
 );
 const SurveyPage = Loader(lazy(() => import('../pages/Survey/Survey')));
 
+const SurveyFormPage = Loader(
+  lazy(() => import('../pages/Survey/Form/Survey.Form'))
+);
+
 const LoginPage = Loader(lazy(() => import('../pages/Login/Login')));
 
 export const routes: RouteObject[] = [
@@ -64,6 +68,14 @@ export const routes: RouteObject[] = [
       {
         path: '/survey',
         element: <SurveyPage />,
+      },
+      {
+        path: '/survey/create',
+        element: <SurveyFormPage />,
+      },
+      {
+        path: '/survey/edit/:id',
+        element: <SurveyFormPage />,
       },
       {
         path: '/space-reservation',

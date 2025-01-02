@@ -1,6 +1,6 @@
-import { SurveyForm } from './Survey.Schema';
+import { ISurveyForm } from './Survey.Schema';
 
-export function surveyHelper(data: SurveyForm | undefined) {
+export function surveyHelper(data: ISurveyForm | undefined) {
   data = {
     id: data?.id ?? undefined,
     title: data?.title ?? '',
