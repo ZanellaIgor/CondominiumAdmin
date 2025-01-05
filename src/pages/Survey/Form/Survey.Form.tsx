@@ -39,6 +39,7 @@ export default function SurveyFrom() {
     watch: watchQuestion,
     reset: resetQuestion,
     getValues: getValuesQuestion,
+    setValue: setValueQuestion,
   } = useForm({
     defaultValues: {
       question: '',
@@ -47,9 +48,23 @@ export default function SurveyFrom() {
     },
   });
 
-  const { fields: fieldsOption, append: appendOption } = useFieldArray({
+  const {
+    fields: fieldsOption,
+    append: appendOption,
+    remove: removeOption,
+  } = useFieldArray({
     control: controlQuestion,
     name: 'options',
+  });
+
+  const {
+    control: controlOption,
+    getValues: getValuesOption,
+    reset: resetOption,
+  } = useForm({
+    defaultValues: {
+      option: '',
+    },
   });
 
   const submitForm = async (data: any) => {
@@ -66,7 +81,10 @@ export default function SurveyFrom() {
   };
 
   const addOption = () => {
-    appendOption({ text: '' });
+    const options = getValuesOption();
+
+    appendOption(options);
+    resetOption({ option: '' });
   };
 
   const typeOption = watchQuestion(`type`);
@@ -81,6 +99,7 @@ export default function SurveyFrom() {
           width: { xs: '100%', lg: '80%' },
           margin: 'auto',
           my: 2,
+          overflow: 'auto',
         }}
       >
         <form onSubmit={handleSubmit(submitForm)}>
@@ -192,6 +211,11 @@ export default function SurveyFrom() {
                 {typeOption === EnumQuestionType.OPTIONAL && (
                   <>
                     <Grid item md={12}>
+                      <InputField
+                        name={`options`}
+                        label={`Opção `}
+                        control={controlOption}
+                      />
                       <Stack alignItems="flex-end">
                         <Button
                           variant="contained"
@@ -205,11 +229,9 @@ export default function SurveyFrom() {
                     {fieldsOption.map((field, index) => (
                       <React.Fragment key={field.id}>
                         <Grid item md={12}>
-                          <InputField
-                            name={`options.${index}.text`}
-                            label="Opções"
-                            control={controlQuestion}
-                          />
+                          <Typography variant="body1" color="text.primary">
+                            {field?.options} - {index + 1}
+                          </Typography>
                         </Grid>
                       </React.Fragment>
                     ))}
