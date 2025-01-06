@@ -13,20 +13,22 @@ import { InputSelect } from '@src/components/Inputs/InputSelect/InputSelect';
 import { SwitchField } from '@src/components/Inputs/SwitchField/SwitchField';
 import { EnumQuestionType } from '@src/utils/enum/typeQuestion.enum';
 import { optionsQuestionType } from '@src/utils/options/questionType.options';
-import React from 'react';
+import React, { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { ISuveyForm } from './Survey.Form.Interface';
 
 export default function SurveyFrom() {
   const { id } = useParams();
-  const { control, handleSubmit } = useForm<Partial<ISuveyForm>>({
+  const { control, handleSubmit, getValues, setValue, watch } = useForm<
+    Partial<ISuveyForm>
+  >({
     defaultValues: {
       title: '',
       description: '',
       validFrom: new Date(),
       validTo: new Date(),
-      questions: [{ text: '', type: EnumQuestionType.TEXT }],
+      questions: [{ text: '', type: EnumQuestionType.TEXT, options: [] }],
     },
   });
   const { fields, append } = useFieldArray({
@@ -34,60 +36,42 @@ export default function SurveyFrom() {
     name: 'questions',
   });
 
-  const {
-    control: controlQuestion,
-    watch: watchQuestion,
-    reset: resetQuestion,
-    getValues: getValuesQuestion,
-    setValue: setValueQuestion,
-  } = useForm({
-    defaultValues: {
-      question: '',
-      type: EnumQuestionType.TEXT,
-      options: undefined,
-    },
-  });
-
-  const {
-    fields: fieldsOption,
-    append: appendOption,
-    remove: removeOption,
-  } = useFieldArray({
-    control: controlQuestion,
-    name: 'options',
-  });
-
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<
+    null | number
+  >(null);
   const {
     control: controlOption,
     getValues: getValuesOption,
     reset: resetOption,
   } = useForm({
-    defaultValues: {
-      option: '',
-    },
+    defaultValues: { option: '' },
   });
 
-  const submitForm = async (data: any) => {
+  const submitForm = async (data: ISuveyForm) => {
     console.log(data);
   };
 
   const addQuestion = () => {
-    resetQuestion({
-      question: '',
-      type: EnumQuestionType.TEXT,
-      options: undefined,
-    });
-    append({ text: '', type: EnumQuestionType.TEXT });
+    append({ text: '', type: EnumQuestionType.TEXT, options: [] });
+    setCurrentQuestionIndex(fields.length); // Aponta para a nova pergunta
   };
 
   const addOption = () => {
-    const options = getValuesOption();
-
-    appendOption(options);
-    resetOption({ option: '' });
+    const option = getValuesOption('option');
+    if (currentQuestionIndex !== null && option) {
+      const updatedQuestions = [...getValues('questions')];
+      updatedQuestions[currentQuestionIndex].options = [
+        ...(updatedQuestions[currentQuestionIndex].options || []),
+        option,
+      ];
+      setValue('questions', updatedQuestions);
+      resetOption(); // Limpa o input de opção
+    }
   };
 
-  const typeOption = watchQuestion(`type`);
+  const handleQuestionSelect = (index: number) => {
+    setCurrentQuestionIndex(index);
+  };
 
   return (
     <Box>
@@ -128,127 +112,116 @@ export default function SurveyFrom() {
             }
           />
           <CardContent>
-            <Box sx={{ display: 'flex', overflow: 'auto', height: '100%' }}>
-              <Grid container spacing={2} sx={{ overflow: 'auto' }}>
-                <Grid item md={4}>
-                  <InputField name="title" label="Título" control={control} />
-                </Grid>
-                <Grid item md={4}>
-                  <InputField
-                    name="description"
-                    label="Descrição"
+            <Grid container spacing={2}>
+              <Grid item md={4}>
+                <InputField name="title" label="Título" control={control} />
+              </Grid>
+              <Grid item md={4}>
+                <InputField
+                  name="description"
+                  label="Descrição"
+                  control={control}
+                  maxRows={4}
+                />
+              </Grid>
+              <Grid item md={3}>
+                <SwitchField name="status" label="Status" control={control} />
+              </Grid>
+              <Grid item md={6}>
+                <Box width="80%">
+                  <InputDatePicker
                     control={control}
-                    maxRows={4}
+                    name="validFrom"
+                    label="Início"
                   />
-                </Grid>
-                <Grid item md={3}>
-                  <SwitchField name="status" label="Status" control={control} />
-                </Grid>
-
-                <Grid item md={6}>
-                  <Box width="80%">
-                    <InputDatePicker
-                      control={control}
-                      name="validFrom"
-                      label="Início"
-                    />
-                  </Box>
-                </Grid>
-                <Grid item md={6}>
-                  <Box width="80%">
-                    <InputDatePicker
-                      control={control}
-                      name="validTo"
-                      label="Valido"
-                    />
-                  </Box>
-                </Grid>
-                <Grid item md={12}>
-                  <Stack alignItems="flex-end">
-                    <Button
-                      variant="contained"
-                      size="small"
-                      onClick={addQuestion}
-                    >
-                      Adicionar Pergunta
-                    </Button>
-                  </Stack>
-                </Grid>
-                <Grid item md={6}>
-                  <InputSelect
-                    name={`type`}
-                    control={controlQuestion}
-                    label="Tipo"
-                    options={optionsQuestionType}
+                </Box>
+              </Grid>
+              <Grid item md={6}>
+                <Box width="80%">
+                  <InputDatePicker
+                    control={control}
+                    name="validTo"
+                    label="Valido"
                   />
-                </Grid>
-                <Grid item md={6}>
-                  <InputField
-                    name={`text`}
-                    label="Pergunta"
-                    control={controlQuestion}
-                  />
-                </Grid>
-                {!typeOption && (
-                  <Grid item md={6}>
-                    <Typography variant="caption" color="error">
-                      Selecione o tipo da pergunta
-                    </Typography>
-                  </Grid>
-                )}
-
-                {typeOption === EnumQuestionType.BOOLEAN && (
-                  <Grid item md={6}>
-                    <Typography variant="body1" color="text.primary">
-                      Verdadeiro
-                    </Typography>
-                    <Typography variant="body1" color="text.primary">
-                      Falso
-                    </Typography>
-                  </Grid>
-                )}
-
-                {typeOption === EnumQuestionType.OPTIONAL && (
-                  <>
-                    <Grid item md={12}>
-                      <InputField
-                        name={`options`}
-                        label={`Opção `}
-                        control={controlOption}
-                      />
-                      <Stack alignItems="flex-end">
-                        <Button
-                          variant="contained"
-                          size="small"
-                          onClick={addOption}
-                        >
-                          Adicionar Opção
-                        </Button>
-                      </Stack>
-                    </Grid>
-                    {fieldsOption.map((field, index) => (
-                      <React.Fragment key={field.id}>
-                        <Grid item md={12}>
-                          <Typography variant="body1" color="text.primary">
-                            {field?.options} - {index + 1}
-                          </Typography>
-                        </Grid>
-                      </React.Fragment>
-                    ))}
-                  </>
-                )}
-
-                {fields.map((field, index) => (
+                </Box>
+              </Grid>
+              <Grid item md={12}>
+                <Stack alignItems="flex-end">
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={addQuestion}
+                  >
+                    Adicionar Pergunta
+                  </Button>
+                </Stack>
+              </Grid>
+              {fields.map((field, index) => {
+                const questionType = watch(`questions[${index}].type`); // Observa o tipo da pergunta
+                return (
                   <React.Fragment key={field.id}>
                     <Grid item md={12}>
-                      <Typography variant="body1" color="text.primary">
-                        Pergunta {index + 1}
+                      <Typography
+                        variant="body1"
+                        color="text.primary"
+                        onClick={() => handleQuestionSelect(index)}
+                        sx={{ cursor: 'pointer' }}
+                      >
+                        {`Pergunta ${index + 1}: ${
+                          field.text || 'Clique para editar'
+                        }`}
                       </Typography>
                     </Grid>
+                    {currentQuestionIndex === index && (
+                      <>
+                        <Grid item md={6}>
+                          <InputSelect
+                            name={`questions[${index}].type`}
+                            control={control}
+                            label="Tipo"
+                            options={optionsQuestionType}
+                          />
+                        </Grid>
+                        <Grid item md={6}>
+                          <InputField
+                            name={`questions[${index}].text`}
+                            label="Pergunta"
+                            control={control}
+                          />
+                        </Grid>
+                        {questionType === EnumQuestionType.OPTIONAL && (
+                          <>
+                            <Grid item md={12}>
+                              <InputField
+                                name="option"
+                                label="Opção"
+                                control={controlOption}
+                              />
+                              <Stack alignItems="flex-end">
+                                <Button
+                                  variant="contained"
+                                  size="small"
+                                  onClick={addOption}
+                                >
+                                  Adicionar Opção
+                                </Button>
+                              </Stack>
+                            </Grid>
+                            {field.options?.map((option, optIndex) => (
+                              <Grid item md={12} key={optIndex}>
+                                <Typography variant="body1">{`${
+                                  optIndex + 1
+                                }. ${option}`}</Typography>
+                              </Grid>
+                            ))}
+                          </>
+                        )}
+                      </>
+                    )}
                   </React.Fragment>
-                ))}
-              </Grid>
-            </Box>
+                );
+              })}
+            </Grid>
           </CardContent>
         </form>
       </Card>
