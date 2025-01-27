@@ -8,9 +8,9 @@ export interface ISuveyForm {
   validTo?: string | Date;
   condominiumId: number;
   questions: {
-    id: number;
+    id?: number;
     text: string;
     type: EnumQuestionType;
-    options?: string[];
+    options?: { text?: string }[];
   }[];
 }

@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Add } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -6,20 +7,29 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import { InputDatePicker } from '@src/components/Inputs/InputDatePicker/InputDatePicker';
 import { InputField } from '@src/components/Inputs/InputField/InputField';
-import { InputSelect } from '@src/components/Inputs/InputSelect/InputSelect';
 import { SwitchField } from '@src/components/Inputs/SwitchField/SwitchField';
-import { EnumQuestionType } from '@src/utils/enum/typeQuestion.enum';
-import { optionsQuestionType } from '@src/utils/options/questionType.options';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { ISuveyForm } from './Survey.Form.Interface';
+import { SurveyFormQuestionsModal } from './Survey.Form.Modal';
+import { ISurveyFormModalProps } from './Survey.Form.Modal.Schema';
+import { surveySchema } from './Survey.Form.Schema';
 
 export default function SurveyFrom() {
   const { id } = useParams();
+  const [openModal, setOpenModal] = useState<{
+    open: boolean;
+    index: number | null;
+    values: ISurveyFormModalProps | null;
+  }>({
+    open: false,
+    index: 0,
+    values: null,
+  });
+
   const { control, handleSubmit, getValues, setValue, watch } = useForm<
     Partial<ISuveyForm>
   >({
@@ -28,53 +38,37 @@ export default function SurveyFrom() {
       description: '',
       validFrom: new Date(),
       validTo: new Date(),
-      questions: [{ text: '', type: EnumQuestionType.TEXT, options: [] }],
+      questions: [],
     },
+    resolver: zodResolver(surveySchema),
   });
   const { fields, append } = useFieldArray({
     control,
     name: 'questions',
   });
 
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<
-    null | number
-  >(null);
-  const {
-    control: controlOption,
-    getValues: getValuesOption,
-    reset: resetOption,
-  } = useForm({
-    defaultValues: { option: '' },
-  });
-
-  const submitForm = async (data: ISuveyForm) => {
+  const submitForm = async (data: any) => {
     console.log(data);
   };
 
   const addQuestion = () => {
-    append({ text: '', type: EnumQuestionType.TEXT, options: [] });
-    setCurrentQuestionIndex(fields.length); // Aponta para a nova pergunta
+    setOpenModal({ open: true, index: fields.length, values: null });
   };
 
-  const addOption = () => {
-    const option = getValuesOption('option');
-    if (currentQuestionIndex !== null && option) {
-      const updatedQuestions = [...getValues('questions')];
-      updatedQuestions[currentQuestionIndex].options = [
-        ...(updatedQuestions[currentQuestionIndex].options || []),
-        option,
-      ];
-      setValue('questions', updatedQuestions);
-      resetOption(); // Limpa o input de opção
-    }
-  };
-
-  const handleQuestionSelect = (index: number) => {
-    setCurrentQuestionIndex(index);
+  const handleAddQuestionForm = (values: ISurveyFormModalProps) => {
+    append(values);
   };
 
   return (
     <Box>
+      <SurveyFormQuestionsModal
+        open={openModal.open}
+        handleClose={() =>
+          setOpenModal({ open: false, index: 0, values: null })
+        }
+        register={openModal.values}
+        handleAddQuestion={handleAddQuestionForm}
+      />
       <Card
         sx={{
           height: `calc(100vh - 150px)`,
@@ -156,71 +150,6 @@ export default function SurveyFrom() {
                   </Button>
                 </Stack>
               </Grid>
-              {fields.map((field, index) => {
-                const questionType = watch(`questions[${index}].type`); // Observa o tipo da pergunta
-                return (
-                  <React.Fragment key={field.id}>
-                    <Grid item md={12}>
-                      <Typography
-                        variant="body1"
-                        color="text.primary"
-                        onClick={() => handleQuestionSelect(index)}
-                        sx={{ cursor: 'pointer' }}
-                      >
-                        {`Pergunta ${index + 1}: ${
-                          field.text || 'Clique para editar'
-                        }`}
-                      </Typography>
-                    </Grid>
-                    {currentQuestionIndex === index && (
-                      <>
-                        <Grid item md={6}>
-                          <InputSelect
-                            name={`questions[${index}].type`}
-                            control={control}
-                            label="Tipo"
-                            options={optionsQuestionType}
-                          />
-                        </Grid>
-                        <Grid item md={6}>
-                          <InputField
-                            name={`questions[${index}].text`}
-                            label="Pergunta"
-                            control={control}
-                          />
-                        </Grid>
-                        {questionType === EnumQuestionType.OPTIONAL && (
-                          <>
-                            <Grid item md={12}>
-                              <InputField
-                                name="option"
-                                label="Opção"
-                                control={controlOption}
-                              />
-                              <Stack alignItems="flex-end">
-                                <Button
-                                  variant="contained"
-                                  size="small"
-                                  onClick={addOption}
-                                >
-                                  Adicionar Opção
-                                </Button>
-                              </Stack>
-                            </Grid>
-                            {field.options?.map((option, optIndex) => (
-                              <Grid item md={12} key={optIndex}>
-                                <Typography variant="body1">{`${
-                                  optIndex + 1
-                                }. ${option}`}</Typography>
-                              </Grid>
-                            ))}
-                          </>
-                        )}
-                      </>
-                    )}
-                  </React.Fragment>
-                );
-              })}
             </Grid>
           </CardContent>
         </form>

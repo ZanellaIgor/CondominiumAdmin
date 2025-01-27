@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import { forwardRef } from 'react';
 import { Control, Controller } from 'react-hook-form';
 
-type OptionType = {
+export type OptionType = {
   value: string | number;
   label: string;
 };
@@ -19,6 +19,10 @@ type InputSelectProps = {
     event: React.SyntheticEvent<Element, Event> | null,
     value: string
   ) => void;
+  onChange?: (
+    event: React.SyntheticEvent<Element, Event>,
+    value: OptionType | OptionType[] | null
+  ) => void;
 };
 
 export const InputSelect = forwardRef(
@@ -31,6 +35,7 @@ export const InputSelect = forwardRef(
       onInputChange,
       isLoading,
       multiple = false,
+      onChange,
       ...rest
     }: InputSelectProps,
     ref
@@ -69,6 +74,7 @@ export const InputSelect = forwardRef(
                     field.onChange((newValue as OptionType).value);
                   }
                 }
+                onChange?.(_, newValue);
               }}
               renderInput={(params) => (
                 <TextField
