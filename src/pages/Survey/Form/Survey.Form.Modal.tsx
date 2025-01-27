@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Add } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -13,7 +14,10 @@ import {
 import { EnumQuestionType } from '@src/utils/enum/typeQuestion.enum';
 import { optionsQuestionType } from '@src/utils/options/questionType.options';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { ISurveyFormModalProps } from './Survey.Form.Modal.Schema';
+import {
+  ISurveyFormModalProps,
+  surveyFormModalSchema,
+} from './Survey.Form.Modal.Schema';
 
 export const SurveyFormQuestionsModal = ({
   open,
@@ -36,6 +40,7 @@ export const SurveyFormQuestionsModal = ({
       type: EnumQuestionType.TEXT,
       options: [],
     },
+    resolver: zodResolver(surveyFormModalSchema),
   });
   const { fields, append } = useFieldArray({ control, name: 'options' });
 
@@ -44,8 +49,6 @@ export const SurveyFormQuestionsModal = ({
   };
 
   const handleOption = (e: OptionType | OptionType[] | null) => {
-    console.log(fields);
-
     if (
       !Array.isArray(e) &&
       e?.value === EnumQuestionType.OPTIONAL &&
@@ -77,22 +80,31 @@ export const SurveyFormQuestionsModal = ({
               <InputField name="text" control={control} label="Pergunta" />
             </Grid>
             <Grid item xs={12}>
-              <InputSelect
-                name="type"
-                control={control}
-                label="Tipo"
-                onChange={(_, e) => handleOption(e)}
-                options={optionsQuestionType}
-              />
+              <Stack flexDirection="row" spacing={1} gap={2}>
+                <InputSelect
+                  name="type"
+                  control={control}
+                  label="Tipo"
+                  onChange={(_, e) => handleOption(e)}
+                  options={optionsQuestionType}
+                />
+
+                {typeOption === EnumQuestionType.OPTIONAL && (
+                  <Stack>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      onClick={addOption}
+                    >
+                      <Add />
+                    </Button>
+                  </Stack>
+                )}
+              </Stack>
             </Grid>
           </Grid>
           {typeOption === EnumQuestionType.OPTIONAL && (
             <>
-              <Stack justifyContent={'flex-end'} direction={'row'}>
-                <Button variant="contained" size="small" onClick={addOption}>
-                  <Add />
-                </Button>
-              </Stack>
               <Grid
                 container
                 spacing={3}

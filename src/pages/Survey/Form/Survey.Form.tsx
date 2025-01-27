@@ -7,6 +7,7 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { InputDatePicker } from '@src/components/Inputs/InputDatePicker/InputDatePicker';
 import { InputField } from '@src/components/Inputs/InputField/InputField';
 import { SwitchField } from '@src/components/Inputs/SwitchField/SwitchField';
@@ -149,6 +150,11 @@ export default function SurveyFrom() {
                     Adicionar Pergunta
                   </Button>
                 </Stack>
+              </Grid>
+              <Grid item md={12}>
+                {fields.map((field, index) => (
+                  <Typography key={field.id}>{field.text}</Typography>
+                ))}
               </Grid>
             </Grid>
           </CardContent>

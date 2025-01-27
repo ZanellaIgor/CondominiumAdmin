@@ -59,6 +59,7 @@ export const InputSelect = forwardRef(
               isOptionEqualToValue={(option, value) => {
                 return option.value === value?.value;
               }}
+              fullWidth
               getOptionLabel={(option) => option.label}
               value={currentValue}
               onChange={(_, newValue) => {
