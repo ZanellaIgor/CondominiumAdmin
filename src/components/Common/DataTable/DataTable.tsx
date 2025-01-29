@@ -13,7 +13,7 @@ import React from 'react';
 interface IDataTableProps {
   register: any;
   columns: IColumns[];
-  actions?: (reg: any) => JSX.Element;
+  actions?: (reg: any, index?: number) => JSX.Element;
   loading?: boolean;
 }
 export interface IColumns {
@@ -118,14 +118,14 @@ export const DataTable = ({
                   )}
                 </TableRow>
               ))
-            : register?.map((reg: any) => (
+            : register?.map((reg: any, index: number) => (
                 <TableRow hover key={reg.id}>
                   {columns.map((column) => (
                     <React.Fragment key={column.value}>
                       {renderCell(reg, column)}
                     </React.Fragment>
                   ))}
-                  {!!reg && actions && actions(reg)}
+                  {!!reg && actions && actions(reg, index)}
                 </TableRow>
               ))}
         </TableBody>

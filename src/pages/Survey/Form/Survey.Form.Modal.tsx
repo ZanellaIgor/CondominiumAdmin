@@ -13,6 +13,7 @@ import {
 } from '@src/components/Inputs/InputSelect/InputSelect';
 import { EnumQuestionType } from '@src/utils/enum/typeQuestion.enum';
 import { optionsQuestionType } from '@src/utils/options/questionType.options';
+import { useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import {
   ISurveyFormModalProps,
@@ -30,18 +31,25 @@ export const SurveyFormQuestionsModal = ({
   handleAddQuestion: (values: ISurveyFormModalProps) => void;
   register: ISurveyFormModalProps | null;
 }) => {
-  const { control, handleSubmit, watch } = useForm<{
+  const { control, handleSubmit, watch, reset } = useForm<{
     text: string;
     type: EnumQuestionType;
     options: { text?: string }[];
   }>({
-    defaultValues: {
-      text: '',
-      type: EnumQuestionType.TEXT,
-      options: [],
-    },
+    defaultValues: defaultValues(register),
     resolver: zodResolver(surveyFormModalSchema),
   });
+
+  function defaultValues(values: any) {
+    const formattedValues = {
+      text: values?.text ?? '',
+      type: values?.type ?? EnumQuestionType.TEXT,
+      options: values?.options.length > 0 ? values.options : [],
+    };
+    return formattedValues;
+  }
+
+  console.log(register);
   const { fields, append } = useFieldArray({ control, name: 'options' });
 
   const submitForm = (data: any) => {
@@ -63,6 +71,10 @@ export const SurveyFormQuestionsModal = ({
   };
 
   const typeOption = watch('type');
+
+  useEffect(() => {
+    if (open) reset(defaultValues(register));
+  }, [register]);
 
   return (
     <Dialog
@@ -111,7 +123,7 @@ export const SurveyFormQuestionsModal = ({
                 padding={1}
                 height={150}
                 overflow={'auto'}
-                mt={2}
+                mt={1}
               >
                 {fields.map((field, index) => (
                   <Grid item xs={12} key={field.id}>

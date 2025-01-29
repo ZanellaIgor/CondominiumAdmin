@@ -8,6 +8,11 @@ import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions';
+import {
+  DataTable,
+  IColumns,
+} from '@src/components/Common/DataTable/DataTable';
 import { InputDatePicker } from '@src/components/Inputs/InputDatePicker/InputDatePicker';
 import { InputField } from '@src/components/Inputs/InputField/InputField';
 import { SwitchField } from '@src/components/Inputs/SwitchField/SwitchField';
@@ -43,7 +48,7 @@ export default function SurveyFrom() {
     },
     resolver: zodResolver(surveySchema),
   });
-  const { fields, append } = useFieldArray({
+  const { fields, append, update } = useFieldArray({
     control,
     name: 'questions',
   });
@@ -53,11 +58,38 @@ export default function SurveyFrom() {
   };
 
   const addQuestion = () => {
-    setOpenModal({ open: true, index: fields.length, values: null });
+    setOpenModal({ open: true, index: null, values: null });
   };
 
   const handleAddQuestionForm = (values: ISurveyFormModalProps) => {
+    if (typeof openModal.index === 'number') {
+      console.log(openModal.index);
+
+      //setValue(`questions.${openModal.index}`, values);
+      update(openModal.index, values);
+      setOpenModal({ open: false, index: null, values: null });
+      return;
+    }
+
     append(values);
+
+    setOpenModal({ open: false, index: null, values: null });
+  };
+  console.log(openModal);
+
+  const columnsSurvey: IColumns[] = [
+    {
+      label: 'Pergunta',
+      value: 'text',
+    },
+    {
+      label: 'Tipo',
+      value: 'type',
+    },
+  ];
+
+  const handleEditQuestion = (item: any, index: number) => {
+    setOpenModal({ open: true, index, values: item });
   };
 
   return (
@@ -65,7 +97,7 @@ export default function SurveyFrom() {
       <SurveyFormQuestionsModal
         open={openModal.open}
         handleClose={() =>
-          setOpenModal({ open: false, index: 0, values: null })
+          setOpenModal({ open: false, index: null, values: null })
         }
         register={openModal.values}
         handleAddQuestion={handleAddQuestionForm}
@@ -152,9 +184,22 @@ export default function SurveyFrom() {
                 </Stack>
               </Grid>
               <Grid item md={12}>
-                {fields.map((field, index) => (
-                  <Typography key={field.id}>{field.text}</Typography>
-                ))}
+                {fields.length === 0 ? (
+                  <Typography>Adicione uma pergunta</Typography>
+                ) : (
+                  <DataTable
+                    columns={columnsSurvey}
+                    register={fields}
+                    actions={(reg, index) => (
+                      <ActionsOptions
+                        handleEdit={() =>
+                          handleEditQuestion(reg, index as number)
+                        }
+                        item={reg}
+                      />
+                    )}
+                  />
+                )}
               </Grid>
             </Grid>
           </CardContent>
