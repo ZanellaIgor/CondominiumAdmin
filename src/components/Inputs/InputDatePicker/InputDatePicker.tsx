@@ -23,6 +23,7 @@ export const InputDatePicker = React.forwardRef<
         <>
           <DatePicker
             {...rest}
+            value={value ? new Date(value) : null}
             label={label}
             onChange={onChange}
             slotProps={{

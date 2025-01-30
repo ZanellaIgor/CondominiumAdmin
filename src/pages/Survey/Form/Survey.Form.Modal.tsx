@@ -33,7 +33,14 @@ export const SurveyFormQuestionsModal = ({
   handleAddQuestion: (values: ISurveyFormModalProps) => void;
   register: ISurveyFormModalProps | null;
 }) => {
-  const { control, handleSubmit, watch, reset, setValue } = useForm<{
+  const {
+    control,
+    handleSubmit,
+    watch,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<{
     text: string;
     type: EnumQuestionType;
     options: { text?: string }[];
@@ -42,7 +49,7 @@ export const SurveyFormQuestionsModal = ({
     resolver: zodResolver(surveyFormModalSchema),
   });
 
-  console.log(register);
+  console.log(errors);
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'options',

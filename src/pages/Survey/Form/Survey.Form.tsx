@@ -16,16 +16,51 @@ import {
 import { InputDatePicker } from '@src/components/Inputs/InputDatePicker/InputDatePicker';
 import { InputField } from '@src/components/Inputs/InputField/InputField';
 import { SwitchField } from '@src/components/Inputs/SwitchField/SwitchField';
-import { useState } from 'react';
+import { useFindOneSurvey } from '@src/hooks/queries/useSurveyId';
+import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
+import { api } from '@src/services/api.service';
+import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { useEffect, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
-import { ISuveyForm } from './Survey.Form.Interface';
+import { useNavigate, useParams } from 'react-router-dom';
+import { mapperSurvey } from './Survey.Form.Functions';
 import { SurveyFormQuestionsModal } from './Survey.Form.Modal';
 import { ISurveyFormModalProps } from './Survey.Form.Modal.Schema';
-import { surveySchema } from './Survey.Form.Schema';
+import { ISurveyForm, surveySchema } from './Survey.Form.Schema';
 
 export default function SurveyFrom() {
   const { id } = useParams();
+  const navigate = useNavigate();
+
+  const { showSnackbar } = useSnackbarStore();
+  const { data, isFetching } = useFindOneSurvey(Number(id));
+  console.log(data);
+
+  const mutation = useMutation({
+    mutationFn: async (values: any) => {
+      const response = id
+        ? await api.patch(`/survey/${id}`, values)
+        : await api.post('/survey', values);
+      return response.data;
+    },
+    onError: (error: AxiosError<ApiResponse>) => {
+      showSnackbar(
+        error?.response?.data?.message ?? 'Erro não especificado',
+        'error'
+      );
+    },
+    onSuccess: (response: ApiResponse) => {
+      showSnackbar(response.message, 'success');
+      navigateToList();
+    },
+  });
+
+  const navigateToList = () => {
+    navigate('/survey');
+  };
+
   const [openModal, setOpenModal] = useState<{
     open: boolean;
     index: number | null;
@@ -36,25 +71,19 @@ export default function SurveyFrom() {
     values: null,
   });
 
-  const { control, handleSubmit, getValues, setValue, watch } = useForm<
-    Partial<ISuveyForm>
-  >({
-    defaultValues: {
-      title: '',
-      description: '',
-      validFrom: new Date(),
-      validTo: new Date(),
-      questions: [],
-    },
-    resolver: zodResolver(surveySchema),
-  });
+  const { control, handleSubmit, getValues, setValue, watch } =
+    useForm<ISurveyForm>({
+      defaultValues: mapperSurvey(data),
+      resolver: zodResolver(surveySchema),
+    });
   const { fields, append, update } = useFieldArray({
     control,
     name: 'questions',
   });
 
   const submitForm = async (data: any) => {
-    console.log(data);
+    data.condominiumId = 1;
+    mutation.mutate(data);
   };
 
   const addQuestion = () => {
@@ -64,18 +93,13 @@ export default function SurveyFrom() {
   const handleAddQuestionForm = (values: ISurveyFormModalProps) => {
     if (typeof openModal.index === 'number') {
       console.log(openModal.index);
-
-      //setValue(`questions.${openModal.index}`, values);
       update(openModal.index, values);
       setOpenModal({ open: false, index: null, values: null });
       return;
     }
-
     append(values);
-
     setOpenModal({ open: false, index: null, values: null });
   };
-  console.log(openModal);
 
   const columnsSurvey: IColumns[] = [
     {
@@ -91,6 +115,10 @@ export default function SurveyFrom() {
   const handleEditQuestion = (item: any, index: number) => {
     setOpenModal({ open: true, index, values: item });
   };
+
+  useEffect(() => {
+    if (id && !isFetching) mapperSurvey(data);
+  }, [isFetching]);
 
   return (
     <Box>
@@ -122,7 +150,7 @@ export default function SurveyFrom() {
                   variant="contained"
                   color="secondary"
                   size="small"
-                  onClick={() => {}}
+                  onClick={navigateToList}
                 >
                   Voltar
                 </Button>
@@ -193,7 +221,10 @@ export default function SurveyFrom() {
                     actions={(reg, index) => (
                       <ActionsOptions
                         handleEdit={() =>
-                          handleEditQuestion(reg, index as number)
+                          handleEditQuestion(
+                            getValues(`questions.${index as number}`),
+                            index as number
+                          )
                         }
                         item={reg}
                       />

@@ -31,7 +31,7 @@ export default function SurveyPage() {
     filters: valuesFilter,
   });
 
-  const registerSurvey = data?.data;
+  const registerSurvey = data;
   const handleEdit = (survey: ISurveyPageDataProps) => {
     navigate(`/survey/edit/${survey.id}`);
   };

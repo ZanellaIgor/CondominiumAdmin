@@ -3,11 +3,13 @@ import { z } from 'zod';
 
 export const surveyFormModalSchema = z
   .object({
+    id: z.number().optional(),
     text: z.string().min(2),
     type: z.nativeEnum(EnumQuestionType),
     options: z
       .array(
         z.object({
+          id: z.number().optional(),
           text: z.string().min(2),
         })
       )
@@ -26,6 +28,4 @@ export const surveyFormModalSchema = z
     }
   );
 
-export type ISurveyFormModalProps = z.infer<typeof surveyFormModalSchema> & {
-  id?: number;
-};
+export type ISurveyFormModalProps = z.infer<typeof surveyFormModalSchema>;

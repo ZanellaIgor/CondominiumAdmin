@@ -1,4 +1,3 @@
-import { ISurveyPageProps } from '@src/pages/Survey/Survey.Interface';
 import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
 import { EnumQuestionType } from '@src/utils/enum/typeQuestion.enum';
@@ -19,6 +18,12 @@ export interface ISurveyByIdProps {
     id: number;
     text: string;
     type: EnumQuestionType;
+    surveyId: number;
+    options: {
+      id?: number;
+      text: string;
+      surveyId?: number;
+    }[];
   }[];
 }
 
@@ -28,13 +33,9 @@ interface IGetSurveyParams {
 
 const getSurveyId = async ({
   id,
-}: IGetSurveyParams): Promise<ISurveyPageProps> => {
+}: IGetSurveyParams): Promise<ISurveyByIdProps> => {
   try {
-    const response = await api.get(`/survey/${id}`, {
-      params: {
-        id,
-      },
-    });
+    const response = await api.get(`/survey/${id}`);
     return response.data;
   } catch (error) {
     throw new Error('Error fetching surveys');
@@ -43,8 +44,8 @@ const getSurveyId = async ({
 
 export const useFindOneSurvey = (
   id: number | null
-): UseQueryResult<ISurveyPageProps> => {
-  return useQuery<ISurveyPageProps>({
+): UseQueryResult<ISurveyByIdProps> => {
+  return useQuery<ISurveyByIdProps>({
     queryKey: [EnumQueries.SURVEY],
     queryFn: () => getSurveyId({ id }),
     enabled: !!id,
