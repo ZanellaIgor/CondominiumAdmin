@@ -40,11 +40,7 @@ export const SurveyFormQuestionsModal = ({
     reset,
     setValue,
     formState: { errors },
-  } = useForm<{
-    text: string;
-    type: EnumQuestionType;
-    options: { text?: string }[];
-  }>({
+  } = useForm<ISurveyFormModalProps>({
     defaultValues: mapperSurveyFormQuestions(register),
     resolver: zodResolver(surveyFormModalSchema),
   });
