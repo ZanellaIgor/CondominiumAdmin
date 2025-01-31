@@ -7,12 +7,14 @@ interface IActionsOptionsProps<T> {
   handleDelete?: (item: T) => void;
   handleEdit?: (item: T) => void;
   item: T;
+  custom?: () => JSX.Element;
 }
 
 export const ActionsOptions = <T,>({
   handleDelete,
   handleEdit,
   item,
+  custom,
 }: IActionsOptionsProps<T>) => {
   return (
     <TableCell align="right" sx={{ padding: '.25rem .5rem' }}>
@@ -30,6 +32,7 @@ export const ActionsOptions = <T,>({
           </IconButton>
         </Tooltip>
       )}
+      {custom && custom()}
     </TableCell>
   );
 };

@@ -6,6 +6,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import React from 'react';
@@ -73,6 +74,16 @@ export const DataTable = ({
       </TableCell>
     );
   };
+
+  if (!register || register.length === 0) {
+    return (
+      <Paper>
+        <Typography variant="h6" align="center" style={{ marginTop: 20 }}>
+          Não há dados para exibir.
+        </Typography>
+      </Paper>
+    );
+  }
 
   return (
     <TableContainer
