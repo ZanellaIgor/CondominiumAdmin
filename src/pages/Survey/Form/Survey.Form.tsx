@@ -19,8 +19,9 @@ import { SwitchField } from '@src/components/Inputs/SwitchField/SwitchField';
 import { useFindOneSurvey } from '@src/hooks/queries/useSurveyId';
 import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
 import { api } from '@src/services/api.service';
+import { EnumQueries } from '@src/utils/enum/queries.enum';
 import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
@@ -33,7 +34,7 @@ import { ISurveyForm, surveySchema } from './Survey.Form.Schema';
 export default function SurveyFrom() {
   const { id } = useParams();
   const navigate = useNavigate();
-
+  const clientQuery = useQueryClient();
   const { showSnackbar } = useSnackbarStore();
   const { data, isFetching } = useFindOneSurvey(Number(id));
   console.log(data);
@@ -54,6 +55,7 @@ export default function SurveyFrom() {
     onSuccess: (response: ApiResponse) => {
       showSnackbar(response.message, 'success');
       navigateToList();
+      clientQuery.invalidateQueries({ queryKey: [EnumQueries.SURVEY] });
     },
   });
 
@@ -71,7 +73,7 @@ export default function SurveyFrom() {
     values: null,
   });
 
-  const { control, handleSubmit, getValues, setValue, watch } =
+  const { control, handleSubmit, getValues, setValue, watch, reset } =
     useForm<ISurveyForm>({
       defaultValues: mapperSurvey(data),
       resolver: zodResolver(surveySchema),
@@ -117,7 +119,7 @@ export default function SurveyFrom() {
   };
 
   useEffect(() => {
-    if (id && !isFetching) mapperSurvey(data);
+    if (id && !isFetching) reset(mapperSurvey(data));
   }, [isFetching]);
 
   return (
