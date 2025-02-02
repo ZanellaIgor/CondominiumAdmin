@@ -21,7 +21,7 @@ export const SwitchField = ({
       render={({ field }) => (
         <FormControlLabel
           label={label}
-          control={<Switch {...field} {...rest} />}
+          control={<Switch {...field} {...rest} checked={field.value} />}
         />
       )}
     />

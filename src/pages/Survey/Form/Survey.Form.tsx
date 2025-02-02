@@ -37,7 +37,6 @@ export default function SurveyFrom() {
   const clientQuery = useQueryClient();
   const { showSnackbar } = useSnackbarStore();
   const { data, isFetching } = useFindOneSurvey(Number(id));
-  console.log(data);
 
   const mutation = useMutation({
     mutationFn: async (values: any) => {
@@ -73,11 +72,10 @@ export default function SurveyFrom() {
     values: null,
   });
 
-  const { control, handleSubmit, getValues, setValue, watch, reset } =
-    useForm<ISurveyForm>({
-      defaultValues: mapperSurvey(data),
-      resolver: zodResolver(surveySchema),
-    });
+  const { control, handleSubmit, getValues, reset } = useForm<ISurveyForm>({
+    defaultValues: mapperSurvey(data),
+    resolver: zodResolver(surveySchema),
+  });
   const { fields, append, update } = useFieldArray({
     control,
     name: 'questions',
@@ -94,7 +92,6 @@ export default function SurveyFrom() {
 
   const handleAddQuestionForm = (values: ISurveyFormModalProps) => {
     if (typeof openModal.index === 'number') {
-      console.log(openModal.index);
       update(openModal.index, values);
       setOpenModal({ open: false, index: null, values: null });
       return;
@@ -184,23 +181,19 @@ export default function SurveyFrom() {
               <Grid item md={3}>
                 <SwitchField name="status" label="Status" control={control} />
               </Grid>
-              <Grid item md={6}>
-                <Box width="80%">
-                  <InputDatePicker
-                    control={control}
-                    name="validFrom"
-                    label="Início"
-                  />
-                </Box>
+              <Grid item md={5}>
+                <InputDatePicker
+                  control={control}
+                  name="validFrom"
+                  label="Início"
+                />
               </Grid>
-              <Grid item md={6}>
-                <Box width="80%">
-                  <InputDatePicker
-                    control={control}
-                    name="validTo"
-                    label="Valido"
-                  />
-                </Box>
+              <Grid item md={5}>
+                <InputDatePicker
+                  control={control}
+                  name="validTo"
+                  label="Valido"
+                />
               </Grid>
               <Grid item md={12}>
                 <Stack alignItems="flex-end">

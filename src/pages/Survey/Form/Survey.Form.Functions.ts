@@ -31,7 +31,6 @@ export const mapperSurvey = (
 export const mapperSurveyFormQuestions = (
   values: ISurveyFormModalProps | null
 ): Partial<ISurveyFormModalProps> => {
-  console.log(values?.id);
   const formattedValues = {
     id: values?.id ? Number(values.id) : undefined,
     text: values?.text ?? '',

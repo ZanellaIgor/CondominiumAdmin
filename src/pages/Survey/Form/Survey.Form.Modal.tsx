@@ -33,19 +33,12 @@ export const SurveyFormQuestionsModal = ({
   handleAddQuestion: (values: ISurveyFormModalProps) => void;
   register: ISurveyFormModalProps | null;
 }) => {
-  const {
-    control,
-    handleSubmit,
-    watch,
-    reset,
-    setValue,
-    formState: { errors },
-  } = useForm<ISurveyFormModalProps>({
-    defaultValues: mapperSurveyFormQuestions(register),
-    resolver: zodResolver(surveyFormModalSchema),
-  });
+  const { control, handleSubmit, watch, reset, setValue } =
+    useForm<ISurveyFormModalProps>({
+      defaultValues: mapperSurveyFormQuestions(register),
+      resolver: zodResolver(surveyFormModalSchema),
+    });
 
-  console.log(errors);
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'options',
@@ -60,7 +53,6 @@ export const SurveyFormQuestionsModal = ({
       setValue('options', []);
     }
     if (!Array.isArray(e) && e?.value === EnumQuestionType.OPTIONAL) {
-      console.log('ss');
       append({ text: '' });
       return;
     }
