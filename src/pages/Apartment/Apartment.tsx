@@ -28,6 +28,7 @@ export default function ApartmentPage() {
     page,
     filters: valuesFilter,
   });
+
   const registerApartment = data?.data;
 
   const handleEdit = (apartment: IApartmentDataProps) => {

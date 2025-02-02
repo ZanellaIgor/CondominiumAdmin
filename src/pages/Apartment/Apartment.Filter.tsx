@@ -8,7 +8,6 @@ import { InputField } from '@src/components/Inputs/InputField/InputField';
 import { InputSelect } from '@src/components/Inputs/InputSelect/InputSelect';
 import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
 import { debounce } from '@src/utils/functions/debounce';
-
 import { useCallback, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IApartmentFormProps } from './Apartment.Schema';
