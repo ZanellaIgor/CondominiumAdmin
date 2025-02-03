@@ -1,11 +1,13 @@
-import { Add, FilterAlt } from '@mui/icons-material';
+import { Add, FilterAlt, Warning } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
+import IconButton from '@mui/material/IconButton';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
 import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions';
 import { DataTable } from '@src/components/Common/DataTable/DataTable';
 import { useFindManySurvey } from '@src/hooks/queries/useSurvey';
@@ -88,7 +90,21 @@ export default function SurveyPage() {
             register={registerSurvey}
             loading={isFetching}
             actions={(reg) => (
-              <ActionsOptions handleEdit={handleEdit} item={reg} />
+              <ActionsOptions
+                handleEdit={handleEdit}
+                item={reg}
+                custom={() => (
+                  <Tooltip title="Responder" arrow>
+                    <IconButton
+                      size="small"
+                      component={Link}
+                      to={`/survey/answer/${reg.id}`}
+                    >
+                      <Warning />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              />
             )}
           />
         </CardContent>

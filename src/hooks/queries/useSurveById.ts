@@ -45,11 +45,11 @@ const getSurveyId = async ({
 export const useFindOneSurvey = (
   id: number | null
 ): UseQueryResult<ISurveyByIdProps> => {
-  return useQuery<ISurveyByIdProps>({
-    queryKey: [EnumQueries.SURVEY, `id:${id}`],
+  return useQuery({
+    queryKey: [EnumQueries.SURVEY, id],
     queryFn: () => getSurveyId({ id }),
     enabled: !!id,
     staleTime: 10000 * 60,
-    placeholderData: keepPreviousData,
+    placeholder: keepPreviousData,
   });
 };

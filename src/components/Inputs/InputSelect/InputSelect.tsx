@@ -12,7 +12,7 @@ type InputSelectProps = {
   control: Control<any, any>;
   name: string;
   label: string;
-  options: OptionType[];
+  options: OptionType[] | [];
   isLoading?: boolean;
   multiple?: boolean;
   onInputChange?: (

@@ -1,4 +1,4 @@
-import { ISurveyByIdProps } from '@src/hooks/queries/useSurveyId';
+import { ISurveyByIdProps } from '@src/hooks/queries/useSurveById';
 import { EnumQuestionType } from '@src/utils/enum/typeQuestion.enum';
 import { ISurveyFormModalProps } from './Survey.Form.Modal.Schema';
 import { ISurveyForm } from './Survey.Form.Schema';

@@ -47,7 +47,7 @@ export const useFindManySurvey = ({
   limit?: number;
   filters?: IFilters | null;
 }): UseQueryResult<ISurveyPageProps> => {
-  return useQuery<ISurveyPageProps>({
+  return useQuery({
     queryKey: [EnumQueries.SURVEY, page, limit, filters],
     queryFn: () => getSurvey({ page, limit, filter: filters }),
     staleTime: 10000 * 60,
