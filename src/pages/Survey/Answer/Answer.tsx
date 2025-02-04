@@ -8,13 +8,14 @@ import Typography from '@mui/material/Typography';
 import { InputField } from '@src/components/Inputs/InputField/InputField';
 import { InputRadio } from '@src/components/Inputs/InputRadio/InputRadio';
 import { InputSelect } from '@src/components/Inputs/InputSelect/InputSelect';
-import { SwitchField } from '@src/components/Inputs/SwitchField/SwitchField';
 import {
   ISurveyByIdProps,
   useFindOneSurvey,
 } from '@src/hooks/queries/useSurveById';
+import { api } from '@src/services/api.service';
 
 import { EnumQuestionType } from '@src/utils/enum/typeQuestion.enum';
+import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
@@ -23,9 +24,38 @@ export default function SurveyAnswer() {
 
   const { data, isFetching } = useFindOneSurvey(Number(id));
 
-  const { control, handleSubmit } = useForm({});
+  const { control, handleSubmit, setValue } = useForm({
+    defaultValues: {
+      questions: data?.questions?.map((q) => ({ id: q.id, answer: '' })) || [],
+    },
+  });
 
-  const submitForm = () => {};
+  const mutation = useMutation({
+    mutationFn: async (formData: any) => {
+      return api.post(`/api/surveys/${id}/answers`, formData);
+    },
+  });
+
+  const submitForm = (formData: any) => {
+    const payload = {
+      surveyId: Number(id),
+      answers: formData.questions.map((q: any) => ({
+        questionId: q.id,
+        answer: q.answer,
+      })),
+    };
+
+    mutation.mutate(payload, {
+      onSuccess: () => {
+        alert('Respostas enviadas com sucesso!');
+        navigate('/survey');
+      },
+      onError: (error) => {
+        console.error('Erro ao enviar respostas:', error);
+        alert('Ocorreu um erro ao enviar suas respostas.');
+      },
+    });
+  };
 
   const navigate = useNavigate();
 
@@ -74,10 +104,10 @@ export default function SurveyAnswer() {
               if (question.type === EnumQuestionType.TEXT) {
                 return (
                   <>
-                    <Typography>{question.text}</Typography>
+                    <Typography fontWeight={600}>{question.text}</Typography>
                     <InputField
                       control={control}
-                      name="text"
+                      name={`questions[${index}].answer`}
                       label="Pergunta"
                     />
                   </>
@@ -89,21 +119,16 @@ export default function SurveyAnswer() {
               ) {
                 return (
                   <>
-                    <Typography>{question.text}</Typography>
+                    <Typography fontWeight={600}>{question.text}</Typography>
                     <InputRadio
                       options={
                         question?.options.map((option) => ({
                           label: option.text,
-                          value: option?.id.toString(),
+                          value: (option?.id as number).toString(),
                         })) || []
                       }
                       control={control}
-                      name="text"
-                      label="Pergunta"
-                    />
-                    <SwitchField
-                      control={control}
-                      name="text"
+                      name={`questions[${index}].answer`}
                       label="Pergunta"
                     />
                   </>
@@ -112,15 +137,14 @@ export default function SurveyAnswer() {
               if (question.type === EnumQuestionType.OPTIONAL) {
                 return (
                   <>
-                    <Typography>{question.text}</Typography>
-
+                    <Typography fontWeight={600}>{question.text}</Typography>
                     <InputSelect
                       control={control}
                       label="option"
-                      name="Pergunta"
+                      name={`questions[${index}].answer`}
                       options={
                         question.options.map((option) => ({
-                          value: option.id,
+                          value: option.id as number,
                           label: option.text,
                         })) || []
                       }

@@ -50,6 +50,6 @@ export const useFindOneSurvey = (
     queryFn: () => getSurveyId({ id }),
     enabled: !!id,
     staleTime: 10000 * 60,
-    placeholder: keepPreviousData,
+    placeholderData: keepPreviousData,
   });
 };
