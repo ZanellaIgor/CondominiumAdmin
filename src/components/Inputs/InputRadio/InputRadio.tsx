@@ -11,7 +11,7 @@ import { Control, Controller } from 'react-hook-form';
 interface RadioFieldProps {
   control: Control<any>;
   name: string;
-  label: string;
+  label?: string;
   options: { value: string; label: string }[];
   defaultValue?: string;
   row?: boolean;
@@ -27,7 +27,7 @@ export const InputRadio = ({
 }: RadioFieldProps) => {
   return (
     <FormControl component="fieldset">
-      <FormLabel>{label}</FormLabel>
+      {label && <FormLabel>{label}</FormLabel>}
       <Controller
         name={name}
         control={control}

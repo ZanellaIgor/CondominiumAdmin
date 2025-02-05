@@ -1,8 +1,10 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Add } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
+import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { InputField } from '@src/components/Inputs/InputField/InputField';
@@ -18,16 +20,18 @@ import { EnumQuestionType } from '@src/utils/enum/typeQuestion.enum';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { answerSchema } from './Answer.schema';
 
 export default function SurveyAnswer() {
   const { id } = useParams();
 
   const { data, isFetching } = useFindOneSurvey(Number(id));
 
-  const { control, handleSubmit, setValue } = useForm({
+  const { control, handleSubmit } = useForm({
     defaultValues: {
       questions: data?.questions?.map((q) => ({ id: q.id, answer: '' })) || [],
     },
+    resolver: zodResolver(answerSchema),
   });
 
   const mutation = useMutation({
@@ -98,62 +102,78 @@ export default function SurveyAnswer() {
             </Stack>
           }
         />
-        <CardContent>
-          {data?.questions?.map(
-            (question: ISurveyByIdProps['questions'][0], index: number) => {
-              if (question.type === EnumQuestionType.TEXT) {
-                return (
-                  <>
-                    <Typography fontWeight={600}>{question.text}</Typography>
-                    <InputField
-                      control={control}
-                      name={`questions[${index}].answer`}
-                      label="Pergunta"
-                    />
-                  </>
-                );
-              }
-              if (
-                question.type === EnumQuestionType.BOOLEAN &&
-                question?.options
-              ) {
-                return (
-                  <>
-                    <Typography fontWeight={600}>{question.text}</Typography>
-                    <InputRadio
-                      options={
-                        question?.options.map((option) => ({
-                          label: option.text,
-                          value: (option?.id as number).toString(),
-                        })) || []
-                      }
-                      control={control}
-                      name={`questions[${index}].answer`}
-                      label="Pergunta"
-                    />
-                  </>
-                );
-              }
-              if (question.type === EnumQuestionType.OPTIONAL) {
-                return (
-                  <>
-                    <Typography fontWeight={600}>{question.text}</Typography>
-                    <InputSelect
-                      control={control}
-                      label="option"
-                      name={`questions[${index}].answer`}
-                      options={
-                        question.options.map((option) => ({
-                          value: option.id as number,
-                          label: option.text,
-                        })) || []
-                      }
-                    />
-                  </>
-                );
-              }
-            }
-          )}
+        <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Stack
+            sx={{
+              flex: 1,
+              overflow: 'auto',
+              maxHeight: 'calc(100vh - 250px)',
+              paddingRight: 2,
+            }}
+          >
+            <Grid container spacing={2}>
+              {data?.questions?.map(
+                (question: ISurveyByIdProps['questions'][0], index: number) => {
+                  if (question.type === EnumQuestionType.TEXT) {
+                    return (
+                      <Grid item xs={12} key={question.id}>
+                        <Typography fontWeight={600} mb={2}>
+                          {question.text}
+                        </Typography>
+                        <InputField
+                          control={control}
+                          name={`questions[${index}].answer`}
+                          label="Pergunta"
+                        />
+                      </Grid>
+                    );
+                  }
+                  if (
+                    question.type === EnumQuestionType.BOOLEAN &&
+                    question?.options
+                  ) {
+                    return (
+                      <Grid item xs={12} key={question.id}>
+                        <Typography fontWeight={600} mb={2}>
+                          {question.text}
+                        </Typography>
+                        <InputRadio
+                          options={
+                            question?.options.map((option) => ({
+                              label: option.text,
+                              value: (option?.id as number).toString(),
+                            })) || []
+                          }
+                          control={control}
+                          name={`questions[${index}].answer`}
+                        />
+                      </Grid>
+                    );
+                  }
+                  if (question.type === EnumQuestionType.OPTIONAL) {
+                    return (
+                      <Grid item xs={12} key={question.id}>
+                        <Typography fontWeight={600} mb={2}>
+                          {question.text}
+                        </Typography>
+                        <InputSelect
+                          control={control}
+                          label="option"
+                          name={`questions[${index}].answer`}
+                          options={
+                            question.options.map((option) => ({
+                              value: option.id as number,
+                              label: option.text,
+                            })) || []
+                          }
+                        />
+                      </Grid>
+                    );
+                  }
+                }
+              )}
+            </Grid>
+          </Stack>
         </CardContent>
       </Card>
     </form>
