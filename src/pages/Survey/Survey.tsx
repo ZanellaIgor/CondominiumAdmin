@@ -1,4 +1,4 @@
-import { Add, FilterAlt, Warning } from '@mui/icons-material';
+import { Add, FilterAlt, NewReleases } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -100,7 +100,7 @@ export default function SurveyPage() {
                       component={Link}
                       to={`/survey/answer/${reg.id}`}
                     >
-                      <Warning />
+                      <NewReleases />
                     </IconButton>
                   </Tooltip>
                 )}

@@ -18,6 +18,7 @@ import { api } from '@src/services/api.service';
 
 import { EnumQuestionType } from '@src/utils/enum/typeQuestion.enum';
 import { useMutation } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { answerSchema } from './Answer.schema';
@@ -27,26 +28,40 @@ export default function SurveyAnswer() {
 
   const { data, isFetching } = useFindOneSurvey(Number(id));
 
-  const { control, handleSubmit } = useForm({
-    defaultValues: {
-      questions: data?.questions?.map((q) => ({ id: q.id, answer: '' })) || [],
-    },
+  const { control, handleSubmit, formState } = useForm({
+    defaultValues: useMemo(
+      () => ({
+        questions:
+          data?.questions?.map((q) => ({ questionId: q.id, answer: '' })) || [],
+        surveyId: Number(id),
+      }),
+      [data]
+    ),
     resolver: zodResolver(answerSchema),
   });
+  console.log(formState.errors);
 
   const mutation = useMutation({
     mutationFn: async (formData: any) => {
-      return api.post(`/api/surveys/${id}/answers`, formData);
+      return api.post(`answers`, formData);
     },
   });
 
   const submitForm = (formData: any) => {
+    console.log('teste', formData);
     const payload = {
       surveyId: Number(id),
-      answers: formData.questions.map((q: any) => ({
-        questionId: q.id,
-        answer: q.answer,
-      })),
+      answers: formData.questions.map((question: any) => {
+        if (!isNaN(Number(question.answer))) {
+          return {
+            questionId: question.questionId,
+            optionId: Number(question.answer),
+          };
+        }
+        if (isNaN(Number(question.answer))) {
+          return { questionId: question.questionId, text: question.answer };
+        }
+      }),
     };
 
     mutation.mutate(payload, {
