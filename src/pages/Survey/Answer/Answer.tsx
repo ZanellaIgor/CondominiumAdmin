@@ -18,9 +18,10 @@ import { api } from '@src/services/api.service';
 
 import { EnumQuestionType } from '@src/utils/enum/typeQuestion.enum';
 import { useMutation } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { mapperAnswer } from './Answer.functions';
 import { answerSchema } from './Answer.schema';
 
 export default function SurveyAnswer() {
@@ -28,18 +29,12 @@ export default function SurveyAnswer() {
 
   const { data, isFetching } = useFindOneSurvey(Number(id));
 
-  const { control, handleSubmit, formState } = useForm({
-    defaultValues: useMemo(
-      () => ({
-        questions:
-          data?.questions?.map((q) => ({ questionId: q.id, answer: '' })) || [],
-        surveyId: Number(id),
-      }),
-      [data]
-    ),
+  const { control, handleSubmit, formState, watch, reset } = useForm({
+    defaultValues: mapperAnswer(data, Number(id)),
     resolver: zodResolver(answerSchema),
   });
-  console.log(formState.errors);
+  console.log(formState.errors, 'erros');
+  console.log(watch(), 'watch');
 
   const mutation = useMutation({
     mutationFn: async (formData: any) => {
@@ -77,6 +72,12 @@ export default function SurveyAnswer() {
   };
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isFetching && !data) {
+      reset(mapperAnswer(data, Number(id)));
+    }
+  }, [isFetching, data]);
 
   if (isFetching) return <div>Carregando...</div>;
 

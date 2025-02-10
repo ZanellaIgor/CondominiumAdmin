@@ -5,7 +5,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { InputField } from '@src/components/Inputs/InputField/InputField';
-import { Dispatch } from 'react';
+import { InputSelect } from '@src/components/Inputs/InputSelect/InputSelect';
+import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
+import { debounce } from '@src/utils/functions/debounce';
+import { Dispatch, useCallback, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IvaluesFormFilter } from './Survey.Interface';
 
@@ -24,6 +27,7 @@ export const FilterSurvey = ({
   open,
   handleClose,
 }: FilterSurveyProps) => {
+  const [filterName, setFilterName] = useState('');
   const { control, handleSubmit } = useForm({
     defaultValues: {
       title: valuesFilter?.title || '',
@@ -31,10 +35,28 @@ export const FilterSurvey = ({
     },
   });
 
+  const { data, isLoading } = useFindManyCondominium({
+    page: 1,
+    limit: 100,
+    filters: { name: filterName },
+  });
+
+  const optionsCondominium = data?.data?.map((condominium) => ({
+    label: condominium.name,
+    value: condominium.id,
+  }));
+
   const submitForm: SubmitHandler<IvaluesFormFilter> = (values) => {
     setValuesFilter(values);
     handleClose();
   };
+
+  const handleInputChange = useCallback(
+    debounce((__: React.SyntheticEvent | null, value: string) => {
+      setFilterName(value);
+    }, 500),
+    []
+  );
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth>
@@ -43,13 +65,16 @@ export const FilterSurvey = ({
         <form noValidate onSubmit={handleSubmit(submitForm)}>
           <Grid container spacing={3} padding={1}>
             <Grid item xs={6}>
-              <InputField name="name" control={control} label="Nome" />
+              <InputField name="title" control={control} label="Título" />
             </Grid>
             <Grid item xs={6}>
-              <InputField
-                name="description"
+              <InputSelect
+                options={optionsCondominium || []}
+                name="condominiumId"
                 control={control}
-                label="Descrição"
+                label="Condomínio"
+                onInputChange={handleInputChange}
+                isLoading={isLoading}
               />
             </Grid>
           </Grid>
