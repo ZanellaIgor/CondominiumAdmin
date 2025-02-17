@@ -6,28 +6,27 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { InputField } from '@src/components/Inputs/InputField/InputField';
+import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
 import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { SubmitHandler, useForm } from 'react-hook-form';
-
-import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
 import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { condominiumHelper } from './Condominium.Functions';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { mapperCondominium } from './Condominium.Functions';
 import { condominiumSchema, ICondominiumFormProps } from './Condominium.Schema';
 
-type ModalCondominiumProps = {
+type IFormCondominiumProps = {
   register: { id: number; name: string } | undefined;
   open: boolean;
   handleClose: () => void;
 };
 
-export const ModalCondominium = ({
+export const FormCondominium = ({
   register,
   open,
   handleClose,
-}: ModalCondominiumProps) => {
+}: IFormCondominiumProps) => {
   const { showSnackbar } = useSnackbarStore();
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -55,7 +54,7 @@ export const ModalCondominium = ({
   });
 
   const { control, handleSubmit } = useForm<ICondominiumFormProps>({
-    defaultValues: condominiumHelper(register),
+    defaultValues: mapperCondominium(register),
     resolver: zodResolver(condominiumSchema),
   });
 

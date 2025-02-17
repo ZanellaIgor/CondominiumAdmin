@@ -12,13 +12,13 @@ import { useFindManyMaintenance } from '@src/hooks/queries/useMaintenance';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
 import { FilterMaintenance } from './Maintenance.Filter';
+import { FormMaintenance } from './Maintenance.Form';
 import {
   columnsMaintenance,
   IMaintenanceDataProps,
 } from './Maintenance.Inteface';
-import { MaintenanceModal } from './Maintenance.Modal';
 
-export default function ReservationsPage() {
+export default function MaintenancePage() {
   const [page, setPage] = useState(1);
 
   const [register, setRegister] = useState<IMaintenanceDataProps | null>(null);
@@ -35,7 +35,7 @@ export default function ReservationsPage() {
 
   return (
     <Box>
-      <MaintenanceModal
+      <FormMaintenance
         open={openModal}
         handleClose={() => setOpenModal(false)}
         register={register}

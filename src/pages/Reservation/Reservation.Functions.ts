@@ -1,9 +1,9 @@
 import { ChipProps } from '@mui/material/Chip';
 import { EnumSituationReservation } from '@src/utils/enum/situationReservation.enum';
-import { ReservationsFormProps } from './Reservation.Schema';
+import { IReservationsFormProps } from './Reservation.Schema';
 
-export function reservationHelper(
-  data: Partial<ReservationsFormProps> | undefined
+export function mapperReservation(
+  data: Partial<IReservationsFormProps> | undefined
 ) {
   data = {
     id: data?.id ?? undefined,
@@ -15,6 +15,7 @@ export function reservationHelper(
       ? new Date(data?.startDateTime)
       : undefined,
     spaceReservationId: data?.spaceReservationId ?? undefined,
+    status: data?.status ?? true,
   };
 
   return data;

@@ -1,7 +1,7 @@
 import { ICondominiumDataProps } from './Condominium.Interface';
 import { ICondominiumFormProps } from './Condominium.Schema';
 
-export function condominiumHelper(
+export function mapperCondominium(
   data: Partial<ICondominiumDataProps> | undefined
 ): ICondominiumFormProps {
   const newValues = {

@@ -1,6 +1,6 @@
 import { ISpaceReservationDataProps } from './SpaceReservation.Interface';
 
-export function spaceReservationHelper(
+export function mapperSpaceReservation(
   data: Partial<ISpaceReservationDataProps> | undefined
 ) {
   data = {

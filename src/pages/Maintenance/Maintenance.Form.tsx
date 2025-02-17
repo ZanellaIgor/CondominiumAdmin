@@ -17,23 +17,23 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { maintenanceHelper } from './Maintenance.Functions';
+import { mapperMaintenance } from './Maintenance.Functions';
 import { IMaintenanceDataProps } from './Maintenance.Inteface';
 import { IMaintenanceFormProps, maintenanceSchema } from './Maintenance.Schema';
 
-type ModalMaintenanceProps = {
+type IFormMaintenanceProps = {
   register: IMaintenanceDataProps | null;
   open: boolean;
   handleClose: () => void;
 };
 
-export const MaintenanceModal = ({
+export const FormMaintenance = ({
   register,
   open,
   handleClose,
-}: ModalMaintenanceProps) => {
+}: IFormMaintenanceProps) => {
   const { control, handleSubmit, reset } = useForm<IMaintenanceFormProps>({
-    defaultValues: maintenanceHelper(register),
+    defaultValues: mapperMaintenance(register),
     resolver: zodResolver(maintenanceSchema),
   });
   const { showSnackbar } = useSnackbarStore();
@@ -65,9 +65,9 @@ export const MaintenanceModal = ({
   };
 
   useEffect(() => {
-    reset(maintenanceHelper(register));
+    reset(mapperMaintenance(register));
     return () => {
-      reset(maintenanceHelper(null));
+      reset(mapperMaintenance(null));
     };
   }, [register]);
 
@@ -114,7 +114,7 @@ export const MaintenanceModal = ({
               <Button
                 onClick={() => {
                   handleClose();
-                  reset(maintenanceHelper(null));
+                  reset(mapperMaintenance(null));
                 }}
               >
                 Voltar

@@ -4,7 +4,7 @@ import { EnumSituation } from '@src/utils/enum/situation.enum';
 import { IMaintenanceDataProps } from './Maintenance.Inteface';
 import { IMaintenanceFormProps } from './Maintenance.Schema';
 
-export function maintenanceHelper(
+export function mapperMaintenance(
   data: IMaintenanceDataProps | null
 ): IMaintenanceFormProps {
   const newValues = {

@@ -12,7 +12,7 @@ import { useCallback, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ISpaceReservationFormProps } from './SpaceReservation.Schema';
 
-type FilterSpaceReservationProps = {
+type IFilterSpaceReservationProps = {
   valuesFilter: Record<string, any> | undefined;
   setValuesFilter: React.Dispatch<
     React.SetStateAction<undefined | Record<string, any>>
@@ -26,7 +26,7 @@ export const FilterSpaceReservation = ({
   setValuesFilter,
   open,
   handleClose,
-}: FilterSpaceReservationProps) => {
+}: IFilterSpaceReservationProps) => {
   const { control, handleSubmit } = useForm<ISpaceReservationFormProps>({
     defaultValues: valuesFilter,
   });

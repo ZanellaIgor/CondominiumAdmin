@@ -8,14 +8,13 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions';
 import { DataTable } from '@src/components/Common/DataTable/DataTable';
-
 import { Error } from '@src/components/Common/Error/Error';
 import { useFindManyApartment } from '@src/hooks/queries/useApartment';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
 import { FilterApartment } from './Apartment.Filter';
+import { FormApartment } from './Apartment.Form';
 import { columnsApartment, IApartmentDataProps } from './Apartment.Interface';
-import { ModalApartment } from './Apartment.Modal';
 
 export default function ApartmentPage() {
   const [register, setRegister] = useState<IApartmentDataProps | undefined>();
@@ -41,7 +40,7 @@ export default function ApartmentPage() {
   return (
     <Box>
       {openModal && (
-        <ModalApartment
+        <FormApartment
           handleClose={() => setOpenModal(false)}
           open={openModal}
           register={register}

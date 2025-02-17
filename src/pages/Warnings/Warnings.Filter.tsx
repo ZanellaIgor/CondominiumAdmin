@@ -11,7 +11,7 @@ import { optionsSituation } from '@src/utils/options/situation.options';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IWarningFormProps } from './Warnings.Schema';
 
-type FilterlWarningProps = {
+type IFilterlWarningProps = {
   valuesFilter: Record<string, any> | undefined;
   setValuesFilter: React.Dispatch<
     React.SetStateAction<undefined | Record<string, any>>
@@ -25,7 +25,7 @@ export const FilterWarning = ({
   setValuesFilter,
   open,
   handleClose,
-}: FilterlWarningProps) => {
+}: IFilterlWarningProps) => {
   const { control, handleSubmit } = useForm<IWarningFormProps>({
     defaultValues: valuesFilter,
   });

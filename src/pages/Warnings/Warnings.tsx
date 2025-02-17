@@ -14,7 +14,7 @@ import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
 import { FilterWarning } from './Warnings.Filter';
 import { columnsWarning, IWarningPageDataProps } from './Warnings.Interface';
-import { ModalWarning } from './Warnings.Modal';
+import { FormWarning } from './Warnings.Modal';
 import { IWarningFormProps } from './Warnings.Schema';
 
 export default function WarningsPage() {
@@ -40,7 +40,7 @@ export default function WarningsPage() {
   return (
     <Box>
       {openModal && (
-        <ModalWarning
+        <FormWarning
           open={openModal}
           handleClose={() => setOpenModal(false)}
           register={register as unknown as IWarningFormProps}

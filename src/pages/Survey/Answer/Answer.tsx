@@ -16,13 +16,14 @@ import {
 } from '@src/hooks/queries/useSurveById';
 import { api } from '@src/services/api.service';
 
+import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
 import { EnumQuestionType } from '@src/utils/enum/typeQuestion.enum';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { mapperAnswer } from './Answer.functions';
-import { answerSchema } from './Answer.schema';
+import { mapperAnswer } from './Answer.Functions';
+import { answerSchema } from './Answer.Schema';
 
 export default function SurveyAnswer() {
   const { id } = useParams();
@@ -33,6 +34,9 @@ export default function SurveyAnswer() {
     defaultValues: mapperAnswer(data, Number(id)),
     resolver: zodResolver(answerSchema),
   });
+
+  const { showSnackbar } = useSnackbarStore();
+
   console.log(formState.errors, 'erros');
   console.log(watch(), 'watch');
 
@@ -61,12 +65,11 @@ export default function SurveyAnswer() {
 
     mutation.mutate(payload, {
       onSuccess: () => {
-        alert('Respostas enviadas com sucesso!');
+        showSnackbar('Respostas enviadas com sucesso!', 'success');
         navigate('/survey');
       },
-      onError: (error) => {
-        console.error('Erro ao enviar respostas:', error);
-        alert('Ocorreu um erro ao enviar suas respostas.');
+      onError: () => {
+        showSnackbar('Ocorreu um erro ao enviar suas respostas.', 'error');
       },
     });
   };

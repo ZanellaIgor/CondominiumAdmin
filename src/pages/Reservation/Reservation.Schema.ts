@@ -14,8 +14,10 @@ export const reservationsSchema = z.object({
   dateReservation: z.date().optional(),
   spaceReservationId: z.number(),
 });
-export type ReservationsFormProps = z.infer<typeof reservationsSchema> & {
+
+export type IReservationsFormProps = z.infer<typeof reservationsSchema> & {
   apartmentId: number;
   condominiumId: number;
   userId: number;
+  status: boolean;
 };

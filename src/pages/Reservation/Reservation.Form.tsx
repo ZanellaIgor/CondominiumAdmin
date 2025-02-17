@@ -19,31 +19,31 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { reservationHelper } from './Reservation.Functions';
+import { mapperReservation } from './Reservation.Functions';
 import {
-  ReservationsFormProps,
+  IReservationsFormProps,
   reservationsSchema,
 } from './Reservation.Schema';
 
-type ModalReservationProps = {
-  register: ReservationsFormProps | undefined;
+type IFormReservationProps = {
+  register: IReservationsFormProps | undefined;
   open: boolean;
   handleClose: () => void;
 };
 
-export const ModalReservation = ({
+export const FormReservation = ({
   register,
   open,
   handleClose,
-}: ModalReservationProps) => {
-  const { control, handleSubmit, reset } = useForm<ReservationsFormProps>({
-    defaultValues: reservationHelper(register),
+}: IFormReservationProps) => {
+  const { control, handleSubmit, reset } = useForm<IReservationsFormProps>({
+    defaultValues: mapperReservation(register),
     resolver: zodResolver(reservationsSchema),
   });
   const { showSnackbar } = useSnackbarStore();
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: async (values: ReservationsFormProps) => {
+    mutationFn: async (values: IReservationsFormProps) => {
       const response = values.id
         ? await api.patch(`/reservation/${values.id}`, values)
         : await api.post('/reservation', values);
@@ -62,8 +62,8 @@ export const ModalReservation = ({
     },
   });
 
-  const submitForm: SubmitHandler<ReservationsFormProps> = (
-    values: ReservationsFormProps
+  const submitForm: SubmitHandler<IReservationsFormProps> = (
+    values: IReservationsFormProps
   ) => {
     values.condominiumId = 1;
     values.apartmentId = 1;
@@ -75,9 +75,9 @@ export const ModalReservation = ({
   };
 
   useEffect(() => {
-    reset(reservationHelper(register));
+    reset(mapperReservation(register));
     return () => {
-      reset(reservationHelper(undefined));
+      reset(mapperReservation(undefined));
     };
   }, [register]);
 
@@ -153,7 +153,7 @@ export const ModalReservation = ({
               <Button
                 onClick={() => {
                   handleClose();
-                  reset(reservationHelper(undefined));
+                  reset(mapperReservation(undefined));
                 }}
               >
                 Voltar

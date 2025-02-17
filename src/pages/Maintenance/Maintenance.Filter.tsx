@@ -11,7 +11,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { optionsSituation } from '@src/utils/options/situation.options';
 import { IMaintenanceFormProps } from './Maintenance.Schema';
 
-type FilterlMaintenanceProps = {
+type IFilterlMaintenanceProps = {
   valuesFilter: Record<string, any> | undefined;
   setValuesFilter: React.Dispatch<
     React.SetStateAction<undefined | Record<string, any>>
@@ -25,7 +25,7 @@ export const FilterMaintenance = ({
   setValuesFilter,
   open,
   handleClose,
-}: FilterlMaintenanceProps) => {
+}: IFilterlMaintenanceProps) => {
   const { control, handleSubmit } = useForm<IMaintenanceFormProps>({
     defaultValues: valuesFilter,
   });

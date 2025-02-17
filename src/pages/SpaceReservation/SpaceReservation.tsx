@@ -8,17 +8,16 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions';
 import { DataTable } from '@src/components/Common/DataTable/DataTable';
-
 import { Error } from '@src/components/Common/Error/Error';
 import { useFindManySpaceReservation } from '@src/hooks/queries/useSpaceReservation';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
 import { FilterSpaceReservation } from './SpaceReservation.Filter';
+import { FormSpaceReservation } from './SpaceReservation.Form';
 import {
   columnsSpaceReservation,
   ISpaceReservationDataProps,
 } from './SpaceReservation.Interface';
-import { ModalSpaceReservation } from './SpaceReservation.Modal';
 
 export default function SpaceReservationPage() {
   const [register, setRegister] = useState<
@@ -34,6 +33,7 @@ export default function SpaceReservationPage() {
   });
 
   const registerSpaceReservation = data?.data;
+
   const handleEdit = (spaceReservation: ISpaceReservationDataProps) => {
     setRegister(spaceReservation);
     setOpenModal(true);
@@ -44,7 +44,7 @@ export default function SpaceReservationPage() {
   return (
     <Box>
       {openModal && (
-        <ModalSpaceReservation
+        <FormSpaceReservation
           handleClose={() => setOpenModal(false)}
           open={openModal}
           register={register}

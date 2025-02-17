@@ -18,16 +18,16 @@ import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { userHelper } from './User.Functions';
+import { mapperUser } from './User.Functions';
 import { IUserFormProps, userSchema } from './User.Schema';
 
-type ModalUserProps = {
+type IFormUserProps = {
   register: IUserFormProps | undefined;
   open: boolean;
   handleClose: () => void;
 };
 
-export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
+export const FormUser = ({ register, open, handleClose }: IFormUserProps) => {
   const { showSnackbar } = useSnackbarStore();
   const queryClient = useQueryClient();
   const { data: dataCondominium, isLoading: loadingCondominium } =
@@ -72,7 +72,7 @@ export const ModalUser = ({ register, open, handleClose }: ModalUserProps) => {
   });
 
   const { control, handleSubmit, watch } = useForm<IUserFormProps>({
-    defaultValues: userHelper(register),
+    defaultValues: mapperUser(register),
     resolver: zodResolver(userSchema),
   });
 

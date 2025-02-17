@@ -31,7 +31,7 @@ import { SurveyFormQuestionsModal } from './Survey.Form.Modal';
 import { ISurveyFormModalProps } from './Survey.Form.Modal.Schema';
 import { ISurveyForm, surveySchema } from './Survey.Form.Schema';
 
-export default function SurveyFrom() {
+export default function SurveyForm() {
   const { id } = useParams();
   const navigate = useNavigate();
   const clientQuery = useQueryClient();

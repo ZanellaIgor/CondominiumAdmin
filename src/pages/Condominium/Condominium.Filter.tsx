@@ -6,10 +6,9 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { InputField } from '@src/components/Inputs/InputField/InputField';
 import { SubmitHandler, useForm } from 'react-hook-form';
-
 import { ICondominiumFormProps } from './Condominium.Schema';
 
-type FilterCondominiumProps = {
+type IFilterCondominiumProps = {
   valuesFilter: Record<string, any> | undefined;
   setValuesFilter: React.Dispatch<
     React.SetStateAction<undefined | Record<string, any>>
@@ -23,7 +22,7 @@ export const FilterCondominium = ({
   setValuesFilter,
   open,
   handleClose,
-}: FilterCondominiumProps) => {
+}: IFilterCondominiumProps) => {
   const { control, handleSubmit } = useForm<ICondominiumFormProps>({
     defaultValues: valuesFilter,
   });

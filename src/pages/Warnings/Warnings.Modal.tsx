@@ -17,20 +17,20 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { warningHelper } from './Warnings.Functions';
-import { IWarningFormProps, WarningsSchema } from './Warnings.Schema';
+import { mapperWarning } from './Warnings.Functions';
+import { IWarningFormProps, warningsSchema } from './Warnings.Schema';
 
-type ModalWarningProps = {
+type IFormWarningProps = {
   register: IWarningFormProps | undefined;
   open: boolean;
   handleClose: () => void;
 };
 
-export const ModalWarning = ({
+export const FormWarning = ({
   register,
   open,
   handleClose,
-}: ModalWarningProps) => {
+}: IFormWarningProps) => {
   const queryClient = useQueryClient();
   const { showSnackbar } = useSnackbarStore();
   const mutation = useMutation({
@@ -54,8 +54,8 @@ export const ModalWarning = ({
   });
 
   const { control, handleSubmit, reset } = useForm<IWarningFormProps>({
-    defaultValues: warningHelper(register),
-    resolver: zodResolver(WarningsSchema),
+    defaultValues: mapperWarning(register),
+    resolver: zodResolver(warningsSchema),
   });
 
   const submitForm: SubmitHandler<IWarningFormProps> = (values) => {
@@ -63,7 +63,7 @@ export const ModalWarning = ({
   };
 
   useEffect(() => {
-    if (open) reset(warningHelper(register));
+    if (open) reset(mapperWarning(register));
   }, [open]);
 
   return (
@@ -112,7 +112,7 @@ export const ModalWarning = ({
             <Button
               onClick={() => {
                 handleClose();
-                reset(warningHelper(undefined));
+                reset(mapperWarning(undefined));
               }}
             >
               Voltar

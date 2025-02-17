@@ -12,7 +12,7 @@ import { Dispatch, useCallback, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IvaluesFormFilter } from './Survey.Interface';
 
-type FilterSurveyProps = {
+type IFilterSurveyProps = {
   valuesFilter: IvaluesFormFilter | null | undefined;
   setValuesFilter: Dispatch<
     React.SetStateAction<IvaluesFormFilter | null | undefined>
@@ -26,7 +26,7 @@ export const FilterSurvey = ({
   setValuesFilter,
   open,
   handleClose,
-}: FilterSurveyProps) => {
+}: IFilterSurveyProps) => {
   const [filterName, setFilterName] = useState('');
   const { control, handleSubmit } = useForm({
     defaultValues: {

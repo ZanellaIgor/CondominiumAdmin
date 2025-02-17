@@ -14,11 +14,11 @@ import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
 import { FilterCondominium } from './Condominium.Filter';
+import { FormCondominium } from './Condominium.Form';
 import {
   columnsCondominium,
   ICondominiumDataProps,
 } from './Condominium.Interface';
-import { ModalCondominium } from './Condominium.Modal';
 
 export default function CondominiumPage() {
   const [register, setRegister] = useState<ICondominiumDataProps | undefined>();
@@ -43,7 +43,7 @@ export default function CondominiumPage() {
   return (
     <Box>
       {openModal && (
-        <ModalCondominium
+        <FormCondominium
           handleClose={() => setOpenModal(false)}
           open={openModal}
           register={register}

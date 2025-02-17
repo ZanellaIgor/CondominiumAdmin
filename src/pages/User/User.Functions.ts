@@ -1,4 +1,4 @@
-export function userHelper(data: any) {
+export function mapperUser(data: any) {
   data = {
     id: data?.id ?? undefined,
     name: data?.name ?? '',

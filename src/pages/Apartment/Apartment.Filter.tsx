@@ -12,7 +12,7 @@ import { useCallback, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IApartmentFormProps } from './Apartment.Schema';
 
-type ModalApartmentProps = {
+type IFilterApartmentProps = {
   valuesFilter: Record<string, any> | undefined;
   setValuesFilter: React.Dispatch<
     React.SetStateAction<undefined | Record<string, any>>
@@ -26,7 +26,7 @@ export const FilterApartment = ({
   setValuesFilter,
   open,
   handleClose,
-}: ModalApartmentProps) => {
+}: IFilterApartmentProps) => {
   const [filterName, setFilterName] = useState('');
 
   const { control, handleSubmit } = useForm<IApartmentFormProps>({

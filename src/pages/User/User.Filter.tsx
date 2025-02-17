@@ -10,7 +10,7 @@ import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IUserFormProps } from './User.Schema';
 
-type FilterUserProps = {
+type IFilterUserProps = {
   valuesFilter: Record<string, any> | undefined;
   setValuesFilter: React.Dispatch<
     React.SetStateAction<undefined | Record<string, any>>
@@ -24,7 +24,7 @@ export const FilterUser = ({
   setValuesFilter,
   open,
   handleClose,
-}: FilterUserProps) => {
+}: IFilterUserProps) => {
   const { data: dataCondominium, isLoading: loadingCondominium } =
     useFindManyCondominium({
       page: 1,

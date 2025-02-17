@@ -17,7 +17,7 @@ import { columnsUser, IUserPageDataProps } from './User.Interface';
 import { IUserFormProps } from './User.Schema';
 
 const LazyModalUser = lazy(() =>
-  import('./User.Modal').then((module) => ({ default: module.ModalUser }))
+  import('./User.Modal').then((module) => ({ default: module.FormUser }))
 );
 
 export default function UserPage() {

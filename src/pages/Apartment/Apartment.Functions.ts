@@ -1,6 +1,6 @@
 import { IApartmentDataProps } from './Apartment.Interface';
 
-export function apartmentHelper(
+export function mapperApartment(
   data: Partial<IApartmentDataProps> | undefined
 ) {
   data = {

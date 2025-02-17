@@ -14,8 +14,8 @@ import { useFindManyReservation } from '@src/hooks/queries/useReservation';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
 import { FilterReservation } from './Reservation.Filter';
+import { FormReservation } from './Reservation.Form';
 import { columnsReservation } from './Reservation.Interface';
-import { ModalReservation } from './Reservation.Modal';
 
 export default function ReservationsPage() {
   const [register, setRegister] = useState();
@@ -39,7 +39,7 @@ export default function ReservationsPage() {
 
   return (
     <Box>
-      <ModalReservation
+      <FormReservation
         open={openModal}
         handleClose={() => setOpenModal(false)}
         register={register}

@@ -18,20 +18,20 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useCallback, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { apartmentHelper } from './Apartment.Functions';
+import { mapperApartment } from './Apartment.Functions';
 import { apartmentSchema, IApartmentFormProps } from './Apartment.Schema';
 
-type ModalApartmentProps = {
+type IFormApartmentProps = {
   register: { id: number; name: string; condominiumId: number } | undefined;
   open: boolean;
   handleClose: () => void;
 };
 
-export const ModalApartment = ({
+export const FormApartment = ({
   register,
   open,
   handleClose,
-}: ModalApartmentProps) => {
+}: IFormApartmentProps) => {
   const { showSnackbar } = useSnackbarStore();
   const queryClient = useQueryClient();
   const [filterName, setFilterName] = useState('');
@@ -57,7 +57,7 @@ export const ModalApartment = ({
   });
 
   const { control, handleSubmit } = useForm<IApartmentFormProps>({
-    defaultValues: apartmentHelper(register),
+    defaultValues: mapperApartment(register),
     resolver: zodResolver(apartmentSchema),
   });
   const { data, isLoading } = useFindManyCondominium({

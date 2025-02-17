@@ -4,13 +4,13 @@ import { InputField } from '@src/components/Inputs/InputField/InputField';
 import React from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
-interface QuestionOptionsProps {
+interface IQuestionOptionsProps {
   questionIndex: number;
 }
 
 export function QuestionOptionsManager({
   questionIndex,
-}: QuestionOptionsProps) {
+}: IQuestionOptionsProps) {
   const { control } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,

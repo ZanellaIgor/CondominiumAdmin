@@ -8,9 +8,9 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { optionsSituationReservation } from '@src/utils/options/situationReservation.options';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ReservationsFormProps } from './Reservation.Schema';
+import { IReservationsFormProps } from './Reservation.Schema';
 
-type FilterReservationProps = {
+type IFilterReservationProps = {
   valuesFilter: Record<string, any> | undefined;
   setValuesFilter: React.Dispatch<
     React.SetStateAction<undefined | Record<string, any>>
@@ -24,13 +24,13 @@ export const FilterReservation = ({
   setValuesFilter,
   open,
   handleClose,
-}: FilterReservationProps) => {
-  const { control, handleSubmit } = useForm<ReservationsFormProps>({
+}: IFilterReservationProps) => {
+  const { control, handleSubmit } = useForm<IReservationsFormProps>({
     defaultValues: valuesFilter,
   });
 
-  const submitForm: SubmitHandler<ReservationsFormProps> = (
-    values: ReservationsFormProps
+  const submitForm: SubmitHandler<IReservationsFormProps> = (
+    values: IReservationsFormProps
   ) => {
     setValuesFilter(values);
     handleClose();

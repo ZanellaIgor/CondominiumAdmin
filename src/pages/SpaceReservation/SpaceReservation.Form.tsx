@@ -7,38 +7,37 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import { api } from '@src/services/api.service';
-import { EnumQueries } from '@src/utils/enum/queries.enum';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useCallback, useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-
 import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
 import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
+import { api } from '@src/services/api.service';
+import { EnumQueries } from '@src/utils/enum/queries.enum';
 import { debounce } from '@src/utils/functions/debounce';
 import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { spaceReservationHelper } from './SpaceReservation.Functions';
+import { useCallback, useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { mapperSpaceReservation } from './SpaceReservation.Functions';
 import { ISpaceReservationDataProps } from './SpaceReservation.Interface';
 import {
   ISpaceReservationFormProps,
   spaceReservationSchema,
 } from './SpaceReservation.Schema';
 
-type ModalSpaceReservationProps = {
+type IFormSpaceReservationProps = {
   register: ISpaceReservationDataProps | undefined;
   open: boolean;
   handleClose: () => void;
 };
 
-export const ModalSpaceReservation = ({
+export const FormSpaceReservation = ({
   register,
   open,
   handleClose,
-}: ModalSpaceReservationProps) => {
+}: IFormSpaceReservationProps) => {
   const { showSnackbar } = useSnackbarStore();
   const { control, handleSubmit, reset } = useForm<ISpaceReservationFormProps>({
-    defaultValues: spaceReservationHelper(register),
+    defaultValues: mapperSpaceReservation(register),
     resolver: zodResolver(spaceReservationSchema),
   });
   const [filterName, setFilterName] = useState('');
@@ -92,7 +91,7 @@ export const ModalSpaceReservation = ({
   );
 
   useEffect(() => {
-    reset(spaceReservationHelper(register));
+    reset(mapperSpaceReservation(register));
   }, [register]);
 
   return (

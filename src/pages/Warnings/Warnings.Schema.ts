@@ -1,7 +1,8 @@
 import { EnumCategory } from '@src/utils/enum/category.enum';
 import { EnumSituation } from '@src/utils/enum/situation.enum';
 import { z } from 'zod';
-export const WarningsSchema = z.object({
+
+export const warningsSchema = z.object({
   id: z
     .number()
     .transform((value) => Number(value))
@@ -12,4 +13,5 @@ export const WarningsSchema = z.object({
   situation: z.nativeEnum(EnumSituation),
   condominiumId: z.number().optional(),
 });
-export type IWarningFormProps = z.infer<typeof WarningsSchema>;
+
+export type IWarningFormProps = z.infer<typeof warningsSchema>;
