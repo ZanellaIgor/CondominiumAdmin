@@ -17,8 +17,8 @@ export interface IWarningPageDataProps {
   id: number;
   title: string;
   description?: string;
-  situation: string;
-  category: string;
+  situation: EnumSituation;
+  category: EnumCategory;
   userId: number;
   condominiumId: number;
 }

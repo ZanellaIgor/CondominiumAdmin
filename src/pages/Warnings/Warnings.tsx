@@ -13,9 +13,8 @@ import { useFindManyWarnings } from '@src/hooks/queries/useWarning';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
 import { FilterWarning } from './Warnings.Filter';
+import { FormWarning } from './Warnings.Form';
 import { columnsWarning, IWarningPageDataProps } from './Warnings.Interface';
-import { FormWarning } from './Warnings.Modal';
-import { IWarningFormProps } from './Warnings.Schema';
 
 export default function WarningsPage() {
   const [openModal, setOpenModal] = useState(false);
@@ -43,7 +42,7 @@ export default function WarningsPage() {
         <FormWarning
           open={openModal}
           handleClose={() => setOpenModal(false)}
-          register={register as unknown as IWarningFormProps}
+          register={register}
         />
       )}
       {openFilter && (

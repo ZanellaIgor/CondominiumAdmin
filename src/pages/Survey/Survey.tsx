@@ -59,7 +59,7 @@ export default function SurveyPage() {
         }}
       >
         <CardHeader
-          title="Áreas de lazer"
+          title="Enquetes"
           action={
             <Stack spacing={1} direction="row">
               <Button

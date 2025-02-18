@@ -8,8 +8,10 @@ import Stack from '@mui/material/Stack';
 import { InputField } from '@src/components/Inputs/InputField/InputField';
 import { InputSelect } from '@src/components/Inputs/InputSelect/InputSelect';
 import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
+import { useAuth } from '@src/hooks/useAuth';
 import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
+import { EnumRoles } from '@src/utils/enum/role.enum';
 import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
 import { optionsCategory } from '@src/utils/options/category.options';
 import { optionsSituation } from '@src/utils/options/situation.options';
@@ -18,10 +20,11 @@ import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { mapperWarning } from './Warnings.Functions';
+import { IWarningPageDataProps } from './Warnings.Interface';
 import { IWarningFormProps, warningsSchema } from './Warnings.Schema';
 
 type IFormWarningProps = {
-  register: IWarningFormProps | undefined;
+  register: IWarningPageDataProps | undefined;
   open: boolean;
   handleClose: () => void;
 };
@@ -33,10 +36,12 @@ export const FormWarning = ({
 }: IFormWarningProps) => {
   const queryClient = useQueryClient();
   const { showSnackbar } = useSnackbarStore();
+  const { userInfo } = useAuth();
+
   const mutation = useMutation({
     mutationFn: async (values: IWarningFormProps) => {
-      const response = values.id
-        ? await api.patch(`/warnings/${values.id}`, values)
+      const response = register?.id
+        ? await api.patch(`/warnings/${register?.id}`, values)
         : await api.post('/warnings', values);
       return response.data;
     },
@@ -85,14 +90,17 @@ export const FormWarning = ({
                 options={optionsCategory}
               />
             </Grid>
-            <Grid item xs={6}>
-              <InputSelect
-                name="situation"
-                control={control}
-                label="Situação"
-                options={optionsSituation}
-              />
-            </Grid>
+            {(userInfo?.role === EnumRoles.ADMIN ||
+              userInfo?.role === EnumRoles.MASTER) && (
+              <Grid item xs={6}>
+                <InputSelect
+                  name="situation"
+                  control={control}
+                  label="Situação"
+                  options={optionsSituation}
+                />
+              </Grid>
+            )}
             <Grid item xs={12}>
               <InputField
                 name="description"
