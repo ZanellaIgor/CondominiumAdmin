@@ -5,14 +5,15 @@ import { IWarningPageDataProps } from './Warnings.Interface';
 import { IWarningFormProps } from './Warnings.Schema';
 
 export function mapperWarning(
-  data: IWarningPageDataProps | undefined
+  data: IWarningPageDataProps | undefined,
+  condominiumId?: number
 ): Partial<IWarningFormProps> {
   const dataForm = {
     title: data?.title ?? '',
     category: data?.category ?? EnumCategory.MEDIA,
     description: data?.description ?? '',
     situation: data?.situation ?? EnumSituation.ABERTO,
-    condominiumId: data?.condominiumId,
+    condominiumId: data?.condominiumId ?? condominiumId,
   };
   return dataForm;
 }

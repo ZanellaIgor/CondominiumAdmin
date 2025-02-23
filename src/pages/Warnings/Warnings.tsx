@@ -9,7 +9,9 @@ import Stack from '@mui/material/Stack';
 import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions';
 import { DataTable } from '@src/components/Common/DataTable/DataTable';
 import { Error } from '@src/components/Common/Error/Error';
+import { usePermissionRole } from '@src/hooks/permission/use-permission-role';
 import { useFindManyWarnings } from '@src/hooks/queries/useWarning';
+import { EnumRoles } from '@src/utils/enum/role.enum';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
 import { FilterWarning } from './Warnings.Filter';
@@ -17,6 +19,7 @@ import { FormWarning } from './Warnings.Form';
 import { columnsWarning, IWarningPageDataProps } from './Warnings.Interface';
 
 export default function WarningsPage() {
+  const { validateRole } = usePermissionRole();
   const [openModal, setOpenModal] = useState(false);
   const [register, setRegister] = useState<IWarningPageDataProps | undefined>();
   const [page, setPage] = useState(1);
@@ -96,9 +99,11 @@ export default function WarningsPage() {
             columns={columnsWarning}
             register={registerWarnings}
             loading={isFetching}
-            actions={(reg) => (
-              <ActionsOptions handleEdit={handleEdit} item={reg} />
-            )}
+            {...(validateRole([EnumRoles.ADMIN, EnumRoles.MASTER]) && {
+              actions: (reg: IWarningPageDataProps) => (
+                <ActionsOptions handleEdit={handleEdit} item={reg} />
+              ),
+            })}
           />
         </CardContent>
       </Card>

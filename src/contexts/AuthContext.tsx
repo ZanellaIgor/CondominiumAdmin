@@ -3,7 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 import React, { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-type User = {
+type IUser = {
   email: string;
   name: string;
   userId: number;
@@ -14,9 +14,9 @@ type User = {
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  userInfo?: User;
+  userInfo?: IUser;
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
-  setUserInfo: React.Dispatch<React.SetStateAction<User | undefined>>;
+  setUserInfo: React.Dispatch<React.SetStateAction<IUser | undefined>>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -25,7 +25,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [userInfo, setUserInfo] = useState<User | undefined>(undefined);
+  const [userInfo, setUserInfo] = useState<IUser | undefined>(undefined);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (token) {
       const handleTokenDecode = async () => {
         try {
-          const decodedValues = (await jwtDecode(token)) as User;
+          const decodedValues = (await jwtDecode(token)) as IUser;
 
           if (decodedValues) {
             setIsAuthenticated(true);

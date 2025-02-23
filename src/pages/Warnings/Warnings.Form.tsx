@@ -7,6 +7,8 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { InputField } from '@src/components/Inputs/InputField/InputField';
 import { InputSelect } from '@src/components/Inputs/InputSelect/InputSelect';
+import { usePermissionRole } from '@src/hooks/permission/use-permission-role';
+import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
 import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
 import { useAuth } from '@src/hooks/useAuth';
 import { api } from '@src/services/api.service';
@@ -17,8 +19,8 @@ import { optionsCategory } from '@src/utils/options/category.options';
 import { optionsSituation } from '@src/utils/options/situation.options';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useEffect, useMemo } from 'react';
+import { Control, SubmitHandler, useForm } from 'react-hook-form';
 import { mapperWarning } from './Warnings.Functions';
 import { IWarningPageDataProps } from './Warnings.Interface';
 import { IWarningFormProps, warningsSchema } from './Warnings.Schema';
@@ -29,12 +31,44 @@ type IFormWarningProps = {
   handleClose: () => void;
 };
 
+const InputSelectCondomium = ({
+  userId,
+  control,
+}: {
+  userId: number;
+  control: Control<IWarningFormProps>;
+}) => {
+  const { data, isFetching } = useFindManyCondominium({
+    filters: {
+      userId,
+    },
+  });
+  const optionsCondominium = useMemo(
+    () =>
+      data?.data?.map((condominium) => ({
+        label: condominium.name,
+        value: condominium.id,
+      })) || [],
+    [isFetching]
+  );
+
+  return (
+    <InputSelect
+      control={control}
+      label="Condominio"
+      options={optionsCondominium}
+      name="condominiumId"
+    />
+  );
+};
+
 export const FormWarning = ({
   register,
   open,
   handleClose,
 }: IFormWarningProps) => {
   const queryClient = useQueryClient();
+  const { validateRole } = usePermissionRole();
   const { showSnackbar } = useSnackbarStore();
   const { userInfo } = useAuth();
 
@@ -59,7 +93,7 @@ export const FormWarning = ({
   });
 
   const { control, handleSubmit, reset } = useForm<IWarningFormProps>({
-    defaultValues: mapperWarning(register),
+    defaultValues: mapperWarning(register, userInfo?.condominiumIds?.[0]),
     resolver: zodResolver(warningsSchema),
   });
 
@@ -68,7 +102,7 @@ export const FormWarning = ({
   };
 
   useEffect(() => {
-    if (open) reset(mapperWarning(register));
+    if (open) reset(mapperWarning(register, userInfo?.condominiumIds?.[0]));
   }, [open]);
 
   return (
@@ -90,8 +124,7 @@ export const FormWarning = ({
                 options={optionsCategory}
               />
             </Grid>
-            {(userInfo?.role === EnumRoles.ADMIN ||
-              userInfo?.role === EnumRoles.MASTER) && (
+            {validateRole([EnumRoles.ADMIN, EnumRoles.MASTER]) && (
               <Grid item xs={6}>
                 <InputSelect
                   name="situation"
@@ -101,6 +134,16 @@ export const FormWarning = ({
                 />
               </Grid>
             )}
+
+            {validateRole([EnumRoles.ADMIN, EnumRoles.MASTER]) &&
+              typeof userInfo?.userId === 'number' && (
+                <Grid item xs={6}>
+                  <InputSelectCondomium
+                    userId={userInfo.userId as number}
+                    control={control}
+                  />
+                </Grid>
+              )}
             <Grid item xs={12}>
               <InputField
                 name="description"

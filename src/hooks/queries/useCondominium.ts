@@ -10,6 +10,7 @@ import {
 
 interface IFilters {
   name?: string;
+  userId?: number;
 }
 interface IGetCondominiumParams {
   page: number;

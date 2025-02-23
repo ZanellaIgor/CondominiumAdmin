@@ -11,10 +11,10 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import React from 'react';
 
-interface IDataTableProps {
+interface IDataTableProps<T> {
   register: any;
   columns: IColumns[];
-  actions?: (reg: any, index?: number) => JSX.Element;
+  actions?: (reg: T, index?: number) => JSX.Element;
   loading?: boolean;
 }
 export interface IColumns {
@@ -49,12 +49,12 @@ function formatValues(reg: any, typeFormat: IMaskTable) {
   }
 }
 
-export const DataTable = ({
+export const DataTable = <T,>({
   register,
   columns,
   actions,
   loading = false,
-}: IDataTableProps) => {
+}: IDataTableProps<T>) => {
   const renderCell = (reg: any, column: IColumns) => {
     if (column.custom) {
       return column.custom(reg[column.value]);
