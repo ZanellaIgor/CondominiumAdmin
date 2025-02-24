@@ -9,7 +9,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { InputDateTime } from '@src/components/Inputs/InputDateTime/InputDateTime';
+import { usePermissionRole } from '@src/hooks/permission/use-permission-role';
+import { useFindManyApartment } from '@src/hooks/queries/useApartment';
+import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
 import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
+import { useAuth } from '@src/hooks/useAuth';
 import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
 import { EnumSituation } from '@src/utils/enum/situation.enum';
@@ -17,8 +21,8 @@ import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
 import { optionsSituationReservation } from '@src/utils/options/situationReservation.options';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useEffect, useMemo } from 'react';
+import { Control, SubmitHandler, useForm } from 'react-hook-form';
 import { mapperReservation } from './Reservation.Functions';
 import {
   IReservationsFormProps,
@@ -31,13 +35,77 @@ type IFormReservationProps = {
   handleClose: () => void;
 };
 
+const InputSelectCondomium = ({
+  userId,
+  control,
+}: {
+  userId: number;
+  control: Control<IReservationsFormProps>;
+}) => {
+  const { data, isFetching } = useFindManyCondominium({
+    filters: {
+      userId,
+    },
+  });
+  const optionsCondominium = useMemo(
+    () =>
+      data?.data?.map((condominium) => ({
+        label: condominium.name,
+        value: condominium.id,
+      })) || [],
+    [isFetching]
+  );
+
+  return (
+    <InputSelect
+      control={control}
+      label="Condomínio"
+      options={optionsCondominium}
+      name="condominiumId"
+    />
+  );
+};
+
+const InputSelectApartament = ({
+  userId,
+  control,
+}: {
+  userId: number;
+  control: Control<IReservationsFormProps>;
+}) => {
+  const { data, isFetching } = useFindManyApartment({
+    filters: {
+      userId,
+    },
+  });
+  const optionsApartment = useMemo(
+    () =>
+      data?.data?.map((apartament) => ({
+        label: apartament.name,
+        value: apartament.id,
+      })) || [],
+    [isFetching]
+  );
+
+  return (
+    <InputSelect
+      control={control}
+      label="Apartamento"
+      options={optionsApartment}
+      name="apartamentID"
+    />
+  );
+};
+
 export const FormReservation = ({
   register,
   open,
   handleClose,
 }: IFormReservationProps) => {
+  const { validateRole } = usePermissionRole();
+  const { userInfo } = useAuth();
   const { control, handleSubmit, reset } = useForm<IReservationsFormProps>({
-    defaultValues: mapperReservation(register),
+    defaultValues: mapperReservation(register, userInfo),
     resolver: zodResolver(reservationsSchema),
   });
   const { showSnackbar } = useSnackbarStore();
@@ -65,8 +133,6 @@ export const FormReservation = ({
   const submitForm: SubmitHandler<IReservationsFormProps> = (
     values: IReservationsFormProps
   ) => {
-    values.condominiumId = 1;
-    values.apartmentId = 1;
     values.userId = 1;
     values.spaceReservationId = 1;
     values.situation = EnumSituation.ABERTO;
@@ -75,11 +141,8 @@ export const FormReservation = ({
   };
 
   useEffect(() => {
-    reset(mapperReservation(register));
-    return () => {
-      reset(mapperReservation(undefined));
-    };
-  }, [register]);
+    if (open) reset(mapperReservation(register, userInfo));
+  }, [open, userInfo]);
 
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -102,22 +165,22 @@ export const FormReservation = ({
                 />
               </Grid>
             )}
-            <Grid item xs={6}>
-              <InputSelect
-                name="spaceReservationId"
-                control={control}
-                label="Local"
-                options={[
-                  { label: 'Salão de Festas - 2º andar', value: 1 },
-                  { label: 'Salão de Festas - Terreo', value: 2 },
-                  { label: 'Piscina', value: 3 },
-                  { label: 'Churrasqueira - 1', value: 4 },
-                  { label: 'Churrasqueira - 2', value: 5 },
-                  { label: 'Churrasqueira - 3', value: 6 },
-                  { label: 'Churrasqueira - 4', value: 7 },
-                ]}
-              />
-            </Grid>
+            {typeof userInfo?.userId === 'number' && (
+              <Grid item xs={6}>
+                <InputSelectCondomium
+                  userId={userInfo.userId as number}
+                  control={control}
+                />
+              </Grid>
+            )}
+            {typeof userInfo?.userId === 'number' && (
+              <Grid item xs={6}>
+                <InputSelectApartament
+                  userId={userInfo.userId as number}
+                  control={control}
+                />
+              </Grid>
+            )}
 
             <Grid item xs={6}>
               <InputDateTime
@@ -150,14 +213,7 @@ export const FormReservation = ({
           </Grid>
           <Grid item xs={12}>
             <Stack justifyContent={'flex-end'} direction={'row'}>
-              <Button
-                onClick={() => {
-                  handleClose();
-                  reset(mapperReservation(undefined));
-                }}
-              >
-                Voltar
-              </Button>
+              <Button onClick={() => handleClose()}>Voltar</Button>
               <Button type="submit" color="success">
                 Adicionar
               </Button>

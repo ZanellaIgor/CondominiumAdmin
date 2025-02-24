@@ -13,11 +13,12 @@ export const reservationsSchema = z.object({
   created_at: z.string().optional(),
   dateReservation: z.date().optional(),
   spaceReservationId: z.number(),
+  apartmentId: z.number(),
+  condominiumId: z.number(),
+  userId: z.number().optional(),
 });
 
 export type IReservationsFormProps = z.infer<typeof reservationsSchema> & {
-  apartmentId: number;
-  condominiumId: number;
   userId: number;
   status: boolean;
 };

@@ -11,6 +11,7 @@ import {
 interface IFiltersApartment {
   condominiumIds?: number[];
   name?: string;
+  userId?: number;
 }
 interface IGetApartmentParams {
   page: number;

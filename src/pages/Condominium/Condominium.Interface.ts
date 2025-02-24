@@ -14,7 +14,7 @@ export interface ICondominiumDataProps {
 
 export const columnsCondominium: IColumns[] = [
   {
-    label: 'Condominio',
+    label: 'Condomínio',
     value: 'name',
   },
 ];

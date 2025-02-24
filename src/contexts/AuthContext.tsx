@@ -3,7 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 import React, { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-type IUser = {
+export type IUser = {
   email: string;
   name: string;
   userId: number;

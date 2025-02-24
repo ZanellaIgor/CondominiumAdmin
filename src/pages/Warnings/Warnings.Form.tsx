@@ -55,7 +55,7 @@ const InputSelectCondomium = ({
   return (
     <InputSelect
       control={control}
-      label="Condominio"
+      label="Condomínio"
       options={optionsCondominium}
       name="condominiumId"
     />

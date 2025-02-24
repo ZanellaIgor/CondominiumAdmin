@@ -1,10 +1,12 @@
 import { ChipProps } from '@mui/material/Chip';
+import { IUser } from '@src/contexts/AuthContext';
 import { EnumSituationReservation } from '@src/utils/enum/situationReservation.enum';
 import { IReservationsFormProps } from './Reservation.Schema';
 
 export function mapperReservation(
-  data: Partial<IReservationsFormProps> | undefined
-) {
+  data: Partial<IReservationsFormProps> | undefined,
+  userInfo: IUser | undefined
+): Partial<IReservationsFormProps> {
   data = {
     id: data?.id ?? undefined,
     title: data?.title ?? '',
@@ -16,6 +18,9 @@ export function mapperReservation(
       : undefined,
     spaceReservationId: data?.spaceReservationId ?? undefined,
     status: data?.status ?? true,
+    userId: data?.userId ?? userInfo?.userId,
+    condominiumId: data?.condominiumId ?? userInfo?.condominiumIds[0],
+    apartmentId: data?.apartmentId ?? userInfo?.apartmentIds[0],
   };
 
   return data;
