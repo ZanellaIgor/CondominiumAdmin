@@ -30,7 +30,7 @@ export function warningChipTableSituation(value: EnumSituation | undefined): {
     case EnumSituation.REABERTO:
       return { label: 'Reaberto', color: 'warning' };
     case EnumSituation.ANALISE:
-      return { label: 'Reaberto', color: 'secondary' };
+      return { label: 'Análise', color: 'secondary' };
     case EnumSituation.SUSPENSO:
       return { label: 'Suspenso', color: 'error' };
     default:

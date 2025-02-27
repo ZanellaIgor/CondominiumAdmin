@@ -8,10 +8,7 @@ export function mapperReservation(
   userInfo: IUser | undefined
 ): Partial<IReservationsFormProps> {
   data = {
-    id: data?.id ?? undefined,
     title: data?.title ?? '',
-    situation: data?.situation ?? '',
-    dateReservation: data?.dateReservation ?? new Date(),
     endDateTime: data?.endDateTime ? new Date(data?.endDateTime) : undefined,
     startDateTime: data?.startDateTime
       ? new Date(data?.startDateTime)
@@ -20,7 +17,6 @@ export function mapperReservation(
     status: data?.status ?? true,
     userId: data?.userId ?? userInfo?.userId,
     condominiumId: data?.condominiumId ?? userInfo?.condominiumIds[0],
-    apartmentId: data?.apartmentId ?? userInfo?.apartmentIds[0],
   };
 
   return data;

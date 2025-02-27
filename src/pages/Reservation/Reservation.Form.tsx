@@ -9,14 +9,12 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { InputDateTime } from '@src/components/Inputs/InputDateTime/InputDateTime';
-import { usePermissionRole } from '@src/hooks/permission/use-permission-role';
-import { useFindManyApartment } from '@src/hooks/queries/useApartment';
 import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
+import { useFindManySpaceReservation } from '@src/hooks/queries/useSpaceReservation';
 import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
 import { useAuth } from '@src/hooks/useAuth';
 import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
-import { EnumSituation } from '@src/utils/enum/situation.enum';
 import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
 import { optionsSituationReservation } from '@src/utils/options/situationReservation.options';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -35,6 +33,40 @@ type IFormReservationProps = {
   handleClose: () => void;
 };
 
+const InputSelectSpaceReservation = ({
+  condominiumId,
+  control,
+  disabled,
+}: {
+  condominiumId: number;
+  control: Control<IReservationsFormProps>;
+  disabled: boolean;
+}) => {
+  const { data } = useFindManySpaceReservation({
+    filters: {
+      condominiumId: condominiumId,
+    },
+  });
+  const optionsSpaceReservation = useMemo(
+    () =>
+      data?.data?.map((spaceReservation) => ({
+        label: spaceReservation.name,
+        value: spaceReservation.id,
+      })) || [],
+    [data]
+  );
+
+  return (
+    <InputSelect
+      control={control}
+      label="Espaço Reservado"
+      options={optionsSpaceReservation}
+      name="spaceReservationId"
+      disabled={disabled}
+    />
+  );
+};
+
 const InputSelectCondomium = ({
   userId,
   control,
@@ -42,7 +74,7 @@ const InputSelectCondomium = ({
   userId: number;
   control: Control<IReservationsFormProps>;
 }) => {
-  const { data, isFetching } = useFindManyCondominium({
+  const { data } = useFindManyCondominium({
     filters: {
       userId,
     },
@@ -53,7 +85,7 @@ const InputSelectCondomium = ({
         label: condominium.name,
         value: condominium.id,
       })) || [],
-    [isFetching]
+    [data]
   );
 
   return (
@@ -66,16 +98,18 @@ const InputSelectCondomium = ({
   );
 };
 
-const InputSelectApartament = ({
-  userId,
+/* const InputSelectApartament = ({
+  condominiumId,
   control,
+  disabled,
 }: {
-  userId: number;
+  condominiumId: number;
   control: Control<IReservationsFormProps>;
+  disabled?: boolean;
 }) => {
-  const { data, isFetching } = useFindManyApartment({
+  const { data } = useFindManyApartment({
     filters: {
-      userId,
+      condominiumIds: [condominiumId],
     },
   });
   const optionsApartment = useMemo(
@@ -84,7 +118,7 @@ const InputSelectApartament = ({
         label: apartament.name,
         value: apartament.id,
       })) || [],
-    [isFetching]
+    [data]
   );
 
   return (
@@ -92,27 +126,34 @@ const InputSelectApartament = ({
       control={control}
       label="Apartamento"
       options={optionsApartment}
-      name="apartamentID"
+      name="apartmentId"
+      disabled={disabled}
     />
   );
-};
+}; */
 
 export const FormReservation = ({
   register,
   open,
   handleClose,
 }: IFormReservationProps) => {
-  const { validateRole } = usePermissionRole();
   const { userInfo } = useAuth();
-  const { control, handleSubmit, reset } = useForm<IReservationsFormProps>({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm<IReservationsFormProps>({
     defaultValues: mapperReservation(register, userInfo),
     resolver: zodResolver(reservationsSchema),
   });
+  console.log(errors);
   const { showSnackbar } = useSnackbarStore();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async (values: IReservationsFormProps) => {
-      const response = values.id
+      const response = register?.id
         ? await api.patch(`/reservation/${values.id}`, values)
         : await api.post('/reservation', values);
       return response.data;
@@ -133,10 +174,6 @@ export const FormReservation = ({
   const submitForm: SubmitHandler<IReservationsFormProps> = (
     values: IReservationsFormProps
   ) => {
-    values.userId = 1;
-    values.spaceReservationId = 1;
-    values.situation = EnumSituation.ABERTO;
-
     mutation.mutate(values);
   };
 
@@ -173,15 +210,16 @@ export const FormReservation = ({
                 />
               </Grid>
             )}
+
             {typeof userInfo?.userId === 'number' && (
               <Grid item xs={6}>
-                <InputSelectApartament
-                  userId={userInfo.userId as number}
+                <InputSelectSpaceReservation
+                  condominiumId={Number(watch('condominiumId'))}
                   control={control}
+                  disabled={!watch('condominiumId')}
                 />
               </Grid>
             )}
-
             <Grid item xs={6}>
               <InputDateTime
                 name="startDateTime"

@@ -15,6 +15,7 @@ type InputSelectProps = {
   options: OptionType[] | [];
   isLoading?: boolean;
   multiple?: boolean;
+  disabled?: boolean;
   onInputChange?: (
     event: React.SyntheticEvent<Element, Event> | null,
     value: string
@@ -36,6 +37,7 @@ export const InputSelect = forwardRef(
       isLoading,
       multiple = false,
       onChange,
+      disabled = false,
       ...rest
     }: InputSelectProps,
     ref
@@ -60,6 +62,7 @@ export const InputSelect = forwardRef(
                 return option.value === value?.value;
               }}
               fullWidth
+              disabled={disabled}
               getOptionLabel={(option) => option.label}
               value={currentValue}
               onChange={(_, newValue) => {
