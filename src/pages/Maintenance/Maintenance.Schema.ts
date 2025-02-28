@@ -7,6 +7,7 @@ export const maintenanceSchema = z.object({
   description: z.string(),
   situation: z.nativeEnum(EnumSituation),
   category: z.nativeEnum(EnumCategory),
+  condominiumId: z.number().optional(),
 });
 
 export type IMaintenanceFormProps = z.infer<typeof maintenanceSchema>;

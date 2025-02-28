@@ -7,7 +7,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
+import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
 import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
+import { useAuth } from '@src/hooks/useAuth';
 import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
 import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
@@ -15,8 +17,8 @@ import { optionsCategory } from '@src/utils/options/category.options';
 import { optionsSituation } from '@src/utils/options/situation.options';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useEffect, useMemo } from 'react';
+import { Control, SubmitHandler, useForm } from 'react-hook-form';
 import { mapperMaintenance } from './Maintenance.Functions';
 import { IMaintenanceDataProps } from './Maintenance.Inteface';
 import { IMaintenanceFormProps, maintenanceSchema } from './Maintenance.Schema';
@@ -27,11 +29,43 @@ type IFormMaintenanceProps = {
   handleClose: () => void;
 };
 
+const InputSelectCondomium = ({
+  userId,
+  control,
+}: {
+  userId: number;
+  control: Control<IMaintenanceFormProps>;
+}) => {
+  const { data, isFetching } = useFindManyCondominium({
+    filters: {
+      userId,
+    },
+  });
+  const optionsCondominium = useMemo(
+    () =>
+      data?.data?.map((condominium) => ({
+        label: condominium.name,
+        value: condominium.id,
+      })) || [],
+    [isFetching]
+  );
+
+  return (
+    <InputSelect
+      control={control}
+      label="Condomínio"
+      options={optionsCondominium}
+      name="condominiumId"
+    />
+  );
+};
+
 export const FormMaintenance = ({
   register,
   open,
   handleClose,
 }: IFormMaintenanceProps) => {
+  const { userInfo } = useAuth();
   const { control, handleSubmit, reset } = useForm<IMaintenanceFormProps>({
     defaultValues: mapperMaintenance(register),
     resolver: zodResolver(maintenanceSchema),
@@ -99,7 +133,15 @@ export const FormMaintenance = ({
                 options={optionsCategory}
               />
             </Grid>
-            <Grid item xs={6}>
+            {typeof userInfo?.userId === 'number' && (
+              <Grid item xs={6}>
+                <InputSelectCondomium
+                  control={control}
+                  userId={userInfo.userId}
+                />
+              </Grid>
+            )}
+            <Grid item xs={12}>
               <InputField
                 name="description"
                 control={control}
