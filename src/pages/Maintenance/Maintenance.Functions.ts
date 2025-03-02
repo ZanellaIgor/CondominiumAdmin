@@ -12,6 +12,7 @@ export function mapperMaintenance(
     description: data?.description ?? '',
     situation: data?.situation ?? EnumSituation.ABERTO,
     category: data?.category ?? EnumCategory.MEDIA,
+    condominiumId: data?.condominiumId,
   };
   return newValues;
 }

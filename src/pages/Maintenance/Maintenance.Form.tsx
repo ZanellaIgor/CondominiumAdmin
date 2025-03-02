@@ -7,11 +7,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
+import { usePermissionRole } from '@src/hooks/permission/use-permission-role';
 import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
 import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
 import { useAuth } from '@src/hooks/useAuth';
 import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
+import { EnumRoles } from '@src/utils/enum/role.enum';
 import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
 import { optionsCategory } from '@src/utils/options/category.options';
 import { optionsSituation } from '@src/utils/options/situation.options';
@@ -65,6 +67,7 @@ export const FormMaintenance = ({
   open,
   handleClose,
 }: IFormMaintenanceProps) => {
+  const { validateRole } = usePermissionRole();
   const { userInfo } = useAuth();
   const { control, handleSubmit, reset } = useForm<IMaintenanceFormProps>({
     defaultValues: mapperMaintenance(register),
@@ -133,14 +136,15 @@ export const FormMaintenance = ({
                 options={optionsCategory}
               />
             </Grid>
-            {typeof userInfo?.userId === 'number' && (
-              <Grid item xs={6}>
-                <InputSelectCondomium
-                  control={control}
-                  userId={userInfo.userId}
-                />
-              </Grid>
-            )}
+            {typeof userInfo?.userId === 'number' &&
+              validateRole([EnumRoles.ADMIN, EnumRoles.MASTER]) && (
+                <Grid item xs={6}>
+                  <InputSelectCondomium
+                    control={control}
+                    userId={userInfo.userId}
+                  />
+                </Grid>
+              )}
             <Grid item xs={12}>
               <InputField
                 name="description"

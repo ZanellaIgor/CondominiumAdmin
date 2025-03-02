@@ -20,7 +20,6 @@ import {
 
 export default function MaintenancePage() {
   const [page, setPage] = useState(1);
-
   const [register, setRegister] = useState<IMaintenanceDataProps | null>(null);
   const [openModal, setOpenModal] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
@@ -90,7 +89,7 @@ export default function MaintenancePage() {
           <DataTable
             columns={columnsMaintenance}
             register={registerMaintenance}
-            actions={(reg) => (
+            actions={(reg: IMaintenanceDataProps) => (
               <ActionsOptions handleEdit={handleEdit} item={reg} />
             )}
           />
