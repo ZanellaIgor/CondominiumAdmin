@@ -138,17 +138,12 @@ export const FormReservation = ({
   handleClose,
 }: IFormReservationProps) => {
   const { userInfo } = useAuth();
-  const {
-    control,
-    handleSubmit,
-    reset,
-    watch,
-    formState: { errors },
-  } = useForm<IReservationsFormProps>({
-    defaultValues: mapperReservation(register, userInfo),
-    resolver: zodResolver(reservationsSchema),
-  });
-  console.log(errors);
+  const { control, handleSubmit, reset, watch } =
+    useForm<IReservationsFormProps>({
+      defaultValues: mapperReservation(register, userInfo),
+      resolver: zodResolver(reservationsSchema),
+    });
+
   const { showSnackbar } = useSnackbarStore();
   const queryClient = useQueryClient();
   const mutation = useMutation({

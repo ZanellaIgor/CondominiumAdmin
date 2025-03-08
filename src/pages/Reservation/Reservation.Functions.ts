@@ -16,7 +16,7 @@ export function mapperReservation(
     spaceReservationId: data?.spaceReservationId ?? undefined,
     status: data?.status ?? true,
     userId: data?.userId ?? userInfo?.userId,
-    condominiumId: data?.condominiumId ?? userInfo?.condominiumIds[0],
+    condominiumId: data?.condominiumId ?? userInfo?.condominiumIds?.[0],
   };
 
   return data;

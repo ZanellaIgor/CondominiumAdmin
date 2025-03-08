@@ -20,7 +20,7 @@ import { z } from 'zod';
 import { ILoginFormProps, LoginSchema } from './Login.Schema';
 
 export default function Login() {
-  const { setIsAuthenticated, setUserInfo } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const { showSnackbar } = useSnackbarStore();
   const [showPassword, setShowPassword] = useState(false);
@@ -91,8 +91,7 @@ export default function Login() {
     onSuccess: async (data: any) => {
       localStorage.setItem('token', data.acess_token);
 
-      setIsAuthenticated(true);
-      setUserInfo(data.acess_token);
+      login(data.acess_token);
       navigate('/');
     },
   });

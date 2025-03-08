@@ -30,15 +30,12 @@ export default function SurveyAnswer() {
 
   const { data, isFetching } = useFindOneSurvey(Number(id));
 
-  const { control, handleSubmit, formState, watch, reset } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     defaultValues: mapperAnswer(data, Number(id)),
     resolver: zodResolver(answerSchema),
   });
 
   const { showSnackbar } = useSnackbarStore();
-
-  console.log(formState.errors, 'erros');
-  console.log(watch(), 'watch');
 
   const mutation = useMutation({
     mutationFn: async (formData: any) => {
@@ -47,7 +44,6 @@ export default function SurveyAnswer() {
   });
 
   const submitForm = (formData: any) => {
-    console.log('teste', formData);
     const payload = {
       surveyId: Number(id),
       answers: formData.questions.map((question: any) => {
