@@ -135,15 +135,14 @@ export const FormWarning = ({
               </Grid>
             )}
 
-            {validateRole([EnumRoles.ADMIN, EnumRoles.MASTER]) &&
-              typeof userInfo?.userId === 'number' && (
-                <Grid item xs={6}>
-                  <InputSelectCondomium
-                    userId={userInfo.userId as number}
-                    control={control}
-                  />
-                </Grid>
-              )}
+            {validateRole([EnumRoles.ADMIN, EnumRoles.MASTER]) && (
+              <Grid item xs={6}>
+                <InputSelectCondomium
+                  userId={userInfo?.userId as number}
+                  control={control}
+                />
+              </Grid>
+            )}
             <Grid item xs={12}>
               <InputField
                 name="description"

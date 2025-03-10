@@ -9,18 +9,19 @@ import Stack from '@mui/material/Stack';
 import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions';
 import { DataTable } from '@src/components/Common/DataTable/DataTable';
 import { Error } from '@src/components/Common/Error/Error';
-import { usePermissionRole } from '@src/hooks/permission/use-permission-role';
 import { useFindManyWarnings } from '@src/hooks/queries/useWarning';
-import { EnumRoles } from '@src/utils/enum/role.enum';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
+import { usePermissionWargings } from './hooks/usePermissionWargings';
+import { WarningsView } from './Wanings.View';
 import { FilterWarning } from './Warnings.Filter';
 import { FormWarning } from './Warnings.Form';
 import { columnsWarning, IWarningPageDataProps } from './Warnings.Interface';
 
 export default function WarningsPage() {
-  const { validateRole } = usePermissionRole();
+  const { validadeUpdateWarning } = usePermissionWargings();
   const [openModal, setOpenModal] = useState(false);
+  const [openModalView, setOpenModalView] = useState(false);
   const [register, setRegister] = useState<IWarningPageDataProps | undefined>();
   const [page, setPage] = useState(1);
   const [openFilter, setOpenFilter] = useState(false);
@@ -37,6 +38,19 @@ export default function WarningsPage() {
     setOpenModal(true);
   };
 
+  const handleView = (warning: IWarningPageDataProps) => {
+    console.log(warning);
+    setRegister(warning);
+    setOpenModalView(true);
+  };
+
+  const handleCloseAllModal = () => {
+    setOpenFilter(false);
+    setOpenModal(false);
+    setOpenModalView(false);
+    setRegister(undefined);
+  };
+
   if (error) return <Error />;
 
   return (
@@ -44,16 +58,23 @@ export default function WarningsPage() {
       {openModal && (
         <FormWarning
           open={openModal}
-          handleClose={() => setOpenModal(false)}
+          handleClose={handleCloseAllModal}
           register={register}
         />
       )}
       {openFilter && (
         <FilterWarning
-          handleClose={() => setOpenFilter(false)}
+          handleClose={handleCloseAllModal}
           open={openFilter}
           setValuesFilter={setValuesFilter}
           valuesFilter={valuesFilter}
+        />
+      )}
+      {register && (
+        <WarningsView
+          open={openModalView}
+          handleClose={handleCloseAllModal}
+          register={register}
         />
       )}
       <Card
@@ -99,11 +120,22 @@ export default function WarningsPage() {
             columns={columnsWarning}
             register={registerWarnings}
             loading={isFetching}
-            {...(validateRole([EnumRoles.ADMIN, EnumRoles.MASTER]) && {
+            {...{
               actions: (reg: IWarningPageDataProps) => (
-                <ActionsOptions handleEdit={handleEdit} item={reg} />
+                <ActionsOptions
+                  handleEdit={
+                    validadeUpdateWarning({
+                      userId: reg.userId,
+                      statusWarning: reg.situation,
+                    })
+                      ? handleEdit
+                      : undefined
+                  }
+                  handleView={handleView}
+                  item={reg}
+                />
               ),
-            })}
+            }}
           />
         </CardContent>
       </Card>

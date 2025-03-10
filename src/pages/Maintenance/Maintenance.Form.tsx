@@ -136,15 +136,14 @@ export const FormMaintenance = ({
                 options={optionsCategory}
               />
             </Grid>
-            {typeof userInfo?.userId === 'number' &&
-              validateRole([EnumRoles.ADMIN, EnumRoles.MASTER]) && (
-                <Grid item xs={6}>
-                  <InputSelectCondomium
-                    control={control}
-                    userId={userInfo.userId}
-                  />
-                </Grid>
-              )}
+            {validateRole([EnumRoles.ADMIN, EnumRoles.MASTER]) && (
+              <Grid item xs={6}>
+                <InputSelectCondomium
+                  control={control}
+                  userId={userInfo?.userId as number}
+                />
+              </Grid>
+            )}
             <Grid item xs={12}>
               <InputField
                 name="description"

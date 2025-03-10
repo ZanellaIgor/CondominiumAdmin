@@ -1,4 +1,4 @@
-import { Delete, Edit } from '@mui/icons-material';
+import { Delete, Edit, Visibility } from '@mui/icons-material';
 import IconButton from '@mui/material/IconButton';
 import TableCell from '@mui/material/TableCell';
 import Tooltip from '@mui/material/Tooltip';
@@ -6,6 +6,7 @@ import Tooltip from '@mui/material/Tooltip';
 interface IActionsOptionsProps<T> {
   handleDelete?: (item: T) => void;
   handleEdit?: (item: T) => void;
+  handleView?: (item: T) => void;
   item: T;
   custom?: () => JSX.Element;
 }
@@ -13,6 +14,7 @@ interface IActionsOptionsProps<T> {
 export const ActionsOptions = <T,>({
   handleDelete,
   handleEdit,
+  handleView,
   item,
   custom,
 }: IActionsOptionsProps<T>) => {
@@ -27,8 +29,23 @@ export const ActionsOptions = <T,>({
       )}
       {handleDelete && (
         <Tooltip title="Deletar Item" arrow>
-          <IconButton color="inherit" size="small">
+          <IconButton
+            color="inherit"
+            size="small"
+            onClick={() => handleDelete(item)}
+          >
             <Delete />
+          </IconButton>
+        </Tooltip>
+      )}
+      {handleView && (
+        <Tooltip title="Visualizar Item" arrow>
+          <IconButton
+            color="inherit"
+            size="small"
+            onClick={() => handleView(item)}
+          >
+            <Visibility />
           </IconButton>
         </Tooltip>
       )}

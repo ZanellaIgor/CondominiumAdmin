@@ -21,6 +21,7 @@ export interface IWarningPageDataProps {
   category: EnumCategory;
   userId: number;
   condominiumId: number;
+  condominium: { id: number; name: string };
 }
 
 export const columnsWarning: IColumns[] = [
