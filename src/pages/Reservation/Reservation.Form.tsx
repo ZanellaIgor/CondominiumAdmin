@@ -22,13 +22,14 @@ import { AxiosError } from 'axios';
 import { useEffect, useMemo } from 'react';
 import { Control, SubmitHandler, useForm } from 'react-hook-form';
 import { mapperReservation } from './Reservation.Functions';
+import { IReservationDataProps } from './Reservation.Interface';
 import {
   IReservationsFormProps,
   reservationsSchema,
 } from './Reservation.Schema';
 
 type IFormReservationProps = {
-  register: IReservationsFormProps | undefined;
+  register: IReservationDataProps | undefined;
   open: boolean;
   handleClose: () => void;
 };
@@ -97,40 +98,6 @@ const InputSelectCondomium = ({
     />
   );
 };
-
-/* const InputSelectApartament = ({
-  condominiumId,
-  control,
-  disabled,
-}: {
-  condominiumId: number;
-  control: Control<IReservationsFormProps>;
-  disabled?: boolean;
-}) => {
-  const { data } = useFindManyApartment({
-    filters: {
-      condominiumIds: [condominiumId],
-    },
-  });
-  const optionsApartment = useMemo(
-    () =>
-      data?.data?.map((apartament) => ({
-        label: apartament.name,
-        value: apartament.id,
-      })) || [],
-    [data]
-  );
-
-  return (
-    <InputSelect
-      control={control}
-      label="Apartamento"
-      options={optionsApartment}
-      name="apartmentId"
-      disabled={disabled}
-    />
-  );
-}; */
 
 export const FormReservation = ({
   register,

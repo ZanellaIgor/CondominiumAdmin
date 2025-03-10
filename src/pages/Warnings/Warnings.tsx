@@ -26,7 +26,7 @@ export default function WarningsPage() {
   const [page, setPage] = useState(1);
   const [openFilter, setOpenFilter] = useState(false);
   const [valuesFilter, setValuesFilter] = useState<Record<string, any>>();
-  const { data, isFetching, error } = useFindManyWarnings({
+  const { data, isLoading, error } = useFindManyWarnings({
     page,
     filters: valuesFilter,
   });
@@ -39,7 +39,6 @@ export default function WarningsPage() {
   };
 
   const handleView = (warning: IWarningPageDataProps) => {
-    console.log(warning);
     setRegister(warning);
     setOpenModalView(true);
   };
@@ -119,7 +118,7 @@ export default function WarningsPage() {
           <DataTable
             columns={columnsWarning}
             register={registerWarnings}
-            loading={isFetching}
+            loading={isLoading}
             {...{
               actions: (reg: IWarningPageDataProps) => (
                 <ActionsOptions

@@ -15,24 +15,43 @@ import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
 import { FilterReservation } from './Reservation.Filter';
 import { FormReservation } from './Reservation.Form';
-import { columnsReservation } from './Reservation.Interface';
+import {
+  columnsReservation,
+  IReservationDataProps,
+} from './Reservation.Interface';
+import { ReservationView } from './Reservation.View';
+import { usePermissionReservation } from './hooks/usePermissionReservation';
 
 export default function ReservationsPage() {
-  const [register, setRegister] = useState();
+  const { validadeUpdateReservation } = usePermissionReservation();
+  const [register, setRegister] = useState<IReservationDataProps>();
   const [openModal, setOpenModal] = useState(false);
   const [page, setPage] = useState(1);
   const [openFilter, setOpenFilter] = useState(false);
+  const [openModalView, setOpenModalView] = useState(false);
   const [valuesFilter, setValuesFilter] = useState<Record<string, any>>();
-  const { data, isFetching, error } = useFindManyReservation({
+  const { data, isLoading, error } = useFindManyReservation({
     page,
     filters: valuesFilter,
   });
 
   const registerSpaceReservation = data?.data;
 
-  const handleEdit = (reservation: any) => {
+  const handleEdit = (reservation: IReservationDataProps) => {
     setRegister(reservation);
     setOpenModal(true);
+  };
+
+  const handleCloseAllModal = () => {
+    setOpenFilter(false);
+    setOpenModal(false);
+    setOpenModalView(false);
+    setRegister(undefined);
+  };
+
+  const handleView = (warning: IReservationDataProps) => {
+    setRegister(warning);
+    setOpenModalView(true);
   };
 
   if (error) return <Error />;
@@ -50,6 +69,13 @@ export default function ReservationsPage() {
           open={openFilter}
           setValuesFilter={setValuesFilter}
           valuesFilter={valuesFilter}
+        />
+      )}
+      {register && (
+        <ReservationView
+          open={openModalView}
+          handleClose={handleCloseAllModal}
+          register={register}
         />
       )}
       <Card
@@ -94,9 +120,20 @@ export default function ReservationsPage() {
           <DataTable
             columns={columnsReservation}
             register={registerSpaceReservation}
-            loading={isFetching}
-            actions={(reg) => (
-              <ActionsOptions handleEdit={handleEdit} item={reg} />
+            loading={isLoading}
+            actions={(reg: IReservationDataProps) => (
+              <ActionsOptions
+                handleEdit={
+                  validadeUpdateReservation({
+                    userId: reg.userId,
+                    statusReservation: reg.situation,
+                  })
+                    ? handleEdit
+                    : undefined
+                }
+                handleView={handleView}
+                item={reg}
+              />
             )}
           />
         </CardContent>
