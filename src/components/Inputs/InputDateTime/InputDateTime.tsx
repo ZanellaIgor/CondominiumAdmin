@@ -6,10 +6,11 @@ type InputFieldProps = {
   name: string;
   label: string;
   control: Control<any>;
+  disabled?: boolean;
 };
 
 export const InputDateTime = React.forwardRef<HTMLDivElement, InputFieldProps>(
-  ({ name, control, label, ...rest }, ref) => {
+  ({ name, control, label, disabled = false, ...rest }, ref) => {
     return (
       <Controller
         name={name}
@@ -23,6 +24,7 @@ export const InputDateTime = React.forwardRef<HTMLDivElement, InputFieldProps>(
               {...rest}
               value={value ? new Date(value) : null}
               label={label}
+              disabled={disabled}
               onChange={onChange}
               slotProps={{
                 textField: {

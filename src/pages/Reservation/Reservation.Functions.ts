@@ -17,6 +17,7 @@ export function mapperReservation(
     status: data?.status ?? true,
     userId: data?.userId ?? userInfo?.userId,
     condominiumId: data?.condominiumId ?? userInfo?.condominiumIds?.[0],
+    situation: data?.situation,
   };
 
   return data;

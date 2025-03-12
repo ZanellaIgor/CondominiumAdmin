@@ -9,12 +9,14 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { InputDateTime } from '@src/components/Inputs/InputDateTime/InputDateTime';
+import { usePermissionRole } from '@src/hooks/permission/use-permission-role';
 import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
 import { useFindManySpaceReservation } from '@src/hooks/queries/useSpaceReservation';
 import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
 import { useAuth } from '@src/hooks/useAuth';
 import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
+import { EnumRoles } from '@src/utils/enum/role.enum';
 import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
 import { optionsSituationReservation } from '@src/utils/options/situationReservation.options';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -71,9 +73,11 @@ const InputSelectSpaceReservation = ({
 const InputSelectCondomium = ({
   userId,
   control,
+  disabled,
 }: {
   userId: number;
   control: Control<IReservationsFormProps>;
+  disabled: boolean;
 }) => {
   const { data } = useFindManyCondominium({
     filters: {
@@ -95,6 +99,7 @@ const InputSelectCondomium = ({
       label="Condomínio"
       options={optionsCondominium}
       name="condominiumId"
+      disabled={disabled}
     />
   );
 };
@@ -105,18 +110,23 @@ export const FormReservation = ({
   handleClose,
 }: IFormReservationProps) => {
   const { userInfo } = useAuth();
+  const { validateRole } = usePermissionRole();
   const { control, handleSubmit, reset, watch } =
     useForm<IReservationsFormProps>({
       defaultValues: mapperReservation(register, userInfo),
       resolver: zodResolver(reservationsSchema),
     });
+  const editForm = !!register?.id;
 
   const { showSnackbar } = useSnackbarStore();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async (values: IReservationsFormProps) => {
-      const response = register?.id
-        ? await api.patch(`/reservation/${values.id}`, values)
+      const response = editForm
+        ? await api.patch(`/reservation/${values.id}`, {
+            situation: values.situation,
+            status: values.status,
+          })
         : await api.post('/reservation', values);
       return response.data;
     },
@@ -152,9 +162,14 @@ export const FormReservation = ({
         <form noValidate onSubmit={handleSubmit(submitForm)}>
           <Grid container spacing={2} padding={1}>
             <Grid item xs={6}>
-              <InputField name="title" control={control} label="Título" />
+              <InputField
+                name="title"
+                control={control}
+                label="Título"
+                disabled={editForm}
+              />
             </Grid>
-            {register?.id && (
+            {editForm && validateRole([EnumRoles.ADMIN, EnumRoles.MASTER]) && (
               <Grid item xs={6}>
                 <InputSelect
                   name="situation"
@@ -164,29 +179,29 @@ export const FormReservation = ({
                 />
               </Grid>
             )}
-            {typeof userInfo?.userId === 'number' && (
-              <Grid item xs={6}>
-                <InputSelectCondomium
-                  userId={userInfo.userId as number}
-                  control={control}
-                />
-              </Grid>
-            )}
 
-            {typeof userInfo?.userId === 'number' && (
-              <Grid item xs={6}>
-                <InputSelectSpaceReservation
-                  condominiumId={Number(watch('condominiumId'))}
-                  control={control}
-                  disabled={!watch('condominiumId')}
-                />
-              </Grid>
-            )}
+            <Grid item xs={6}>
+              <InputSelectCondomium
+                userId={userInfo?.userId as number}
+                control={control}
+                disabled={editForm}
+              />
+            </Grid>
+
+            <Grid item xs={6}>
+              <InputSelectSpaceReservation
+                condominiumId={Number(watch('condominiumId'))}
+                control={control}
+                disabled={editForm || !watch('condominiumId')}
+              />
+            </Grid>
+
             <Grid item xs={6}>
               <InputDateTime
                 name="startDateTime"
                 control={control}
                 label="Data inicial da reserva"
+                disabled={editForm}
               />
             </Grid>
             <Grid item xs={6}>
@@ -194,6 +209,7 @@ export const FormReservation = ({
                 name="endDateTime"
                 control={control}
                 label="Data final da Reserva"
+                disabled={editForm}
               />
             </Grid>
 
@@ -208,6 +224,7 @@ export const FormReservation = ({
                 label="Descrição"
                 multiline
                 rows={4}
+                disabled={editForm}
               />
             </Grid>
           </Grid>

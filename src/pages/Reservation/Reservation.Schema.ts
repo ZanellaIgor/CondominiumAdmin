@@ -1,3 +1,4 @@
+import { EnumSituationReservation } from '@src/utils/enum/situationReservation.enum';
 import { z } from 'zod';
 
 export const reservationsSchema = z.object({
@@ -16,4 +17,5 @@ export type IReservationsFormProps = z.infer<typeof reservationsSchema> & {
   userId: number;
   id?: number;
   status: boolean;
+  situation: EnumSituationReservation;
 };
