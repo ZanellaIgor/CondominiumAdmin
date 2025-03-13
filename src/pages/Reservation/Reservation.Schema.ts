@@ -11,11 +11,11 @@ export const reservationsSchema = z.object({
   spaceReservationId: z.number(),
   condominiumId: z.number(),
   userId: z.number().optional(),
+  apartmentId: z.number().optional(),
 });
 
 export type IReservationsFormProps = z.infer<typeof reservationsSchema> & {
   userId: number;
   id?: number;
-  status: boolean;
   situation: EnumSituationReservation;
 };

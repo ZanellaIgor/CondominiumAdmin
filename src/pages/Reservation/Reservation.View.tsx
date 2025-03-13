@@ -67,12 +67,20 @@ export const ReservationView = ({
             </Typography>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <Typography variant="subtitle1" color="textSecondary">
               Condomínio
             </Typography>
             <Typography variant="body1" sx={{ mt: 0.5 }}>
               {register.condominium.name}
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="subtitle1" color="textSecondary">
+              Apartamento
+            </Typography>
+            <Typography variant="body1" sx={{ mt: 0.5 }}>
+              {register.apartament.name}
             </Typography>
           </Grid>
 

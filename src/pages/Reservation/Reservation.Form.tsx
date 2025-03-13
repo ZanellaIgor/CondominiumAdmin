@@ -1,6 +1,5 @@
 import { InputField } from '@components/Inputs/InputField/InputField';
 import { InputSelect } from '@components/Inputs/InputSelect/InputSelect';
-import { SwitchField } from '@components/Inputs/SwitchField/SwitchField';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -10,6 +9,7 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { InputDateTime } from '@src/components/Inputs/InputDateTime/InputDateTime';
 import { usePermissionRole } from '@src/hooks/permission/use-permission-role';
+import { useFindManyApartment } from '@src/hooks/queries/useApartment';
 import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
 import { useFindManySpaceReservation } from '@src/hooks/queries/useSpaceReservation';
 import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
@@ -29,6 +29,7 @@ import {
   IReservationsFormProps,
   reservationsSchema,
 } from './Reservation.Schema';
+import { usePermissionReservation } from './hooks/usePermissionReservation';
 
 type IFormReservationProps = {
   register: IReservationDataProps | undefined;
@@ -104,6 +105,40 @@ const InputSelectCondomium = ({
   );
 };
 
+const InputSelectApartament = ({
+  condominiumId,
+  control,
+  disabled,
+}: {
+  control: Control<IReservationsFormProps>;
+  disabled: boolean;
+  condominiumId: number;
+}) => {
+  const { data } = useFindManyApartment({
+    filters: {
+      condominiumIds: [condominiumId],
+    },
+  });
+  const optionsApartament = useMemo(
+    () =>
+      data?.data?.map((apartament) => ({
+        label: apartament.name,
+        value: apartament.id,
+      })) || [],
+    [data]
+  );
+
+  return (
+    <InputSelect
+      control={control}
+      label="Apartamento"
+      options={optionsApartament}
+      name="apartmentId"
+      disabled={disabled}
+    />
+  );
+};
+
 export const FormReservation = ({
   register,
   open,
@@ -111,6 +146,7 @@ export const FormReservation = ({
 }: IFormReservationProps) => {
   const { userInfo } = useAuth();
   const { validateRole } = usePermissionRole();
+  const { validadeUpdateReservation } = usePermissionReservation();
   const { control, handleSubmit, reset, watch } =
     useForm<IReservationsFormProps>({
       defaultValues: mapperReservation(register, userInfo),
@@ -125,7 +161,7 @@ export const FormReservation = ({
       const response = editForm
         ? await api.patch(`/reservation/${values.id}`, {
             situation: values.situation,
-            status: values.status,
+            description: values.description,
           })
         : await api.post('/reservation', values);
       return response.data;
@@ -187,6 +223,15 @@ export const FormReservation = ({
                 disabled={editForm}
               />
             </Grid>
+            {validateRole([EnumRoles.ADMIN, EnumRoles.MASTER]) && (
+              <Grid item xs={6}>
+                <InputSelectApartament
+                  condominiumId={Number(watch('condominiumId'))}
+                  control={control}
+                  disabled={editForm || !watch('condominiumId')}
+                />
+              </Grid>
+            )}
 
             <Grid item xs={6}>
               <InputSelectSpaceReservation
@@ -213,10 +258,6 @@ export const FormReservation = ({
               />
             </Grid>
 
-            <Grid item xs={6}>
-              <SwitchField name="status" control={control} label="Ativo" />
-            </Grid>
-
             <Grid item xs={12}>
               <InputField
                 name="description"
@@ -224,7 +265,14 @@ export const FormReservation = ({
                 label="Descrição"
                 multiline
                 rows={4}
-                disabled={editForm}
+                disabled={
+                  editForm
+                    ? !validadeUpdateReservation({
+                        userId: register?.userId as number,
+                        statusReservation: register?.situation,
+                      })
+                    : editForm
+                }
               />
             </Grid>
           </Grid>

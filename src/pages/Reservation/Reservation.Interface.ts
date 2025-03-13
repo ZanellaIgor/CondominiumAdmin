@@ -28,6 +28,7 @@ export interface IReservationDataProps {
   createdAt: Date;
   updatedAt: Date;
   condominium: { id: number; name: string };
+  apartament: { id: number; name: string };
 }
 
 export const columnsReservation: IColumns[] = [

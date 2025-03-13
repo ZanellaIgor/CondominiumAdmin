@@ -99,7 +99,7 @@ export default function ApartmentPage() {
             columns={columnsApartment}
             register={registerApartment}
             loading={isFetching}
-            actions={(reg) => (
+            actions={(reg: IApartmentDataProps) => (
               <ActionsOptions handleEdit={handleEdit} item={reg} />
             )}
           />
