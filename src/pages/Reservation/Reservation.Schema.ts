@@ -12,6 +12,7 @@ export const reservationsSchema = z.object({
   condominiumId: z.number(),
   userId: z.number().optional(),
   apartmentId: z.number().optional(),
+  situation: z.nativeEnum(EnumSituationReservation).optional(),
 });
 
 export type IReservationsFormProps = z.infer<typeof reservationsSchema> & {

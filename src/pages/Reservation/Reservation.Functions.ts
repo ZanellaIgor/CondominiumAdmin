@@ -30,11 +30,13 @@ export function reservationChipTableCategory(
 } {
   switch (value) {
     case EnumSituationReservation.ABERTO:
-      return { label: 'Alta', color: 'primary' };
+      return { label: 'Aberto', color: 'primary' };
     case EnumSituationReservation.ANALISE:
-      return { label: 'Crítica', color: 'warning' };
+      return { label: 'Análise', color: 'warning' };
     case EnumSituationReservation.CONFIRMADO:
-      return { label: 'Média', color: 'success' };
+      return { label: 'Confirmado', color: 'success' };
+    case EnumSituationReservation.REPROVADO:
+      return { label: 'Reprovado', color: 'success' };
 
     default:
       return { label: 'Não informado', color: 'primary' };

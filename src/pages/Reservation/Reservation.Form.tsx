@@ -159,7 +159,7 @@ export const FormReservation = ({
   const mutation = useMutation({
     mutationFn: async (values: IReservationsFormProps) => {
       const response = editForm
-        ? await api.patch(`/reservation/${values.id}`, {
+        ? await api.patch(`/reservation/${register.id}`, {
             situation: values.situation,
             description: values.description,
           })
