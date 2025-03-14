@@ -10,9 +10,9 @@ export function mapperMaintenance(
   const newValues = {
     title: data?.title ?? '',
     description: data?.description ?? '',
-    situation: data?.situation ?? EnumSituation.ABERTO,
+    situation: data?.situation,
     category: data?.category ?? EnumCategory.MEDIA,
-    condominiumId: data?.condominiumId,
+    condominiumId: data?.condominium?.id,
   };
   return newValues;
 }

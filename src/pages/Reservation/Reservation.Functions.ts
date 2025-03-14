@@ -19,6 +19,7 @@ export function mapperReservation(
     condominiumId: data?.condominiumId ?? userInfo?.condominiumIds?.[0],
     situation: data?.situation,
     apartmentId: data?.apartament?.id ?? undefined,
+    description: data?.description ?? '',
   };
 }
 

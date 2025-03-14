@@ -34,9 +34,11 @@ type IFormMaintenanceProps = {
 const InputSelectCondomium = ({
   userId,
   control,
+  disabled,
 }: {
   userId: number;
   control: Control<IMaintenanceFormProps>;
+  disabled: boolean;
 }) => {
   const { data, isFetching } = useFindManyCondominium({
     filters: {
@@ -58,6 +60,7 @@ const InputSelectCondomium = ({
       label="Condomínio"
       options={optionsCondominium}
       name="condominiumId"
+      disabled={disabled}
     />
   );
 };
@@ -69,6 +72,7 @@ export const FormMaintenance = ({
 }: IFormMaintenanceProps) => {
   const { validateRole } = usePermissionRole();
   const { userInfo } = useAuth();
+  const isEdit = !!register?.id;
   const { control, handleSubmit, reset } = useForm<IMaintenanceFormProps>({
     defaultValues: mapperMaintenance(register),
     resolver: zodResolver(maintenanceSchema),
@@ -76,9 +80,13 @@ export const FormMaintenance = ({
   const { showSnackbar } = useSnackbarStore();
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: async (values: any) => {
-      const response = values.id
-        ? await api.patch(`/maintenance/${values.id}`, values)
+    mutationFn: async (values: IMaintenanceFormProps) => {
+      const response = isEdit
+        ? await api.patch(`/maintenance/${register.id}`, {
+            situation: values.situation,
+            description: values.description,
+            category: values.category,
+          })
         : await api.post('/maintenance', values);
       return response.data;
     },
@@ -102,10 +110,7 @@ export const FormMaintenance = ({
   };
 
   useEffect(() => {
-    reset(mapperMaintenance(register));
-    return () => {
-      reset(mapperMaintenance(null));
-    };
+    reset(mapperMaintenance(isEdit ? register : null));
   }, [register]);
 
   return (
@@ -117,17 +122,24 @@ export const FormMaintenance = ({
         <form noValidate onSubmit={handleSubmit(submitForm)}>
           <Grid container spacing={2}>
             <Grid item xs={6}>
-              <InputField name="title" control={control} label="Título" />
-            </Grid>
-
-            <Grid item xs={6}>
-              <InputSelect
-                name="situation"
+              <InputField
+                name="title"
                 control={control}
-                label="Situação"
-                options={optionsSituation}
+                label="Título"
+                disabled={isEdit}
               />
             </Grid>
+
+            {validateRole([EnumRoles.ADMIN, EnumRoles.MASTER]) && isEdit && (
+              <Grid item xs={6}>
+                <InputSelect
+                  name="situation"
+                  control={control}
+                  label="Situação"
+                  options={optionsSituation}
+                />
+              </Grid>
+            )}
             <Grid item xs={6}>
               <InputSelect
                 name="category"
@@ -141,6 +153,7 @@ export const FormMaintenance = ({
                 <InputSelectCondomium
                   control={control}
                   userId={userInfo?.userId as number}
+                  disabled={isEdit}
                 />
               </Grid>
             )}

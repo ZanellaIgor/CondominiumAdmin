@@ -152,13 +152,13 @@ export const FormReservation = ({
       defaultValues: mapperReservation(register, userInfo),
       resolver: zodResolver(reservationsSchema),
     });
-  const editForm = !!register?.id;
+  const isEdit = !!register?.id;
 
   const { showSnackbar } = useSnackbarStore();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async (values: IReservationsFormProps) => {
-      const response = editForm
+      const response = isEdit
         ? await api.patch(`/reservation/${register.id}`, {
             situation: values.situation,
             description: values.description,
@@ -202,10 +202,10 @@ export const FormReservation = ({
                 name="title"
                 control={control}
                 label="Título"
-                disabled={editForm}
+                disabled={isEdit}
               />
             </Grid>
-            {editForm && validateRole([EnumRoles.ADMIN, EnumRoles.MASTER]) && (
+            {isEdit && validateRole([EnumRoles.ADMIN, EnumRoles.MASTER]) && (
               <Grid item xs={6}>
                 <InputSelect
                   name="situation"
@@ -220,7 +220,7 @@ export const FormReservation = ({
               <InputSelectCondomium
                 userId={userInfo?.userId as number}
                 control={control}
-                disabled={editForm}
+                disabled={isEdit}
               />
             </Grid>
             {validateRole([EnumRoles.ADMIN, EnumRoles.MASTER]) && (
@@ -228,7 +228,7 @@ export const FormReservation = ({
                 <InputSelectApartament
                   condominiumId={Number(watch('condominiumId'))}
                   control={control}
-                  disabled={editForm || !watch('condominiumId')}
+                  disabled={isEdit || !watch('condominiumId')}
                 />
               </Grid>
             )}
@@ -237,7 +237,7 @@ export const FormReservation = ({
               <InputSelectSpaceReservation
                 condominiumId={Number(watch('condominiumId'))}
                 control={control}
-                disabled={editForm || !watch('condominiumId')}
+                disabled={isEdit || !watch('condominiumId')}
               />
             </Grid>
 
@@ -246,7 +246,7 @@ export const FormReservation = ({
                 name="startDateTime"
                 control={control}
                 label="Data inicial da reserva"
-                disabled={editForm}
+                disabled={isEdit}
               />
             </Grid>
             <Grid item xs={6}>
@@ -254,7 +254,7 @@ export const FormReservation = ({
                 name="endDateTime"
                 control={control}
                 label="Data final da Reserva"
-                disabled={editForm}
+                disabled={isEdit}
               />
             </Grid>
 
@@ -266,12 +266,12 @@ export const FormReservation = ({
                 multiline
                 rows={4}
                 disabled={
-                  editForm
+                  isEdit
                     ? !validadeUpdateReservation({
                         userId: register?.userId as number,
                         statusReservation: register?.situation,
                       })
-                    : editForm
+                    : isEdit
                 }
               />
             </Grid>

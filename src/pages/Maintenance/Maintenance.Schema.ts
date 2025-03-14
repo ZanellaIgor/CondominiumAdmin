@@ -5,7 +5,7 @@ import { z } from 'zod';
 export const maintenanceSchema = z.object({
   title: z.string(),
   description: z.string(),
-  situation: z.nativeEnum(EnumSituation),
+  situation: z.nativeEnum(EnumSituation).optional(),
   category: z.nativeEnum(EnumCategory),
   condominiumId: z.number().optional(),
 });

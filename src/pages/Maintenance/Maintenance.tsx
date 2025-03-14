@@ -17,14 +17,18 @@ import {
   columnsMaintenance,
   IMaintenanceDataProps,
 } from './Maintenance.Inteface';
+import { MaintenanceView } from './Maintenance.View';
+import { usePermissionMaintenance } from './hooks/usePermissionMaintenance';
 
 export default function MaintenancePage() {
   const [page, setPage] = useState(1);
   const [register, setRegister] = useState<IMaintenanceDataProps | null>(null);
   const [openModal, setOpenModal] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
+  const [openModalView, setOpenModalView] = useState(false);
   const [valuesFilter, setValuesFilter] = useState<Record<string, any>>();
   const { data } = useFindManyMaintenance({ page, filters: valuesFilter });
+  const { validadeUpdateMaintenance } = usePermissionMaintenance();
   const registerMaintenance = data?.data;
 
   const handleEdit = (reservation: IMaintenanceDataProps) => {
@@ -32,11 +36,23 @@ export default function MaintenancePage() {
     setOpenModal(true);
   };
 
+  const handleView = (maintenance: IMaintenanceDataProps) => {
+    setRegister(maintenance);
+    setOpenModalView(true);
+  };
+
+  const handleCloseAllModal = () => {
+    setOpenFilter(false);
+    setOpenModal(false);
+    setOpenModalView(false);
+    setRegister(null);
+  };
+
   return (
     <Box>
       <FormMaintenance
         open={openModal}
-        handleClose={() => setOpenModal(false)}
+        handleClose={handleCloseAllModal}
         register={register}
       />
       {openFilter && (
@@ -45,6 +61,13 @@ export default function MaintenancePage() {
           open={openFilter}
           setValuesFilter={setValuesFilter}
           valuesFilter={valuesFilter}
+        />
+      )}
+      {openModalView && (
+        <MaintenanceView
+          open={openModalView}
+          handleClose={handleCloseAllModal}
+          register={register}
         />
       )}
       <Card
@@ -90,7 +113,18 @@ export default function MaintenancePage() {
             columns={columnsMaintenance}
             register={registerMaintenance}
             actions={(reg: IMaintenanceDataProps) => (
-              <ActionsOptions handleEdit={handleEdit} item={reg} />
+              <ActionsOptions
+                handleEdit={
+                  validadeUpdateMaintenance({
+                    userId: reg.userId,
+                    situation: reg.situation,
+                  })
+                    ? handleEdit
+                    : undefined
+                }
+                handleView={handleView}
+                item={reg}
+              />
             )}
           />
         </CardContent>
