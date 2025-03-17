@@ -118,7 +118,7 @@ export default function SurveyForm() {
     name: 'questions',
   });
 
-  const submitForm = async (data: any) => {
+  const submitForm = async (data: ISurveyForm) => {
     mutation.mutate(data);
   };
 

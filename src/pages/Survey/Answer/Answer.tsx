@@ -14,11 +14,11 @@ import {
   ISurveyByIdProps,
   useFindOneSurvey,
 } from '@src/hooks/queries/useSurveById';
-import { api } from '@src/services/api.service';
-
 import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
+import { api } from '@src/services/api.service';
+import { EnumQueries } from '@src/utils/enum/queries.enum';
 import { EnumQuestionType } from '@src/utils/enum/typeQuestion.enum';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -30,7 +30,7 @@ export default function SurveyAnswer() {
   const {} = useNavigate();
 
   const { data, isFetching } = useFindOneSurvey(Number(id));
-
+  const clientQuery = useQueryClient();
   const { control, handleSubmit, reset } = useForm({
     defaultValues: mapperAnswer(data, Number(id)),
     resolver: zodResolver(answerSchema),
@@ -40,7 +40,9 @@ export default function SurveyAnswer() {
 
   const mutation = useMutation({
     mutationFn: async (formData: any) => {
-      return api.post(`answers`, formData);
+      const response = await api.post(`answers`, formData);
+
+      return response.data;
     },
   });
 
@@ -63,10 +65,14 @@ export default function SurveyAnswer() {
     mutation.mutate(payload, {
       onSuccess: () => {
         showSnackbar('Respostas enviadas com sucesso!', 'success');
+        clientQuery.invalidateQueries({ queryKey: [EnumQueries.SURVEY] });
         navigate('/survey');
       },
-      onError: () => {
-        showSnackbar('Ocorreu um erro ao enviar suas respostas.', 'error');
+      onError: (error: any) => {
+        showSnackbar(
+          error?.response?.data?.message ?? 'Erro não especificado',
+          'error'
+        );
       },
     });
   };
