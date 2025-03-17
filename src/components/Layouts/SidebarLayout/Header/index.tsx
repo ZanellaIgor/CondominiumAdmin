@@ -3,11 +3,8 @@ import { useContext } from 'react';
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import {
   Box,
-  Divider,
   IconButton,
-  Stack,
   Tooltip,
-  Typography,
   alpha,
   lighten,
   styled,
@@ -27,10 +24,9 @@ const HeaderWrapper = styled(Box)(
         padding: ${theme.spacing(0, 2)};
         right: 0;
         z-index: 6;
-        background-color: ${alpha(theme.header.background as string, 0.95)};
         backdrop-filter: blur(3px);
         position: fixed;
-        justify-content: space-between;
+        justify-content: flex-end;
         width: 100%;
         @media (min-width: ${theme.breakpoints.values.lg}px) {
             left: ${theme.sidebar.width};
@@ -63,14 +59,6 @@ function Header() {
               )}`,
       }}
     >
-      <Stack
-        direction="row"
-        divider={<Divider orientation="vertical" flexItem />}
-        alignItems="center"
-        spacing={2}
-      >
-        <Typography variant="h3">Meu condomínio</Typography>
-      </Stack>
       <Box display="flex" alignItems="center">
         <HeaderButtons />
         <HeaderUserbox />

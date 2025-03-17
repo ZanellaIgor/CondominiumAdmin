@@ -8,6 +8,7 @@ export const surveySchema = z.object({
   validFrom: z.date(),
   validTo: z.date(),
   questions: z.array(surveyFormModalSchema),
+  condominiumId: z.number(),
 });
 
 export type ISurveyForm = z.infer<typeof surveySchema>;

@@ -12,6 +12,7 @@ export const mapperSurvey = (
     validFrom: data?.validFrom ? new Date(data.validFrom) : null,
     validTo: data?.validTo ? new Date(data.validTo) : null,
     status: data?.status ?? true,
+    condominiumId: data?.condominiumId ?? 0,
     questions:
       data?.questions?.map((question) => ({
         id: question.id,

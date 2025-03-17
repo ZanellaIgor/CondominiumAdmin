@@ -21,7 +21,6 @@ import {
   HolidayVillage,
   OtherHouses,
 } from '@mui/icons-material';
-import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
 import { useAuth } from '@src/hooks/useAuth';
 import { SidebarContext } from '../../../../../contexts/SidebarContext';
 
@@ -231,17 +230,6 @@ function SidebarMenu() {
           >
             <SubMenuWrapper>
               <List component="div">
-                <ListItem component="div">
-                  <Button
-                    disableRipple
-                    component={RouterLink}
-                    onClick={closeSidebar}
-                    to="user/profile"
-                    startIcon={<AccountCircleTwoToneIcon />}
-                  >
-                    Perfil
-                  </Button>
-                </ListItem>
                 <ListItem component="div">
                   <Button
                     disableRipple

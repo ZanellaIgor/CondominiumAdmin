@@ -15,31 +15,68 @@ import {
 } from '@src/components/Common/DataTable/DataTable';
 import { InputDatePicker } from '@src/components/Inputs/InputDatePicker/InputDatePicker';
 import { InputField } from '@src/components/Inputs/InputField/InputField';
-import { SwitchField } from '@src/components/Inputs/SwitchField/SwitchField';
+import { InputSelect } from '@src/components/Inputs/InputSelect/InputSelect';
+import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
 import { useFindOneSurvey } from '@src/hooks/queries/useSurveById';
 import { useSnackbarStore } from '@src/hooks/snackbar/useSnackbar.store';
+import { useAuth } from '@src/hooks/useAuth';
 import { api } from '@src/services/api.service';
 import { EnumQueries } from '@src/utils/enum/queries.enum';
 import { ApiResponse } from '@src/utils/interfaces/Axios.Response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useEffect, useState } from 'react';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useEffect, useMemo, useState } from 'react';
+import { Control, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { mapperSurvey } from './Survey.Form.Functions';
 import { SurveyFormQuestionsModal } from './Survey.Form.Modal';
 import { ISurveyFormModalProps } from './Survey.Form.Modal.Schema';
 import { ISurveyForm, surveySchema } from './Survey.Form.Schema';
 
+const InputSelectCondomium = ({
+  userId,
+  control,
+  disabled = false,
+}: {
+  userId: number;
+  control: Control<ISurveyForm>;
+  disabled?: boolean;
+}) => {
+  const { data } = useFindManyCondominium({
+    filters: {
+      userId,
+    },
+  });
+  const optionsCondominium = useMemo(
+    () =>
+      data?.data?.map((condominium) => ({
+        label: condominium.name,
+        value: condominium.id,
+      })) || [],
+    [data]
+  );
+
+  return (
+    <InputSelect
+      control={control}
+      label="Condomínio"
+      options={optionsCondominium}
+      name="condominiumId"
+      disabled={disabled}
+    />
+  );
+};
+
 export default function SurveyForm() {
   const { id } = useParams();
+  const { userInfo } = useAuth();
   const navigate = useNavigate();
   const clientQuery = useQueryClient();
   const { showSnackbar } = useSnackbarStore();
   const { data, isFetching } = useFindOneSurvey(Number(id));
 
   const mutation = useMutation({
-    mutationFn: async (values: any) => {
+    mutationFn: async (values: ISurveyForm) => {
       const response = id
         ? await api.patch(`/survey/${id}`, values)
         : await api.post('/survey', values);
@@ -82,7 +119,6 @@ export default function SurveyForm() {
   });
 
   const submitForm = async (data: any) => {
-    data.condominiumId = 1;
     mutation.mutate(data);
   };
 
@@ -179,7 +215,10 @@ export default function SurveyForm() {
                 />
               </Grid>
               <Grid item md={3}>
-                <SwitchField name="status" label="Status" control={control} />
+                <InputSelectCondomium
+                  userId={userInfo?.userId as number}
+                  control={control}
+                />
               </Grid>
               <Grid item md={5}>
                 <InputDatePicker

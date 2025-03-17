@@ -23,10 +23,11 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { mapperAnswer } from './Answer.Functions';
-import { answerSchema } from './Answer.Schema';
+import { answerSchema, IAnswer } from './Answer.Schema';
 
 export default function SurveyAnswer() {
   const { id } = useParams();
+  const {} = useNavigate();
 
   const { data, isFetching } = useFindOneSurvey(Number(id));
 
@@ -43,10 +44,10 @@ export default function SurveyAnswer() {
     },
   });
 
-  const submitForm = (formData: any) => {
+  const submitForm = async (formData: IAnswer) => {
     const payload = {
       surveyId: Number(id),
-      answers: formData.questions.map((question: any) => {
+      answers: formData.questions.map((question) => {
         if (!isNaN(Number(question.answer))) {
           return {
             questionId: question.questionId,
@@ -73,7 +74,7 @@ export default function SurveyAnswer() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isFetching && !data) {
+    if (!isFetching) {
       reset(mapperAnswer(data, Number(id)));
     }
   }, [isFetching, data]);

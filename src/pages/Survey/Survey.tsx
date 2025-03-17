@@ -10,7 +10,9 @@ import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions';
 import { DataTable } from '@src/components/Common/DataTable/DataTable';
+import { usePermissionRole } from '@src/hooks/permission/use-permission-role';
 import { useFindManySurvey } from '@src/hooks/queries/useSurvey';
+import { EnumRoles } from '@src/utils/enum/role.enum';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -23,6 +25,7 @@ import {
 
 export default function SurveyPage() {
   const navigate = useNavigate();
+  const { validateRole } = usePermissionRole();
   const [page, setPage] = useState(1);
   const [openFilter, setOpenFilter] = useState(false);
   const [valuesFilter, setValuesFilter] = useState<
@@ -71,16 +74,18 @@ export default function SurveyPage() {
               >
                 Filtrar
               </Button>
-              <Button
-                color="success"
-                variant="contained"
-                size="small"
-                startIcon={<Add />}
-                component={Link}
-                to="/survey/create"
-              >
-                Adicionar
-              </Button>
+              {validateRole([EnumRoles.ADMIN, EnumRoles.MASTER]) && (
+                <Button
+                  color="success"
+                  variant="contained"
+                  size="small"
+                  startIcon={<Add />}
+                  component={Link}
+                  to="/survey/create"
+                >
+                  Adicionar
+                </Button>
+              )}
             </Stack>
           }
         />
@@ -89,21 +94,27 @@ export default function SurveyPage() {
             columns={columnsSurvey}
             register={registerSurvey}
             loading={isFetching}
-            actions={(reg) => (
+            actions={(reg: ISurveyPageDataProps) => (
               <ActionsOptions
-                handleEdit={handleEdit}
+                handleEdit={
+                  validateRole([EnumRoles.ADMIN, EnumRoles.MASTER])
+                    ? handleEdit
+                    : undefined
+                }
                 item={reg}
-                custom={() => (
-                  <Tooltip title="Responder" arrow>
-                    <IconButton
-                      size="small"
-                      component={Link}
-                      to={`/survey/answer/${reg.id}`}
-                    >
-                      <NewReleases />
-                    </IconButton>
-                  </Tooltip>
-                )}
+                {...(validateRole([EnumRoles.USER]) && {
+                  custom: () => (
+                    <Tooltip title="Responder" arrow>
+                      <IconButton
+                        size="small"
+                        component={Link}
+                        to={`/survey/answer/${reg.id}`}
+                      >
+                        <NewReleases />
+                      </IconButton>
+                    </Tooltip>
+                  ),
+                })}
               />
             )}
           />

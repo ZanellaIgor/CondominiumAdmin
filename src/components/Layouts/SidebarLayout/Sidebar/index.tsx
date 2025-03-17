@@ -52,13 +52,8 @@ function Sidebar() {
       >
         <Scrollbar>
           <Box mt={3}>
-            <Box
-              mx={2}
-              sx={{
-                width: 52,
-              }}
-            >
-              LOGO
+            <Box mx={2}>
+              <Typography variant="h4">Meu Condomínio</Typography>
             </Box>
           </Box>
           <Divider
@@ -107,13 +102,8 @@ function Sidebar() {
         >
           <Scrollbar>
             <Box mt={3}>
-              <Box
-                mx={2}
-                sx={{
-                  width: 52,
-                }}
-              >
-                LOGO
+              <Box mx={2}>
+                <Typography variant="h4">Meu Condomínio</Typography>
               </Box>
             </Box>
             <Divider

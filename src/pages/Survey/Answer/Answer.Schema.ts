@@ -9,3 +9,5 @@ export const answerSchema = z.object({
     })
   ),
 });
+
+export type IAnswer = z.infer<typeof answerSchema>;

@@ -1,15 +1,15 @@
 import { alpha, createTheme, darken, lighten } from '@mui/material';
 
 const themeColors = {
-  primary: '#CAD2D3',
-  secondary: '#383838',
-  success: '#3B873E',
-  warning: '#B37400',
-  error: '#B22035',
-  info: '#246B89',
-  black: '#121826',
-  white: '#f6f6f6f6',
-  primaryAlt: '#1C2540',
+  primary: '#3a56e4',
+  secondary: '#556991',
+  success: '#2cbc63',
+  warning: '#e67e22',
+  error: '#e53935',
+  info: '#29b6f6',
+  black: '#1a2035',
+  white: '#ffffff',
+  primaryAlt: '#001458',
 };
 
 const colors = {
@@ -900,6 +900,17 @@ export const DarkTheme = createTheme({
             '&:hover, &:active, &.active, &.Mui-selected': {
               color: colors.alpha.white[100],
               background: lighten(colors.primary.lighter, 0.5),
+            },
+          },
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: colors.alpha.black[30],
             },
           },
         },
