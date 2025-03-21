@@ -102,7 +102,7 @@ export default function UserPage() {
             columns={columnsUser}
             register={registerUser}
             loading={isFetching}
-            actions={(reg) => (
+            actions={(reg: IUserPageDataProps) => (
               <ActionsOptions handleEdit={handleEdit} item={reg} />
             )}
           />

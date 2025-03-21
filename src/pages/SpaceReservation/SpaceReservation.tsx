@@ -101,7 +101,7 @@ export default function SpaceReservationPage() {
             columns={columnsSpaceReservation}
             register={registerSpaceReservation}
             loading={isFetching}
-            actions={(reg) => (
+            actions={(reg: ISpaceReservationDataProps) => (
               <ActionsOptions handleEdit={handleEdit} item={reg} />
             )}
           />

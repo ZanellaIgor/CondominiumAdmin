@@ -58,6 +58,29 @@ Este projeto é um sistema de gerenciamento de condomínios que oferece funciona
 - **Zustand** - Gerenciamento de estado global.
 - **Vite** - Ferramenta de build e desenvolvimento rápido.
 
+## Instalação e Configuração
+
+Clone do repositório:
+
+```bash
+git clone https://github.com/ZanellaIgor/CondominiumAdmin.git
+cd CondominiumAdminBackend
+```
+
+Instalação as dependências:
+
+```bash
+npm install
+```
+
+Iniciar projeto
+
+```bash
+npm run dev
+```
+
+Obs: Verificar configuração do .env.example, e alterar para .env
+
 Layout baseado :
 
 **[Tokyo - free](https://tokyo-free-white.bloomui.com/management/transactions)**

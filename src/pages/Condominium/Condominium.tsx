@@ -102,7 +102,7 @@ export default function CondominiumPage() {
             columns={columnsCondominium}
             register={registerCondominium}
             loading={isFetching}
-            actions={(reg) => (
+            actions={(reg: ICondominiumDataProps) => (
               <ActionsOptions handleEdit={handleEdit} item={reg} />
             )}
           />
