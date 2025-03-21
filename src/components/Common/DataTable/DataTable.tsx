@@ -91,6 +91,8 @@ export const DataTable = <T,>({
       sx={{
         minHeight: '100%',
         padding: '1rem',
+        maxHeight: 'calc(100vh - 15rem)',
+        overflowY: 'auto',
       }}
     >
       <Table>

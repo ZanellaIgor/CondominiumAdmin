@@ -1,3 +1,51 @@
+# Sistema de Gerenciamento de Condomínio
+
+Este projeto é um sistema de gerenciamento de condomínios que oferece funcionalidades para comunicação, reservas, manutenções, enquetes e administração. O sistema foi desenvolvido utilizando tecnologias modernas e é projetado para ser eficiente e fácil de usar.
+
+## Funcionalidades
+
+### Avisos (WARNINGS)
+
+- **Criação**: Todos os usuários podem criar avisos.
+- **Aprovação**: Avisos precisam ser aprovados por usuários com role "admin" ou "master".
+- **Edição**:
+  - Usuários comuns: Podem editar seus próprios avisos apenas enquanto estiverem no status "ABERTO".
+  - Admins/Masters: Podem selecionar o apartamento ao qual o aviso se refere.
+- **Visualização**: Todos os usuários podem visualizar avisos aprovados.
+
+### Reservas (RESERVATION)
+
+- **Solicitação**: Usuários podem solicitar reservas.
+- **Edição**:
+  - Usuários comuns: Podem editar a descrição da reserva apenas enquanto estiver no status "ABERTO".
+  - Admins/Masters: Podem aprovar ou reprovar as solicitações.
+  - Admins/Masters: Podem selecionar o apartamento ao qual a reserva se refere.
+
+### Manutenções (MAINTENANCE)
+
+- **Solicitação**: Usuários podem solicitar manutenções.
+- **Aprovação**: Solicitações precisam ser aprovadas por usuários "admin" ou "master".
+- **Edição**:
+  - Usuários comuns: Podem editar a descrição de suas próprias solicitações enquanto estiverem no status "ABERTO".
+  - Admins/Masters: Podem selecionar o condomínio ao qual a manutenção se refere.
+- **Visualização**: Todos os usuários podem visualizar manutenções aprovadas.
+
+### Enquetes (SURVEY)
+
+- **Criação/Edição**: Apenas usuários "admin" e "master" podem criar e editar enquetes.
+- **Restrição**: Enquetes não podem ser editadas após receberem respostas.
+
+### Respostas (ANSWER)
+
+- **Participação**: Apenas usuários com role "USER" podem responder enquetes.
+
+### Área Administrativa (Acesso exclusivo para usuários "admin" e "master")
+
+- **Apartamentos (APARTMENT)**: CRUD de informações dos apartamentos.
+- **Condomínios (CONDOMINIUM)**: CRUD de informações dos condomínios.
+- **Espaços de Reserva (SPACE-RESERVATION)**: CRUD de espaços de reserva, com seleção do condomínio.
+- **Usuários (USER)**: CRUD de informações dos usuários.
+
 ## Tecnologias Utilizadas
 
 - **TypeScript** - Superset de JavaScript que adiciona tipagem estática ao código.
@@ -5,5 +53,11 @@
 - **React Query** - Gerenciamento de estado assíncrono para requisições.
 - **React Hook Form** - Gerenciamento de formulários.
 - **Zod** - Biblioteca para validação de dados.
+- **Axios** - Cliente HTTP para fazer requisições à API.
+- **React Router DOM** - Gerenciamento de rotas na aplicação.
+- **Zustand** - Gerenciamento de estado global.
+- **Vite** - Ferramenta de build e desenvolvimento rápido.
 
-## Estrutura do Projeto
+Layout baseado :
+
+**[Tokyo - free](https://tokyo-free-white.bloomui.com/management/transactions)**
