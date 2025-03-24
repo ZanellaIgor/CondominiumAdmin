@@ -1,7 +1,8 @@
-import { EnumRoles } from '@src/utils/enum/role.enum';
-import { jwtDecode } from 'jwt-decode';
-import React, { createContext, useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { EnumRoles } from "@src/utils/enum/role.enum";
+import { jwtDecode } from "jwt-decode";
+import Cookies from "node_modules/@types/js-cookie";
+import React, { createContext, useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export type IUser = {
   email: string;
@@ -34,26 +35,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     (token: string) => {
       try {
         const decodedUser = jwtDecode<IUser>(token);
-        localStorage.setItem('token', token);
+        Cookies.set("token", token, {
+          expires: import.meta.env.VITE_COOKIE_JWT_TTL,
+        });
         setIsAuthenticated(true);
         setUserInfo(decodedUser);
-        navigate('/');
+        navigate("/");
       } catch (error) {
-        console.error('Erro ao processar login:', error);
+        console.error("Erro ao processar login:", error);
       }
     },
     [navigate]
   );
 
   const logout = useCallback(() => {
-    localStorage.removeItem('token');
+    Cookies.remove("token");
     setIsAuthenticated(false);
     setUserInfo(undefined);
-    navigate('/login');
+    navigate("/login");
   }, [navigate]);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = Cookies.get("token");
 
     if (token) {
       try {
@@ -61,7 +64,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setIsAuthenticated(true);
         setUserInfo(decodedUser);
       } catch (error) {
-        console.error('Erro ao decodificar token:', error);
+        console.error("Erro ao decodificar token:", error);
         logout();
       }
     }
