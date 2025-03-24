@@ -64,7 +64,7 @@ Clone do repositório:
 
 ```bash
 git clone https://github.com/ZanellaIgor/CondominiumAdmin.git
-cd CondominiumAdminBackend
+cd CondominiumAdmin
 ```
 
 Instalação as dependências:
