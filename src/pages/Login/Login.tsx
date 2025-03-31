@@ -41,15 +41,13 @@ export default function Login() {
   };
 
   async function submitForm(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-
-    const values = {
-      email: data.get("email")?.toString() ?? "",
-      password: data.get("password")?.toString() ?? "",
-    };
-
     try {
+      const data = new FormData(event.currentTarget);
+
+      const values = {
+        email: data.get("email")?.toString() ?? "",
+        password: data.get("password")?.toString() ?? "",
+      };
       LoginSchema.parse(values);
       setError({ email: false, password: false });
       setErrorMessages({ email: "", password: "" });
@@ -77,11 +75,15 @@ export default function Login() {
   const mutation = useMutation({
     mutationFn: async (values: ILoginFormProps) => {
       const response = await api.post("/login", values);
-
       return response.data;
     },
 
     onError: (error: AxiosError<ApiResponse>) => {
+      setError({ email: true, password: true });
+      setErrorMessages({
+        email: "E-mail ou senha incorretos",
+        password: "E-mail ou senha incorretos",
+      });
       showSnackbar(
         error?.response?.data?.message ?? "Erro não especificado",
         "error"
@@ -89,8 +91,8 @@ export default function Login() {
     },
 
     onSuccess: async (data: any) => {
-      login(data.acess_token);
-      navigate("/");
+      login(data.access_token);
+      navigate("/reservation");
     },
   });
 
@@ -115,7 +117,11 @@ export default function Login() {
             padding: 4,
             gap: 4,
           }}
-          onSubmit={submitForm}
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            submitForm(e);
+          }}
         >
           <FormControl error={error.email}>
             <FormLabel htmlFor="email">Email</FormLabel>

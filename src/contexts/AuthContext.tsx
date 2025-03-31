@@ -1,6 +1,6 @@
 import { EnumRoles } from "@src/utils/enum/role.enum";
 import { jwtDecode } from "jwt-decode";
-import Cookies from "node_modules/@types/js-cookie";
+import Cookies from "js-cookie";
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -32,11 +32,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
 
   const login = useCallback(
-    (token: string) => {
+    async (token: string) => {
       try {
+        const ttlDays = Number(import.meta.env.VITE_COOKIE_JWT_TTL);
         const decodedUser = jwtDecode<IUser>(token);
         Cookies.set("token", token, {
-          expires: import.meta.env.VITE_COOKIE_JWT_TTL,
+          expires: ttlDays,
         });
         setIsAuthenticated(true);
         setUserInfo(decodedUser);
