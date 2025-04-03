@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext } from "react";
 
 import {
   Box,
@@ -8,8 +8,8 @@ import {
   ListSubheader,
   alpha,
   styled,
-} from '@mui/material';
-import { NavLink as RouterLink } from 'react-router-dom';
+} from "@mui/material";
+import { NavLink as RouterLink } from "react-router-dom";
 
 import {
   Announcement,
@@ -20,9 +20,10 @@ import {
   Group,
   HolidayVillage,
   OtherHouses,
-} from '@mui/icons-material';
-import { useAuth } from '@src/hooks/useAuth';
-import { SidebarContext } from '../../../../../contexts/SidebarContext';
+  Home,
+} from "@mui/icons-material";
+import { useAuth } from "@src/hooks/useAuth";
+import { SidebarContext } from "../../../../../contexts/SidebarContext";
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -75,7 +76,7 @@ const SubMenuWrapper = styled(Box)(
 
           .MuiButton-startIcon,
           .MuiButton-endIcon {
-            transition: ${theme.transitions.create(['color'])};
+            transition: ${theme.transitions.create(["color"])};
 
             .MuiSvgIcon-root {
               font-size: inherit;
@@ -129,8 +130,8 @@ const SubMenuWrapper = styled(Box)(
                 background: ${theme.colors.alpha.trueWhite[100]};
                 opacity: 0;
                 transition: ${theme.transitions.create([
-                  'transform',
-                  'opacity',
+                  "transform",
+                  "opacity",
                 ])};
                 width: 6px;
                 height: 6px;
@@ -171,6 +172,17 @@ function SidebarMenu() {
         >
           <SubMenuWrapper>
             <List component="div">
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/"
+                  startIcon={<Home />}
+                >
+                  Home
+                </Button>
+              </ListItem>
               <ListItem component="div">
                 <Button
                   disableRipple
@@ -219,7 +231,7 @@ function SidebarMenu() {
             </List>
           </SubMenuWrapper>
         </List>
-        {(userInfo?.role == 'ADMIN' || userInfo?.role == 'MASTER') && (
+        {(userInfo?.role == "ADMIN" || userInfo?.role == "MASTER") && (
           <List
             component="div"
             subheader={
