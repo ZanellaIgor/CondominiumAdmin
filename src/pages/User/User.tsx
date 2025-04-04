@@ -1,23 +1,23 @@
-import { Add, FilterAlt } from '@mui/icons-material';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
-import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions';
-import { DataTable } from '@src/components/Common/DataTable/DataTable';
-import { Error } from '@src/components/Common/Error/Error';
-import { useFindManyUsers } from '@src/hooks/queries/useUser';
-import { totalPagination } from '@src/utils/functions/totalPagination';
-import { lazy, useState } from 'react';
-import { FilterUser } from './User.Filter';
-import { columnsUser, IUserPageDataProps } from './User.Interface';
-import { IUserFormProps } from './User.Schema';
+import { Add, FilterAlt } from "@mui/icons-material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import { ActionsOptions } from "@src/components/Common/DataTable/ActionsOptions";
+import { DataTable } from "@src/components/Common/DataTable/DataTable";
+import { Error } from "@src/components/Common/Error/Error";
+import { useFindManyUsers } from "@src/hooks/queries/useUser";
+import { totalPagination } from "@src/utils/functions/totalPagination";
+import { lazy, useState } from "react";
+import { FilterUser } from "./User.Filter";
+import { columnsUser, IUserPageDataProps } from "./User.Interface";
+import { IUserFormProps } from "./User.Schema";
 
 const LazyModalUser = lazy(() =>
-  import('./User.Modal').then((module) => ({ default: module.FormUser }))
+  import("./User.Modal").then((module) => ({ default: module.FormUser }))
 );
 
 export default function UserPage() {
@@ -26,7 +26,7 @@ export default function UserPage() {
   const [page, setPage] = useState(1);
   const [openFilter, setOpenFilter] = useState(false);
   const [valuesFilter, setValuesFilter] = useState<Record<string, any>>();
-  const { data, isFetching, error } = useFindManyUsers({
+  const { data, isLoading, error } = useFindManyUsers({
     page,
     filters: valuesFilter,
   });
@@ -62,10 +62,10 @@ export default function UserPage() {
       <Card
         sx={{
           height: `calc(100vh - 150px)`,
-          display: 'flex',
-          flexDirection: 'column',
-          width: { xs: '100%', lg: '80%' },
-          margin: 'auto',
+          display: "flex",
+          flexDirection: "column",
+          width: { xs: "100%", lg: "80%" },
+          margin: "auto",
           my: 2,
         }}
       >
@@ -101,7 +101,7 @@ export default function UserPage() {
           <DataTable
             columns={columnsUser}
             register={registerUser}
-            loading={isFetching}
+            loading={isLoading}
             actions={(reg: IUserPageDataProps) => (
               <ActionsOptions handleEdit={handleEdit} item={reg} />
             )}

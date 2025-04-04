@@ -1,7 +1,7 @@
-import { Box, Hidden, Typography } from '@mui/material';
+import { Avatar, Box, Hidden, Typography } from "@mui/material";
 
-import { styled } from '@mui/material/styles';
-import { useAuth } from '@src/hooks/useAuth';
+import { styled } from "@mui/material/styles";
+import { useAuth } from "@src/hooks/useAuth";
 
 const UserBoxText = styled(Box)(
   ({ theme }) => `
@@ -14,14 +14,12 @@ function HeaderUserbox() {
   const { userInfo } = useAuth();
 
   return (
-    <>
-      <Hidden mdDown>
-        <UserBoxText>
-          <Typography variant="h5">{userInfo?.name}</Typography>
-          <Typography variant="h6">{userInfo?.email}</Typography>
-        </UserBoxText>
-      </Hidden>
-    </>
+    <Hidden mdDown>
+      <UserBoxText>
+        <Avatar>{userInfo?.name?.[0]}</Avatar>
+        <Typography variant="h6">{userInfo?.email}</Typography>
+      </UserBoxText>
+    </Hidden>
   );
 }
 
