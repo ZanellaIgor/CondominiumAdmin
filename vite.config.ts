@@ -1,7 +1,7 @@
-import react from "@vitejs/plugin-react";
-import path from "path";
-import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
+import react from '@vitejs/plugin-react';
+import path from 'path';
+import { defineConfig } from 'vite';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   plugins: [
@@ -9,20 +9,20 @@ export default defineConfig({
     tsconfigPaths(),
     {
       ...react({
-        jsxImportSource: "@emotion/react",
+        jsxImportSource: '@emotion/react',
         babel: {
-          plugins: ["@emotion/babel-plugin"],
+          plugins: ['@emotion/babel-plugin'],
         },
       }),
     },
   ],
   optimizeDeps: {
-    include: ["@emotion/react", "@emotion/styled", "@mui/material/Tooltip"],
+    include: ['@emotion/react', '@emotion/styled', '@mui/material/Tooltip'],
   },
   resolve: {
     alias: {
-      "@components": path.resolve(__dirname, "src/components"),
-      "@utils": path.resolve(__dirname, "src/utils"),
+      '@components': path.resolve(__dirname, 'src/components'),
+      '@utils': path.resolve(__dirname, 'src/utils'),
     },
   },
 });

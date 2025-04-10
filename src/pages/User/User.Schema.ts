@@ -10,9 +10,20 @@ export const userSchema = z.object({
   email: z.string(),
   password: z.string(),
   profilePhoto: z.string().optional(),
-  apartmentIds: z.array(z.number()).optional(),
-  condominiumIds: z.array(z.number()).optional(),
+  apartmentIds: z
+    .union([z.number(), z.array(z.number())])
+    .transform((val) => (Array.isArray(val) ? val : [val]))
+    .optional()
+    .default([]),
+  condominiumIds: z
+    .union([z.number(), z.array(z.number())])
+    .transform((val) => (Array.isArray(val) ? val : [val]))
+    .optional()
+    .default([]),
   role: z.nativeEnum(EnumRoles),
+  status: z.boolean(),
 });
 
-export type IUserFormProps = z.infer<typeof userSchema>;
+export type IUserFormProps = z.infer<typeof userSchema> & {
+  condominiumIds: number[];
+};

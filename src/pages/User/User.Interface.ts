@@ -27,8 +27,8 @@ export interface IUserPageDataProps {
   status: boolean;
   profilePhoto: string;
   role: EnumRoles;
-  apartments: IUserApartments;
-  condominiums: IUserCondominium;
+  apartments: IUserApartments[];
+  condominiums: IUserCondominium[];
 }
 
 export const columnsUser: IColumns[] = [

@@ -20,6 +20,9 @@ import { AxiosError } from 'axios';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { mapperUser } from './User.Functions';
 import { IUserFormProps, userSchema } from './User.Schema';
+import { useAuth } from '@src/hooks/useAuth';
+import { optionsRole } from '@src/utils/options/role.options';
+import { useMemo } from 'react';
 
 type IFormUserProps = {
   register: IUserFormProps | undefined;
@@ -29,6 +32,7 @@ type IFormUserProps = {
 
 export const FormUser = ({ register, open, handleClose }: IFormUserProps) => {
   const { showSnackbar } = useSnackbarStore();
+  const { userInfo } = useAuth();
   const queryClient = useQueryClient();
   const { data: dataCondominium, isLoading: loadingCondominium } =
     useFindManyCondominium({
@@ -80,6 +84,18 @@ export const FormUser = ({ register, open, handleClose }: IFormUserProps) => {
     mutation.mutate(values);
   };
 
+  const optionsPerfil = useMemo(
+    () =>
+      optionsRole.filter(
+        (option) =>
+          !!userInfo?.role &&
+          (userInfo?.role === EnumRoles.ADMIN
+            ? option.value !== EnumRoles.MASTER
+            : true)
+      ),
+    [userInfo]
+  );
+
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle sx={{ textAlign: 'center' }}>
@@ -101,12 +117,8 @@ export const FormUser = ({ register, open, handleClose }: IFormUserProps) => {
               <InputSelect
                 control={control}
                 name="role"
-                label="Cargo"
-                options={[
-                  { value: EnumRoles.USER, label: 'Usuário' },
-                  { value: EnumRoles.ADMIN, label: 'Administrador' },
-                  { value: EnumRoles.MASTER, label: 'Master' },
-                ]}
+                label="Perfil"
+                options={optionsPerfil}
               />
             </Grid>
 
@@ -114,7 +126,7 @@ export const FormUser = ({ register, open, handleClose }: IFormUserProps) => {
               <Grid item xs={12}>
                 <InputSelect
                   control={control}
-                  name="condominiumId"
+                  name="condominiumIds"
                   label="Condomínio"
                   isLoading={loadingCondominium}
                   options={optionsCondominium || []}
@@ -133,11 +145,10 @@ export const FormUser = ({ register, open, handleClose }: IFormUserProps) => {
                 />
               </Grid>
             )}
-            {register?.id && (
-              <Grid item xs={12}>
-                <SwitchField control={control} name="status" label="Status" />
-              </Grid>
-            )}
+
+            <Grid item xs={12}>
+              <SwitchField control={control} name="status" label="Status" />
+            </Grid>
           </Grid>
           <Stack
             justifyContent={'flex-end'}
@@ -152,9 +163,8 @@ export const FormUser = ({ register, open, handleClose }: IFormUserProps) => {
             >
               Voltar
             </Button>
-            <Button type="submit" color="success">
-              {/*     {mutation.isPending ? 'Adicionando...' : 'Adicionar'} */}{' '}
-              Adicionar
+            <Button type="submit" color="success" disabled={mutation.isLoading}>
+              {mutation.isPending ? 'Adicionando...' : 'Adicionar'}
             </Button>
           </Stack>
         </form>
