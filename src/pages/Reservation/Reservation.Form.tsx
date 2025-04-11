@@ -50,12 +50,13 @@ const InputSelectSpaceReservation = ({
     filters: {
       condominiumId: condominiumId,
     },
+    disabled: typeof condominiumId !== 'number',
   });
   const optionsSpaceReservation = useMemo(
     () =>
       data?.data?.map((spaceReservation) => ({
-        label: spaceReservation.name,
-        value: spaceReservation.id,
+        label: spaceReservation?.name,
+        value: spaceReservation?.id,
       })) || [],
     [data]
   );
@@ -88,8 +89,8 @@ const InputSelectCondomium = ({
   const optionsCondominium = useMemo(
     () =>
       data?.data?.map((condominium) => ({
-        label: condominium.name,
-        value: condominium.id,
+        label: condominium?.name,
+        value: condominium?.id,
       })) || [],
     [data]
   );
@@ -118,12 +119,13 @@ const InputSelectApartament = ({
     filters: {
       condominiumIds: [condominiumId],
     },
+    disbaled: typeof condominiumId !== 'number',
   });
   const optionsApartament = useMemo(
     () =>
       data?.data?.map((apartament) => ({
-        label: apartament.name,
-        value: apartament.id,
+        label: apartament?.name,
+        value: apartament?.id,
       })) || [],
     [data]
   );

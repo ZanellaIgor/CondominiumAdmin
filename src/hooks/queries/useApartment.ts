@@ -33,7 +33,7 @@ const getApartment = async ({
       },
     });
     return response.data;
-  } catch (error) {
+  } catch (_error) {
     throw new Error('Error fetching apartment');
   }
 };
@@ -42,15 +42,18 @@ export const useFindManyApartment = ({
   page = 1,
   limit = paginationTake,
   filters,
+  disbaled,
 }: {
   page?: number;
   limit?: number;
   filters?: IFiltersApartment;
+  disbaled?: boolean;
 }): UseQueryResult<IApartmentPageProps> => {
   return useQuery<IApartmentPageProps>({
     queryKey: [EnumQueries.APARTMENT, page, limit, filters],
     queryFn: () => getApartment({ page, limit, filters }),
     staleTime: 10000 * 60,
     placeholderData: keepPreviousData,
+    enabled: !disbaled,
   });
 };

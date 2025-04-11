@@ -42,15 +42,18 @@ export const useFindManySpaceReservation = ({
   page = 1,
   limit = paginationTake,
   filters,
+  disabled,
 }: {
   page?: number;
   limit?: number;
   filters?: IFilters;
+  disabled?: boolean;
 }): UseQueryResult<ISpaceReservationPageProps> => {
   return useQuery<ISpaceReservationPageProps>({
     queryKey: [EnumQueries.SPACE_RESERVATION, page, limit, filters],
     queryFn: () => getSpaceReservation({ page, limit, filter: filters }),
     staleTime: 10000 * 60,
     placeholderData: keepPreviousData,
+    enabled: !disabled,
   });
 };

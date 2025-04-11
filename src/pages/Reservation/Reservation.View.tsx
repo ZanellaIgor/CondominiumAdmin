@@ -63,7 +63,7 @@ export const ReservationView = ({
               Usuário
             </Typography>
             <Typography variant="body1" sx={{ mt: 0.5 }}>
-              {register.user.name}
+              {register?.user?.name}
             </Typography>
           </Grid>
 
@@ -72,7 +72,7 @@ export const ReservationView = ({
               Condomínio
             </Typography>
             <Typography variant="body1" sx={{ mt: 0.5 }}>
-              {register.condominium.name}
+              {register.condominium?.name}
             </Typography>
           </Grid>
           <Grid item xs={6}>
@@ -80,7 +80,7 @@ export const ReservationView = ({
               Apartamento
             </Typography>
             <Typography variant="body1" sx={{ mt: 0.5 }}>
-              {register.apartament.name}
+              {register.apartament?.name}
             </Typography>
           </Grid>
 

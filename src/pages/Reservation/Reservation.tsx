@@ -128,7 +128,7 @@ export default function ReservationsPage() {
                     userId: reg.userId,
                     statusReservation: reg.situation,
                   })
-                    ? handleEdit
+                    ? () => handleEdit(reg)
                     : undefined
                 }
                 handleView={handleView}
