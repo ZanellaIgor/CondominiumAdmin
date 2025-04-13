@@ -12,13 +12,13 @@ Este projeto foi desenvolvido como parte de um estudo prático de front-end para
 
 | Dashboard                           | Tela de Manutenção (usuário MASTER)            |
 | ----------------------------------- | ---------------------------------------------- |
-| ![Dashboard](/public/dashboard.png) | ![Manutenções](/public/maintenance-master.png) |
+| ![Dashboard](/public/dashboard.PNG) | ![Manutenções](/public/maintenance-master.PNG) |
 
 ### Avisos (roles diferentes)
 
 | Avisos - MASTER                               | Avisos - Usuário comum                    |
 | --------------------------------------------- | ----------------------------------------- |
-| ![Avisos Master](/public/warnings-master.png) | ![Avisos User](/public/warnings-user.png) |
+| ![Avisos Master](/public/warnings-master.PNG) | ![Avisos User](/public/warnings-user.PNG) |
 
 ## Funcionalidades
 
