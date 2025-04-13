@@ -97,7 +97,7 @@ export const FormUser = ({ register, open, handleClose }: IFormUserProps) => {
   );
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open}>
       <DialogTitle sx={{ textAlign: 'center' }}>
         {register ? 'Edite o usuário' : 'Adicione um novo usuário'}
       </DialogTitle>
@@ -160,11 +160,12 @@ export const FormUser = ({ register, open, handleClose }: IFormUserProps) => {
               onClick={() => {
                 handleClose();
               }}
+              disabled={mutation.isPending}
             >
               Voltar
             </Button>
-            <Button type="submit" color="success" disabled={mutation.isLoading}>
-              {mutation.isPending ? 'Adicionando...' : 'Adicionar'}
+            <Button type="submit" color="success" disabled={mutation.isPending}>
+              {mutation.isPending ? 'Salvando...' : 'Salvar'}
             </Button>
           </Stack>
         </form>

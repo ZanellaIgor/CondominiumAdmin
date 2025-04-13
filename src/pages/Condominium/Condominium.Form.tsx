@@ -63,7 +63,7 @@ export const FormCondominium = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth>
+    <Dialog open={open} fullWidth>
       <DialogTitle sx={{ textAlign: 'center' }}>
         {register ? 'Edite o Condomínio' : 'Adicione um novo Condomínio'}
       </DialogTitle>

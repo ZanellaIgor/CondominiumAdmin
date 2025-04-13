@@ -33,7 +33,7 @@ export const FilterCondominium = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth>
+    <Dialog open={open} fullWidth>
       <DialogTitle sx={{ textAlign: 'center' }}>
         Filtrar Condomínios
       </DialogTitle>

@@ -77,11 +77,7 @@ export const SurveyFormQuestionsModal = ({
   }, [open]);
 
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      PaperProps={{ sx: { width: '30rem' } }}
-    >
+    <Dialog open={open} PaperProps={{ sx: { width: '30rem' } }}>
       <DialogTitle sx={{ textAlign: 'center' }}>
         {register ? 'Edite a questão' : 'Adicione uma nova questão'}
       </DialogTitle>

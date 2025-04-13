@@ -192,7 +192,7 @@ export const FormReservation = ({
   }, [open, userInfo]);
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open}>
       <DialogContent>
         <DialogTitle sx={{ textAlign: 'center' }}>
           {register ? 'Edite a reserva' : 'Adicione uma nova reserva'}
@@ -280,9 +280,20 @@ export const FormReservation = ({
           </Grid>
           <Grid item xs={12}>
             <Stack justifyContent={'flex-end'} direction={'row'}>
-              <Button onClick={() => handleClose()}>Voltar</Button>
-              <Button type="submit" color="success">
-                Adicionar
+              <Button
+                onClick={() => {
+                  handleClose();
+                }}
+                disabled={mutation.isPending}
+              >
+                Voltar
+              </Button>
+              <Button
+                type="submit"
+                color="success"
+                disabled={mutation.isPending}
+              >
+                {mutation.isPending ? 'Salvando...' : 'Salvar'}
               </Button>
             </Stack>
           </Grid>

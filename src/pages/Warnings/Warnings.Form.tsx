@@ -106,7 +106,7 @@ export const FormWarning = ({
   }, [open]);
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open}>
       <DialogTitle sx={{ textAlign: 'center' }}>
         {register ? 'Edite o aviso' : 'Adicione um novo aviso'}
       </DialogTitle>
@@ -162,13 +162,13 @@ export const FormWarning = ({
             <Button
               onClick={() => {
                 handleClose();
-                reset(mapperWarning(undefined));
               }}
+              disabled={mutation.isPending}
             >
               Voltar
             </Button>
             <Button type="submit" color="success" disabled={mutation.isPending}>
-              {mutation.isPending ? 'Adicionando...' : 'Adicionar'}
+              {mutation.isPending ? 'Salvando...' : 'Salvar'}
             </Button>
           </Stack>
         </form>

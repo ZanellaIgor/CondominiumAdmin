@@ -37,7 +37,7 @@ export const FilterReservation = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open}>
       <DialogContent>
         <DialogTitle sx={{ textAlign: 'center' }}>Filtrar Reservas</DialogTitle>
         <form noValidate onSubmit={handleSubmit(submitForm)}>

@@ -38,7 +38,7 @@ export const FilterMaintenance = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open}>
       <DialogContent>
         <DialogTitle sx={{ textAlign: 'center' }}>
           Filtrar Solicitação de manutenção

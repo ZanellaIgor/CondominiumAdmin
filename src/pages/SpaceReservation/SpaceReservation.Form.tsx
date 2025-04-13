@@ -93,7 +93,7 @@ export const FormSpaceReservation = ({
   }, [register]);
 
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth>
+    <Dialog open={open} fullWidth>
       <DialogContent>
         <DialogTitle sx={{ textAlign: 'center' }}>
           {register ? 'Edite a reserva' : 'Adicione uma nova reserva'}
@@ -120,11 +120,16 @@ export const FormSpaceReservation = ({
                 onClick={() => {
                   handleClose();
                 }}
+                disabled={mutation.isPending}
               >
                 Voltar
               </Button>
-              <Button type="submit" color="success">
-                Adicionar
+              <Button
+                type="submit"
+                color="success"
+                disabled={mutation.isPending}
+              >
+                {mutation.isPending ? 'Salvando...' : 'Salvar'}
               </Button>
             </Stack>
           </Grid>

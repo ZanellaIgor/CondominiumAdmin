@@ -45,7 +45,7 @@ export const FilterUser = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open}>
       <DialogTitle sx={{ textAlign: 'center' }}>Filtrar Usuários</DialogTitle>
       <DialogContent>
         <form noValidate onSubmit={handleSubmit(submitForm)}>

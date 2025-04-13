@@ -114,7 +114,7 @@ export const FormMaintenance = ({
   }, [register]);
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open}>
       <DialogContent>
         <DialogTitle sx={{ textAlign: 'center' }}>
           {register ? 'Edite a solicitação' : 'Adicione uma nova solicitação'}
@@ -172,13 +172,17 @@ export const FormMaintenance = ({
               <Button
                 onClick={() => {
                   handleClose();
-                  reset(mapperMaintenance(null));
                 }}
+                disabled={mutation.isPending}
               >
                 Voltar
               </Button>
-              <Button type="submit" color="success">
-                Adicionar
+              <Button
+                type="submit"
+                color="success"
+                disabled={mutation.isPending}
+              >
+                {mutation.isPending ? 'Salvando...' : 'Salvar'}
               </Button>
             </Stack>
           </Grid>

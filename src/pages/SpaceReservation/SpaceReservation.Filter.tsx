@@ -58,7 +58,7 @@ export const FilterSpaceReservation = ({
   );
 
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth>
+    <Dialog open={open} fullWidth>
       <DialogContent>
         <DialogTitle sx={{ textAlign: 'center' }}>
           Filtrar Áreas de Lazer

@@ -18,7 +18,7 @@ export const ReservationView = ({
   register: IReservationDataProps;
 }) => {
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open}>
       <DialogTitle sx={{ textAlign: 'center' }}>Detalhes do Aviso</DialogTitle>
       <DialogContent>
         <Grid container spacing={2}>

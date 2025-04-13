@@ -59,7 +59,7 @@ export const FilterSurvey = ({
   );
 
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth>
+    <Dialog open={open} fullWidth>
       <DialogTitle sx={{ textAlign: 'center' }}>Filtrar Enquete</DialogTitle>
       <DialogContent>
         <form noValidate onSubmit={handleSubmit(submitForm)}>

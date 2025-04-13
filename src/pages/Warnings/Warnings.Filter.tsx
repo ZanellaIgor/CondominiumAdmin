@@ -35,7 +35,7 @@ export const FilterWarning = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open}>
       <DialogTitle sx={{ textAlign: 'center' }}>Filtrar Avisos</DialogTitle>
       <DialogContent>
         <form noValidate onSubmit={handleSubmit(submitForm)}>
