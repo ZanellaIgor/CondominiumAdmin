@@ -2,6 +2,24 @@
 
 Este projeto é um sistema de gerenciamento de condomínios que oferece funcionalidades para comunicação, reservas, manutenções, enquetes e administração. O sistema foi desenvolvido utilizando tecnologias modernas e é projetado para ser eficiente e fácil de usar.
 
+## Objetivo
+
+Este projeto foi desenvolvido como parte de um estudo prático de front-end para complementar o back-end já criado. Ele tem como finalidade permitir que usuários interajam com o sistema de gerenciamento de condomínios de forma direta e funcional.
+
+## Demonstração
+
+### Painel Principal & Manutenções
+
+| Dashboard                           | Tela de Manutenção (usuário MASTER)            |
+| ----------------------------------- | ---------------------------------------------- |
+| ![Dashboard](/public/dashboard.png) | ![Manutenções](/public/maintenance-master.png) |
+
+### Avisos (roles diferentes)
+
+| Avisos - MASTER                               | Avisos - Usuário comum                    |
+| --------------------------------------------- | ----------------------------------------- |
+| ![Avisos Master](/public/warnings-master.png) | ![Avisos User](/public/warnings-user.png) |
+
 ## Funcionalidades
 
 ### Avisos (WARNINGS)
