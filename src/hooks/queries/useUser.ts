@@ -8,22 +8,22 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query';
 
-interface IFilters {
+export interface IFiltersUser {
   name?: string;
   condominiunsId?: number[];
 }
 
-interface GetUsersParams {
+interface IGetUsersParams {
   page: number;
   limit: number;
-  filters?: IFilters;
+  filters?: IFiltersUser | null;
 }
 
 const getWarnings = async ({
   page,
   limit,
   filters,
-}: GetUsersParams): Promise<IUserPageProps> => {
+}: IGetUsersParams): Promise<IUserPageProps> => {
   try {
     const response = await api.get(`/user`, {
       params: {
@@ -45,7 +45,7 @@ export const useFindManyUsers = ({
 }: {
   page?: number;
   limit?: number;
-  filters?: IFilters;
+  filters?: IFiltersUser | null;
 }): UseQueryResult<IUserPageProps> => {
   return useQuery<IUserPageProps>({
     queryKey: [EnumQueries.USER, page, limit, filters],

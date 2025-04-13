@@ -9,7 +9,7 @@ import {
 } from '@tanstack/react-query';
 import { IReservationPageProps } from '../../pages/Reservation/Reservation.Interface';
 
-interface IFilters {
+export interface IFiltersReservation {
   situation?: EnumSituationReservation;
   title?: string;
 }
@@ -17,7 +17,7 @@ interface IFilters {
 interface IGetReservationParams {
   page: number;
   limit?: number;
-  filters?: IFilters;
+  filters?: IFiltersReservation | null;
 }
 
 const getReservation = async ({

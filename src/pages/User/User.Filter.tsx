@@ -8,13 +8,12 @@ import { InputField } from '@src/components/Inputs/InputField/InputField';
 import { InputSelect } from '@src/components/Inputs/InputSelect/InputSelect';
 import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { IUserFormProps } from './User.Schema';
+
+import { IFiltersUser } from '@src/hooks/queries/useUser';
 
 type IFilterUserProps = {
-  valuesFilter: Record<string, any> | undefined;
-  setValuesFilter: React.Dispatch<
-    React.SetStateAction<undefined | Record<string, any>>
-  >;
+  valuesFilter: IFiltersUser | null;
+  setValuesFilter: React.Dispatch<React.SetStateAction<IFiltersUser | null>>;
   open: boolean;
   handleClose: () => void;
 };
@@ -36,11 +35,11 @@ export const FilterUser = ({
     value: condominium.id,
   }));
 
-  const { control, handleSubmit } = useForm<IUserFormProps>({
-    defaultValues: valuesFilter,
+  const { control, handleSubmit } = useForm<IFiltersUser>({
+    defaultValues: valuesFilter ?? {},
   });
 
-  const submitForm: SubmitHandler<IUserFormProps> = (values) => {
+  const submitForm: SubmitHandler<IFiltersUser> = (values) => {
     setValuesFilter(values);
     handleClose();
   };

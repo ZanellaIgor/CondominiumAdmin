@@ -78,8 +78,6 @@ export const FormSpaceReservation = ({
   const submitForm: SubmitHandler<ISpaceReservationFormProps> = (
     values: ISpaceReservationFormProps
   ) => {
-    values.condominiumId = 1;
-
     mutation.mutate({ ...values, id: register?.id });
   };
 

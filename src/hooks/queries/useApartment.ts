@@ -34,7 +34,7 @@ const getApartment = async ({
     });
     return response.data;
   } catch (_error) {
-    throw new Error('Error fetching apartment');
+    throw new Error('Error fetching apartment:');
   }
 };
 

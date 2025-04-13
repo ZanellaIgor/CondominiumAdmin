@@ -10,7 +10,10 @@ import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions'
 import { DataTable } from '@src/components/Common/DataTable/DataTable';
 
 import { Error } from '@src/components/Common/Error/Error';
-import { useFindManyReservation } from '@src/hooks/queries/useReservation';
+import {
+  IFiltersReservation,
+  useFindManyReservation,
+} from '@src/hooks/queries/useReservation';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
 import { FilterReservation } from './Reservation.Filter';
@@ -29,7 +32,9 @@ export default function ReservationsPage() {
   const [page, setPage] = useState(1);
   const [openFilter, setOpenFilter] = useState(false);
   const [openModalView, setOpenModalView] = useState(false);
-  const [valuesFilter, setValuesFilter] = useState<Record<string, any>>();
+  const [valuesFilter, setValuesFilter] = useState<IFiltersReservation | null>(
+    null
+  );
   const { data, isLoading, error } = useFindManyReservation({
     page,
     filters: valuesFilter,

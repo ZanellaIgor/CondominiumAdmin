@@ -9,7 +9,7 @@ import Stack from '@mui/material/Stack';
 import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions';
 import { DataTable } from '@src/components/Common/DataTable/DataTable';
 import { Error } from '@src/components/Common/Error/Error';
-import { useFindManyUsers } from '@src/hooks/queries/useUser';
+import { IFiltersUser, useFindManyUsers } from '@src/hooks/queries/useUser';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
 import { FilterUser } from './User.Filter';
@@ -22,7 +22,7 @@ export default function UserPage() {
   const [register, setRegister] = useState<IUserPageDataProps | undefined>();
   const [page, setPage] = useState(1);
   const [openFilter, setOpenFilter] = useState(false);
-  const [valuesFilter, setValuesFilter] = useState<Record<string, unknown>>();
+  const [valuesFilter, setValuesFilter] = useState<IFiltersUser | null>(null);
   const { data, isLoading, error } = useFindManyUsers({
     page,
     filters: valuesFilter,
