@@ -13,11 +13,6 @@ export interface ISurveyPageDataProps {
   descripiton: string;
 }
 
-export type IvaluesFormFilter = {
-  title?: string | null;
-  description?: string | null;
-};
-
 export const columnsSurvey: IColumns[] = [
   {
     label: 'Titulo',

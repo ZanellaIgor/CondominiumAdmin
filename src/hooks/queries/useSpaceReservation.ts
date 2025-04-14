@@ -8,7 +8,7 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query';
 
-interface IFilters {
+export interface IFiltersSpaceReservation {
   name?: string;
   condominiumId?: number;
 }
@@ -16,25 +16,27 @@ interface IFilters {
 interface IGetSpaceReservationParams {
   page: number;
   limit: number;
-  filter?: IFilters;
+  filters?: IFiltersSpaceReservation | null;
 }
 
 const getSpaceReservation = async ({
   page,
   limit,
-  filter,
+  filters,
 }: IGetSpaceReservationParams): Promise<ISpaceReservationPageProps> => {
   try {
     const response = await api.get(`/space-reservation`, {
       params: {
         page,
         limit,
-        ...filter,
+        ...filters,
       },
     });
     return response.data;
   } catch (error) {
-    throw new Error('Error fetching space reservation');
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error occurred';
+    throw new Error(`Error fetching space reservations: ${errorMessage}`);
   }
 };
 
@@ -46,12 +48,12 @@ export const useFindManySpaceReservation = ({
 }: {
   page?: number;
   limit?: number;
-  filters?: IFilters;
+  filters?: IFiltersSpaceReservation | null;
   disabled?: boolean;
 }): UseQueryResult<ISpaceReservationPageProps> => {
   return useQuery<ISpaceReservationPageProps>({
     queryKey: [EnumQueries.SPACE_RESERVATION, page, limit, filters],
-    queryFn: () => getSpaceReservation({ page, limit, filter: filters }),
+    queryFn: () => getSpaceReservation({ page, limit, filters }),
     staleTime: 10000 * 60,
     placeholderData: keepPreviousData,
     enabled: !disabled,

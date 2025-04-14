@@ -38,7 +38,9 @@ const getSurveyId = async ({
     const response = await api.get(`/survey/${id}`);
     return response.data;
   } catch (error) {
-    throw new Error('Error fetching surveys');
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error occurred';
+    throw new Error(`Error fetching surveysId: ${errorMessage}`);
   }
 };
 

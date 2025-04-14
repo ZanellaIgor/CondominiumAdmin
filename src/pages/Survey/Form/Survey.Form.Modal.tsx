@@ -30,7 +30,7 @@ export const SurveyFormQuestionsModal = ({
 }: {
   open: boolean;
   handleClose: () => void;
-  handleAddQuestion: (values: ISurveyFormModalProps) => void;
+  handleAddQuestion: (_values: ISurveyFormModalProps) => void;
   register: ISurveyFormModalProps | null;
 }) => {
   const { control, handleSubmit, watch, reset, setValue } =
@@ -44,7 +44,7 @@ export const SurveyFormQuestionsModal = ({
     name: 'options',
   });
 
-  const submitForm = (data: any) => {
+  const submitForm = (data: ISurveyFormModalProps) => {
     handleAddQuestion(data);
   };
 

@@ -8,7 +8,7 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query';
 
-interface IFiltersApartment {
+export interface IFiltersApartment {
   condominiumIds?: number[];
   name?: string;
   userId?: number;
@@ -16,7 +16,7 @@ interface IFiltersApartment {
 interface IGetApartmentParams {
   page: number;
   limit: number;
-  filters?: IFiltersApartment;
+  filters?: IFiltersApartment | null;
 }
 
 const getApartment = async ({
@@ -33,8 +33,10 @@ const getApartment = async ({
       },
     });
     return response.data;
-  } catch (_error) {
-    throw new Error('Error fetching apartment:');
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error occurred';
+    throw new Error(`Error fetching apartament: ${errorMessage}`);
   }
 };
 
@@ -46,7 +48,7 @@ export const useFindManyApartment = ({
 }: {
   page?: number;
   limit?: number;
-  filters?: IFiltersApartment;
+  filters?: IFiltersApartment | null;
   disbaled?: boolean;
 }): UseQueryResult<IApartmentPageProps> => {
   return useQuery<IApartmentPageProps>({

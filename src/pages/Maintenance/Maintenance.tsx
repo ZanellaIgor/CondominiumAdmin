@@ -8,7 +8,10 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions';
 import { DataTable } from '@src/components/Common/DataTable/DataTable';
-import { useFindManyMaintenance } from '@src/hooks/queries/useMaintenance';
+import {
+  IFiltersMaintenance,
+  useFindManyMaintenance,
+} from '@src/hooks/queries/useMaintenance';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
 import { FilterMaintenance } from './Maintenance.Filter';
@@ -26,7 +29,9 @@ export default function MaintenancePage() {
   const [openModal, setOpenModal] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
   const [openModalView, setOpenModalView] = useState(false);
-  const [valuesFilter, setValuesFilter] = useState<Record<string, any>>();
+  const [valuesFilter, setValuesFilter] = useState<IFiltersMaintenance | null>(
+    null
+  );
   const { data } = useFindManyMaintenance({ page, filters: valuesFilter });
   const { validadeUpdateMaintenance } = usePermissionMaintenance();
   const registerMaintenance = data?.data;

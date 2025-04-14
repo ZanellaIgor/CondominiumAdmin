@@ -8,32 +8,34 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query';
 
-interface IFilters {
+export interface IFiltersCondominium {
   name?: string;
   userId?: number;
 }
 interface IGetCondominiumParams {
   page: number;
   limit: number;
-  filter?: IFilters;
+  filters?: IFiltersCondominium | null;
 }
 
 const getCondominium = async ({
   page,
   limit,
-  filter,
+  filters,
 }: IGetCondominiumParams): Promise<ICondominiumPageProps> => {
   try {
     const response = await api.get(`/condominium`, {
       params: {
         page,
         limit,
-        ...filter,
+        ...filters,
       },
     });
     return response.data;
   } catch (error) {
-    throw new Error('Error fetching Condominium');
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error occurred';
+    throw new Error(`Error fetching condominium: ${errorMessage}`);
   }
 };
 
@@ -44,11 +46,11 @@ export const useFindManyCondominium = ({
 }: {
   page?: number;
   limit?: number;
-  filters?: IFilters;
+  filters?: IFiltersCondominium | null;
 }): UseQueryResult<ICondominiumPageProps> => {
   return useQuery<ICondominiumPageProps>({
     queryKey: [EnumQueries.CONDOMINUM, page, limit, filters],
-    queryFn: () => getCondominium({ page, limit, filter: filters }),
+    queryFn: () => getCondominium({ page, limit, filters }),
     staleTime: 10000 * 60,
     placeholderData: keepPreviousData,
   });

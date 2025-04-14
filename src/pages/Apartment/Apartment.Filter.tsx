@@ -10,12 +10,12 @@ import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
 import { debounce } from '@src/utils/functions/debounce';
 import { useCallback, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { IApartmentFormProps } from './Apartment.Schema';
+import { IFiltersApartment } from '@src/hooks/queries/useApartment';
 
 type IFilterApartmentProps = {
-  valuesFilter: Record<string, any> | undefined;
+  valuesFilter: IFiltersApartment | null;
   setValuesFilter: React.Dispatch<
-    React.SetStateAction<undefined | Record<string, any>>
+    React.SetStateAction<IFiltersApartment | null>
   >;
   open: boolean;
   handleClose: () => void;
@@ -29,9 +29,10 @@ export const FilterApartment = ({
 }: IFilterApartmentProps) => {
   const [filterName, setFilterName] = useState('');
 
-  const { control, handleSubmit } = useForm<IApartmentFormProps>({
-    defaultValues: valuesFilter,
+  const { control, handleSubmit } = useForm<IFiltersApartment>({
+    defaultValues: valuesFilter ?? {},
   });
+
   const { data, isLoading } = useFindManyCondominium({
     page: 1,
     limit: 100,
@@ -43,7 +44,7 @@ export const FilterApartment = ({
     value: condominium.id,
   }));
 
-  const submitForm: SubmitHandler<IApartmentFormProps> = async (values) => {
+  const submitForm: SubmitHandler<IFiltersApartment> = async (values) => {
     setValuesFilter(values);
     handleClose();
   };

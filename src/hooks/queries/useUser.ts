@@ -34,7 +34,9 @@ const getWarnings = async ({
     });
     return response.data;
   } catch (error) {
-    throw new Error('Error fetching warnings');
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error occurred';
+    throw new Error(`Error fetching users: ${errorMessage}`);
   }
 };
 

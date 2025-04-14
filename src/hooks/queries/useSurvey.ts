@@ -8,7 +8,7 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query';
 
-interface IFilters {
+export interface IFiltersSurvey {
   title?: string | null;
   description?: string | null;
 }
@@ -16,25 +16,27 @@ interface IFilters {
 interface IGetSurveyParams {
   page: number;
   limit: number;
-  filter?: IFilters | null;
+  filters?: IFiltersSurvey | null;
 }
 
 const getSurvey = async ({
   page,
   limit,
-  filter,
+  filters,
 }: IGetSurveyParams): Promise<ISurveyPageProps> => {
   try {
     const response = await api.get(`/survey`, {
       params: {
         page,
         limit,
-        ...filter,
+        ...filters,
       },
     });
     return response.data;
   } catch (error) {
-    throw new Error('Error fetching surveys');
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error occurred';
+    throw new Error(`Error fetching surveys: ${errorMessage}`);
   }
 };
 
@@ -45,11 +47,11 @@ export const useFindManySurvey = ({
 }: {
   page?: number;
   limit?: number;
-  filters?: IFilters | null;
+  filters?: IFiltersSurvey | null;
 }): UseQueryResult<ISurveyPageProps> => {
   return useQuery({
     queryKey: [EnumQueries.SURVEY, `page: ${page} - ${limit}`, filters],
-    queryFn: () => getSurvey({ page, limit, filter: filters }),
+    queryFn: () => getSurvey({ page, limit, filters }),
     staleTime: 10000 * 60,
     placeholderData: keepPreviousData,
   });

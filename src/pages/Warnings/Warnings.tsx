@@ -9,7 +9,10 @@ import Stack from '@mui/material/Stack';
 import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions';
 import { DataTable } from '@src/components/Common/DataTable/DataTable';
 import { Error } from '@src/components/Common/Error/Error';
-import { useFindManyWarnings } from '@src/hooks/queries/useWarning';
+import {
+  IFiltersWarning,
+  useFindManyWarnings,
+} from '@src/hooks/queries/useWarning';
 import { totalPagination } from '@src/utils/functions/totalPagination';
 import { useState } from 'react';
 import { usePermissionWargings } from './hooks/usePermissionWargings';
@@ -25,7 +28,9 @@ export default function WarningsPage() {
   const [register, setRegister] = useState<IWarningPageDataProps | undefined>();
   const [page, setPage] = useState(1);
   const [openFilter, setOpenFilter] = useState(false);
-  const [valuesFilter, setValuesFilter] = useState<Record<string, any>>();
+  const [valuesFilter, setValuesFilter] = useState<IFiltersWarning | null>(
+    null
+  );
   const { data, isLoading, error } = useFindManyWarnings({
     page,
     filters: valuesFilter,

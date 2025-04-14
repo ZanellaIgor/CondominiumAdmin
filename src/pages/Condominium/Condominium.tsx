@@ -1,31 +1,36 @@
-import { Add, FilterAlt } from "@mui/icons-material";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
-import { ActionsOptions } from "@src/components/Common/DataTable/ActionsOptions";
-import { DataTable } from "@src/components/Common/DataTable/DataTable";
+import { Add, FilterAlt } from '@mui/icons-material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions';
+import { DataTable } from '@src/components/Common/DataTable/DataTable';
 
-import { Error } from "@src/components/Common/Error/Error";
-import { useFindManyCondominium } from "@src/hooks/queries/useCondominium";
-import { totalPagination } from "@src/utils/functions/totalPagination";
-import { useState } from "react";
-import { FilterCondominium } from "./Condominium.Filter";
-import { FormCondominium } from "./Condominium.Form";
+import { Error } from '@src/components/Common/Error/Error';
+import {
+  IFiltersCondominium,
+  useFindManyCondominium,
+} from '@src/hooks/queries/useCondominium';
+import { totalPagination } from '@src/utils/functions/totalPagination';
+import { useState } from 'react';
+import { FilterCondominium } from './Condominium.Filter';
+import { FormCondominium } from './Condominium.Form';
 import {
   columnsCondominium,
   ICondominiumDataProps,
-} from "./Condominium.Interface";
+} from './Condominium.Interface';
 
 export default function CondominiumPage() {
   const [register, setRegister] = useState<ICondominiumDataProps | undefined>();
   const [openModal, setOpenModal] = useState(false);
   const [page, setPage] = useState(1);
   const [openFilter, setOpenFilter] = useState(false);
-  const [valuesFilter, setValuesFilter] = useState<Record<string, any>>();
+  const [valuesFilter, setValuesFilter] = useState<IFiltersCondominium | null>(
+    null
+  );
 
   const { data, isLoading, error } = useFindManyCondominium({
     page,
@@ -62,10 +67,10 @@ export default function CondominiumPage() {
       <Card
         sx={{
           height: `calc(100vh - 150px)`,
-          display: "flex",
-          flexDirection: "column",
-          width: { xs: "100%", lg: "80%" },
-          margin: "auto",
+          display: 'flex',
+          flexDirection: 'column',
+          width: { xs: '100%', lg: '80%' },
+          margin: 'auto',
           my: 2,
         }}
       >

@@ -35,7 +35,9 @@ const getReservation = async ({
     });
     return response.data;
   } catch (error) {
-    throw new Error('Error fetching reservations');
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error occurred';
+    throw new Error(`Error fetching reservations: ${errorMessage}`);
   }
 };
 

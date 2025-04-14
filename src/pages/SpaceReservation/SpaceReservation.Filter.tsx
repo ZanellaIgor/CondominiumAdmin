@@ -10,12 +10,12 @@ import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
 import { debounce } from '@src/utils/functions/debounce';
 import { useCallback, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ISpaceReservationFormProps } from './SpaceReservation.Schema';
+import { IFiltersSpaceReservation } from '@src/hooks/queries/useSpaceReservation';
 
 type IFilterSpaceReservationProps = {
-  valuesFilter: Record<string, any> | undefined;
+  valuesFilter: IFiltersSpaceReservation | null;
   setValuesFilter: React.Dispatch<
-    React.SetStateAction<undefined | Record<string, any>>
+    React.SetStateAction<IFiltersSpaceReservation | null>
   >;
   open: boolean;
   handleClose: () => void;
@@ -27,8 +27,8 @@ export const FilterSpaceReservation = ({
   open,
   handleClose,
 }: IFilterSpaceReservationProps) => {
-  const { control, handleSubmit } = useForm<ISpaceReservationFormProps>({
-    defaultValues: valuesFilter,
+  const { control, handleSubmit } = useForm<IFiltersSpaceReservation>({
+    defaultValues: valuesFilter ?? {},
   });
 
   const [filterName, setFilterName] = useState('');
@@ -43,8 +43,8 @@ export const FilterSpaceReservation = ({
     value: condominium.id,
   }));
 
-  const submitForm: SubmitHandler<ISpaceReservationFormProps> = (
-    values: ISpaceReservationFormProps
+  const submitForm: SubmitHandler<IFiltersSpaceReservation> = (
+    values: IFiltersSpaceReservation
   ) => {
     setValuesFilter(values);
     handleClose();

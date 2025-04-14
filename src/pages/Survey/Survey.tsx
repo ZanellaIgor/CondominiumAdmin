@@ -1,36 +1,33 @@
-import { Add, FilterAlt, NewReleases } from "@mui/icons-material";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import IconButton from "@mui/material/IconButton";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
-import Tooltip from "@mui/material/Tooltip";
-import { ActionsOptions } from "@src/components/Common/DataTable/ActionsOptions";
-import { DataTable } from "@src/components/Common/DataTable/DataTable";
-import { usePermissionRole } from "@src/hooks/permission/use-permission-role";
-import { useFindManySurvey } from "@src/hooks/queries/useSurvey";
-import { EnumRoles } from "@src/utils/enum/role.enum";
-import { totalPagination } from "@src/utils/functions/totalPagination";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { FilterSurvey } from "./Survey.Filter";
+import { Add, FilterAlt, NewReleases } from '@mui/icons-material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import IconButton from '@mui/material/IconButton';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
+import { ActionsOptions } from '@src/components/Common/DataTable/ActionsOptions';
+import { DataTable } from '@src/components/Common/DataTable/DataTable';
+import { usePermissionRole } from '@src/hooks/permission/use-permission-role';
 import {
-  columnsSurvey,
-  ISurveyPageDataProps,
-  IvaluesFormFilter,
-} from "./Survey.Interface";
+  IFiltersSurvey,
+  useFindManySurvey,
+} from '@src/hooks/queries/useSurvey';
+import { EnumRoles } from '@src/utils/enum/role.enum';
+import { totalPagination } from '@src/utils/functions/totalPagination';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { FilterSurvey } from './Survey.Filter';
+import { columnsSurvey, ISurveyPageDataProps } from './Survey.Interface';
 
 export default function SurveyPage() {
   const navigate = useNavigate();
   const { validateRole } = usePermissionRole();
   const [page, setPage] = useState(1);
   const [openFilter, setOpenFilter] = useState(false);
-  const [valuesFilter, setValuesFilter] = useState<
-    IvaluesFormFilter | null | undefined
-  >(null);
+  const [valuesFilter, setValuesFilter] = useState<IFiltersSurvey | null>(null);
   const { data, isLoading } = useFindManySurvey({
     page,
     filters: valuesFilter,
@@ -54,10 +51,10 @@ export default function SurveyPage() {
       <Card
         sx={{
           height: `calc(100vh - 150px)`,
-          display: "flex",
-          flexDirection: "column",
-          width: { xs: "100%", lg: "80%" },
-          margin: "auto",
+          display: 'flex',
+          flexDirection: 'column',
+          width: { xs: '100%', lg: '80%' },
+          margin: 'auto',
           my: 2,
         }}
       >

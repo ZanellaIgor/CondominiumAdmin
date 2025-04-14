@@ -9,13 +9,12 @@ import { InputSelect } from '@src/components/Inputs/InputSelect/InputSelect';
 import { optionsCategory } from '@src/utils/options/category.options';
 import { optionsSituation } from '@src/utils/options/situation.options';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { IWarningFormProps } from './Warnings.Schema';
+
+import { IFiltersWarning } from '@src/hooks/queries/useWarning';
 
 type IFilterlWarningProps = {
-  valuesFilter: Record<string, any> | undefined;
-  setValuesFilter: React.Dispatch<
-    React.SetStateAction<undefined | Record<string, any>>
-  >;
+  valuesFilter: IFiltersWarning | null;
+  setValuesFilter: React.Dispatch<React.SetStateAction<IFiltersWarning | null>>;
   open: boolean;
   handleClose: () => void;
 };
@@ -26,11 +25,11 @@ export const FilterWarning = ({
   open,
   handleClose,
 }: IFilterlWarningProps) => {
-  const { control, handleSubmit } = useForm<IWarningFormProps>({
-    defaultValues: valuesFilter,
+  const { control, handleSubmit } = useForm<IFiltersWarning>({
+    defaultValues: valuesFilter ?? {},
   });
 
-  const submitForm: SubmitHandler<IWarningFormProps> = (values) => {
+  const submitForm: SubmitHandler<IFiltersWarning> = (values) => {
     setValuesFilter(values);
   };
 

@@ -10,24 +10,24 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query';
 
-interface IFilters {
+export interface IFiltersWarning {
   category?: EnumCategory;
   situation?: EnumSituation;
   condominiumId?: number;
   name?: string;
 }
 
-interface GetWarningsParams {
+interface IGetWarningsParams {
   page: number;
   limit: number;
-  filters?: IFilters;
+  filters?: IFiltersWarning | null;
 }
 
 const getWarnings = async ({
   page,
   limit,
   filters,
-}: GetWarningsParams): Promise<IWarningPageProps> => {
+}: IGetWarningsParams): Promise<IWarningPageProps> => {
   try {
     const response = await api.get(`/warnings`, {
       params: {
@@ -38,7 +38,9 @@ const getWarnings = async ({
     });
     return response.data;
   } catch (error) {
-    throw new Error('Error fetching warnings');
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error occurred';
+    throw new Error(`Error fetching warnings: ${errorMessage}`);
   }
 };
 
@@ -49,7 +51,7 @@ export const useFindManyWarnings = ({
 }: {
   page?: number;
   limit?: number;
-  filters?: IFilters;
+  filters?: IFiltersWarning | null;
 }): UseQueryResult<IWarningPageProps> => {
   return useQuery<IWarningPageProps>({
     queryKey: [EnumQueries.WARNING, page, limit, filters],

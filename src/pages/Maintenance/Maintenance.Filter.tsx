@@ -9,12 +9,12 @@ import Stack from '@mui/material/Stack';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { optionsSituation } from '@src/utils/options/situation.options';
-import { IMaintenanceFormProps } from './Maintenance.Schema';
+import { IFiltersMaintenance } from '@src/hooks/queries/useMaintenance';
 
 type IFilterlMaintenanceProps = {
-  valuesFilter: Record<string, any> | undefined;
+  valuesFilter: IFiltersMaintenance | null;
   setValuesFilter: React.Dispatch<
-    React.SetStateAction<undefined | Record<string, any>>
+    React.SetStateAction<IFiltersMaintenance | null>
   >;
   open: boolean;
   handleClose: () => void;
@@ -26,12 +26,12 @@ export const FilterMaintenance = ({
   open,
   handleClose,
 }: IFilterlMaintenanceProps) => {
-  const { control, handleSubmit } = useForm<IMaintenanceFormProps>({
-    defaultValues: valuesFilter,
+  const { control, handleSubmit } = useForm<IFiltersMaintenance>({
+    defaultValues: valuesFilter ?? {},
   });
 
-  const submitForm: SubmitHandler<IMaintenanceFormProps> = (
-    values: IMaintenanceFormProps
+  const submitForm: SubmitHandler<IFiltersMaintenance> = (
+    values: IFiltersMaintenance
   ) => {
     setValuesFilter(values);
     handleClose();

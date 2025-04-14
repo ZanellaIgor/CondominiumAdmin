@@ -7,16 +7,14 @@ import Stack from '@mui/material/Stack';
 import { InputField } from '@src/components/Inputs/InputField/InputField';
 import { InputSelect } from '@src/components/Inputs/InputSelect/InputSelect';
 import { useFindManyCondominium } from '@src/hooks/queries/useCondominium';
+import { IFiltersSurvey } from '@src/hooks/queries/useSurvey';
 import { debounce } from '@src/utils/functions/debounce';
 import { Dispatch, useCallback, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { IvaluesFormFilter } from './Survey.Interface';
 
 type IFilterSurveyProps = {
-  valuesFilter: IvaluesFormFilter | null | undefined;
-  setValuesFilter: Dispatch<
-    React.SetStateAction<IvaluesFormFilter | null | undefined>
-  >;
+  valuesFilter: IFiltersSurvey | null;
+  setValuesFilter: Dispatch<React.SetStateAction<IFiltersSurvey | null>>;
   open: boolean;
   handleClose: () => void;
 };
@@ -46,7 +44,7 @@ export const FilterSurvey = ({
     value: condominium.id,
   }));
 
-  const submitForm: SubmitHandler<IvaluesFormFilter> = (values) => {
+  const submitForm: SubmitHandler<IFiltersSurvey> = (values) => {
     setValuesFilter(values);
     handleClose();
   };

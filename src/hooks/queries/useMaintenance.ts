@@ -9,7 +9,7 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query';
 
-interface IFilters {
+export interface IFiltersMaintenance {
   title?: string;
   situation?: EnumSituation;
 }
@@ -17,7 +17,7 @@ interface IFilters {
 interface IGetMaintenanceParams {
   page: number;
   limit?: number;
-  filters?: IFilters;
+  filters?: IFiltersMaintenance | null;
 }
 
 const getMaintenance = async ({
@@ -35,7 +35,9 @@ const getMaintenance = async ({
     });
     return response.data;
   } catch (error) {
-    throw new Error('Error fetching maintenance');
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error occurred';
+    throw new Error(`Error fetching maintenances: ${errorMessage}`);
   }
 };
 
