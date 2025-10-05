@@ -42,12 +42,8 @@ function Sidebar() {
           position: 'fixed',
           left: 0,
           top: 0,
-          background:
-            theme.palette.mode === 'dark'
-              ? theme.colors.gradients.black1
-              : darken(theme.colors.alpha.black[100], 0.5),
-          boxShadow:
-            theme.palette.mode === 'dark' ? theme.sidebar.boxShadow : 'none',
+          background: darken(theme.colors.alpha.black[100], 0.5),
+          boxShadow: theme.sidebar.boxShadow,
         }}
       >
         <Scrollbar>

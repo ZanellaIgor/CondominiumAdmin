@@ -1,4 +1,5 @@
 import { EnumRoles } from '@src/utils/enum/role.enum';
+import { msgRequired } from '@src/utils/messages/messages';
 import { z } from 'zod';
 
 export const userSchema = z.object({
@@ -6,9 +7,9 @@ export const userSchema = z.object({
     .number()
     .transform((value) => Number(value))
     .optional(),
-  name: z.string(),
-  email: z.string(),
-  password: z.string(),
+  name: z.string().min(1, msgRequired),
+  email: z.string().min(1, msgRequired),
+  password: z.string().min(1, msgRequired),
   profilePhoto: z.string().optional(),
   apartmentIds: z
     .union([z.number(), z.array(z.number())])
